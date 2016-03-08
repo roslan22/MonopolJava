@@ -2,6 +2,7 @@ package logic.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import logic.model.player.ComputerPlayer;
 import logic.model.player.HumanPlayer;
@@ -11,6 +12,12 @@ public class Engine
 {
     private List<Player> players = new ArrayList<>();
     private Board board = new Board();
+    private Optional<Player> currentPlayer;
+
+    public Optional<Player> getPlayingPlayer()
+    {
+        return currentPlayer;
+    }
 
     public void createPlayers(List<String> humanPlayerNames, int computerPlayersCount)
     {
@@ -24,5 +31,14 @@ public class Engine
         {
             players.add(new ComputerPlayer());
         }
+    }
+
+    public void initialize(MonopolyInitReader monopolyInitReader)
+    {
+    }
+
+    public boolean isStillPlaying()
+    {
+        return false;
     }
 }
