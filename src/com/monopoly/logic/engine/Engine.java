@@ -16,16 +16,15 @@ public class Engine
     public static final int FIRST_PLAYER_INDEX = 0;
 
     private List<Player> players = new ArrayList<>();
-    private Board board = new Board();
+    private Board board;
     private Player currentPlayer;
 
     public Player getCurrentPlayer()
     {
         if (currentPlayer == null) 
         {
-            throw new IllegalStateException("There is no current player. Have you called createComputerPlayers() ?");
+            throw new IllegalStateException("There is no current player. Have you called createPlayers(...) ?");
         }
-        
         return currentPlayer;
     }
 
@@ -64,6 +63,22 @@ public class Engine
     {
         Random r = new Random(System.nanoTime());
         return new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
+    }
+
+    public void movePlayer(Player player, int result) 
+    {
+        board.movePlayer(player, result);
+    }
+
+    public void playerFinishedARound(Player player) 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void nextPlayer() 
+    {
+        final int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
+        currentPlayer = players.get(nextPlayerIndex);
     }
 
 }

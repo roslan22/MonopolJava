@@ -1,11 +1,11 @@
 package com.monopoly.logic.model;
 
-public class CubesResult 
+public class CubesResult
 {
     private int firstCubeResult;
     private int secondCuberResult;
 
-    public CubesResult(int firstCubeResult, int secondCuberResult) 
+    public CubesResult(int firstCubeResult, int secondCuberResult)
     {
         validateCube(firstCubeResult);
         validateCube(secondCuberResult);
@@ -27,19 +27,9 @@ public class CubesResult
         return firstCubeResult;
     }
 
-    public void setFirstCubeResult(int firstCubeResult) 
-    {
-        this.firstCubeResult = firstCubeResult;
-    }
-
     public int getSecondCuberResult() 
     {
         return secondCuberResult;
-    }
-
-    public void setSecondCuberResult(int secondCuberResult) 
-    {
-        this.secondCuberResult = secondCuberResult;
     }
     
     public int getResult()

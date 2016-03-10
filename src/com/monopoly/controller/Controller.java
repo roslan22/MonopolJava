@@ -28,8 +28,11 @@ public class Controller
         while (engine.isStillPlaying())
         {
             Player player = engine.getCurrentPlayer();
+            
             CubesResult cr = engine.throwCubes();
-//            engine.movePlayer(player, cr.getResult());
+            engine.movePlayer(player, cr.getResult());
+            
+            engine.nextPlayer();
         }
     }
 
