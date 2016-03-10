@@ -1,4 +1,4 @@
-package main;
+package com.monopoly.main;
 
 public class Main {
 

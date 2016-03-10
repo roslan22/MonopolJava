@@ -1,4 +1,4 @@
-package logic.model.player;
+package com.monopoly.logic.model.player;
 
 public class HumanPlayer extends Player
 {
@@ -6,4 +6,6 @@ public class HumanPlayer extends Player
     {
         super(name);
     }
+
+
 }

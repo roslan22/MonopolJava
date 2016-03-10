@@ -1,4 +1,4 @@
-package view;
+package com.monopoly.view;
 
 import java.util.ArrayList;
 import java.util.List;

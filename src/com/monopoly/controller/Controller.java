@@ -1,13 +1,16 @@
-package controller;
+package com.monopoly.controller;
+
+import com.monopoly.logic.engine.Engine;
+import com.monopoly.logic.model.CubesResult;
+import com.monopoly.logic.model.player.Player;
+import com.monopoly.view.View;
 
 import java.util.List;
-
-import logic.engine.Engine;
-import view.View;
 
 public class Controller
 {
     private static final String PATH = "";
+
     private View view;
     private Engine engine;
 
@@ -20,11 +23,13 @@ public class Controller
     public void startGame()
     {
         createPlayers();
-        engine.initialize(new XmlMonopolyInitReader(PATH));
-
+        engine.initialize(XmlMonopolyInitReader.getSettings(PATH));
+        
         while (engine.isStillPlaying())
         {
-
+            Player player = engine.getCurrentPlayer();
+            CubesResult cr = engine.throwCubes();
+//            engine.movePlayer(player, cr.getResult());
         }
     }
 
@@ -32,6 +37,7 @@ public class Controller
     {
         int humanPlayersNumber = view.getHumanPlayersNumber();
         int computerPlayersNumber = view.getComputerPlayersNumber();
+        // TODO: Chack that the sum of the players is 6
         List<String> humanPlayersNames = view.getHumanPlayerNames(humanPlayersNumber);
         engine.createPlayers(humanPlayersNames, computerPlayersNumber);
     }

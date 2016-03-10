@@ -1,4 +1,4 @@
-package logic.model.player;
+package com.monopoly.logic.model.player;
 
 import java.util.Random;
 
@@ -14,7 +14,8 @@ public class ComputerPlayer extends Player
     {
         public static final int MAX_RANDOM_NAME_LENGTH = 8;
         public static final int MIN_RANDOM_NAME_LENGTH = 3;
-        final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
+        
+        final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         final Random rand    = new Random();
 
         public String randomName()
