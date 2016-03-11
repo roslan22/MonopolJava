@@ -55,4 +55,9 @@ public abstract class Player
     {
         return getName().hashCode();
     }
+
+    public void receiveMoney(int moneyEarned)
+    {
+        money += moneyEarned;
+    }
 }

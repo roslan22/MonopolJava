@@ -16,7 +16,7 @@ public class MoneyEarnCard extends SurpriseCard
         }
         else
         {
-            player.reciveMoney(moneyEarned);
+            player.receiveMoney(moneyEarned);
         }
     }
     
