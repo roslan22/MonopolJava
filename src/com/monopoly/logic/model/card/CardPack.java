@@ -12,6 +12,7 @@ public class CardPack<T extends Card>
     public CardPack(List<T> cards) 
     {
         this.cards = cards;
+        randomizePack();
     }
     
     public T getNext()
@@ -20,7 +21,7 @@ public class CardPack<T extends Card>
         return cards.get(currentCardIndex);
     }
 
-    public void randmizePack()
+    public void randomizePack()
     {
         Collections.shuffle(cards, new Random(System.nanoTime()));
     }
