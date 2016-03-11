@@ -11,6 +11,7 @@ public class Country
     public Country(List<City> countryCities)
     {
         this.countryCities = countryCities;
+        countryCities.forEach(city -> city.setCountry(this));
     }
 
     public boolean hasMonopoly(Player player)
