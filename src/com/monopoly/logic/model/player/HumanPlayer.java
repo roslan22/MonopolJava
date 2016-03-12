@@ -7,5 +7,17 @@ public class HumanPlayer extends Player
         super(name);
     }
 
+    @Override
+    public boolean isWillingToBuyProperty()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isWillingToBuyHouse()
+    {
+        return false;
+    }
+
 
 }
