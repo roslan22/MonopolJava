@@ -51,7 +51,7 @@ public class Engine
 
     public void initialize(MonopolyInitSettings monopolyInitSettings)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new DoNotCompile();
     }
 
     public boolean isStillPlaying()
@@ -72,7 +72,7 @@ public class Engine
 
     public void playerFinishedARound(Player player) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new DoNotCompile();
     }
 
     public void nextPlayer() 
