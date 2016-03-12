@@ -1,5 +1,6 @@
 package com.monopoly.logic.model.player;
 
+import com.monopoly.logic.model.card.OutOfJailCard;
 import com.monopoly.logic.model.cell.Cell;
 
 public abstract class Player
@@ -46,22 +47,9 @@ public abstract class Player
         currentCell.perform(this);
     }
 
-    @Override
-    public boolean equals(Object o)
+    public void setCurrentCellDoNotPerform(Cell currentCell)
     {
-        if (this == o)
-        {
-            return true;
-        }
-        if (!(o instanceof Player))
-        {
-            return false;
-        }
-
-        Player player = (Player) o;
-
-        return getName().equals(player.getName());
-
+        this.currentCell = currentCell;
     }
 
     public void receiveMoney(int moneyEarned)
@@ -77,4 +65,52 @@ public abstract class Player
     }
 
     public abstract boolean isWillingToBuyHouse();
+
+    public void payToBank(int housePrice)
+    {
+        return new DoNotCompile();
+    }
+
+    public boolean isParking()
+    {
+        return getCurrentCell().isPlayerParking(this);
+    }
+
+    public boolean isInJail()
+    {
+        return getCurrentCell().isInJail(this);
+    }
+
+    public void exitFromParking()
+    {
+        getCurrentCell().exitFromParking(this);
+    }
+
+    public void getOutOfJail()
+    {
+        getCurrentCell().getPlayerOutOfJail(this);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return getName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof Player))
+        {
+            return false;
+        }
+
+        Player player = (Player) o;
+
+        return getName().equals(player.getName());
+    }
 }
