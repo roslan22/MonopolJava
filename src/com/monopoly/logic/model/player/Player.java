@@ -1,11 +1,14 @@
 package com.monopoly.logic.model.player;
 
+import com.monopoly.logic.model.cell.Cell;
+
 public abstract class Player
 {
     private static final int START_MONEY_AMOUNT = 1500;
     
     private String name;
     private int money = START_MONEY_AMOUNT;
+    private Cell currentCell;
 
     public Player(String name)
     {
@@ -32,6 +35,17 @@ public abstract class Player
         this.money = money;
     }
 
+    public Cell getCurrentCell()
+    {
+        return currentCell;
+    }
+
+    public void setCurrentCell(Cell currentCell)
+    {
+        this.currentCell = currentCell;
+        currentCell.perform(this);
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -50,14 +64,17 @@ public abstract class Player
 
     }
 
-    @Override
-    public int hashCode()
-    {
-        return getName().hashCode();
-    }
-
     public void receiveMoney(int moneyEarned)
     {
         money += moneyEarned;
     }
+
+    public abstract boolean isWillingToBuyProperty();
+
+    public void payToOtherPlayer(Player owner, int rentPrice)
+    {
+        return new DoNotCompile();
+    }
+
+    public abstract boolean isWillingToBuyHouse();
 }

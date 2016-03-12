@@ -1,6 +1,7 @@
 package com.monopoly.logic.model;
 
 import com.monopoly.logic.engine.Engine;
+import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
 import com.monopoly.logic.model.cell.Cell;
@@ -14,7 +15,7 @@ public class Board
     private Engine engine;
     private List<Cell> cells = new ArrayList<>();
     private CardPack<SurpriseCard> surpriseCardPack;
-    private CardPack<AlertCard> alertCardPack;
+    private CardPack<AlertCard>    alertCardPack;
     
     public Board(Engine engine, List<Cell> cells)
     {
@@ -34,11 +35,9 @@ public class Board
 
     public void movePlayer(Player player, int stepsToMove)
     {
-        int currentPlayerPlace = 0;
-        if (currentPlayerPlace + stepsToMove >= cells.size())
-        {
+        int newPlayerPlace = cells.indexOf(player.getCurrentCell()) + stepsToMove;
+        if (newPlayerPlace >= cells.size())
             engine.playerFinishedARound(player);
-        }
-        cells.get((currentPlayerPlace + stepsToMove) % cells.size()).perform(player);
+        player.setCurrentCell(cells.get(newPlayerPlace % cells.size()));
     }
 }
