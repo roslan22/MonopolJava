@@ -40,7 +40,7 @@ public class Controller
     {
         int humanPlayersNumber = view.getHumanPlayersNumber();
         int computerPlayersNumber = view.getComputerPlayersNumber();
-        // TODO: Chack that the sum of the players is 6
+        // TODO: Check that the sum of the players is 6
         List<String> humanPlayersNames = view.getHumanPlayerNames(humanPlayersNumber);
         engine.createPlayers(humanPlayersNames, computerPlayersNumber);
     }
