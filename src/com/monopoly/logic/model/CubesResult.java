@@ -36,4 +36,6 @@ public class CubesResult
     {
         return firstCubeResult + secondCuberResult;
     }
+
+    public boolean isDouble(){return firstCubeResult == secondCuberResult;}
 }

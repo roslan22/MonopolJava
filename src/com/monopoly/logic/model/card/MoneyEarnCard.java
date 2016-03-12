@@ -6,13 +6,19 @@ public class MoneyEarnCard extends SurpriseCard
 { 
     private boolean isFromOtherPlayers;
     private int moneyEarned;
-            
+
+    public MoneyEarnCard(boolean isFromOtherPlayers, int moneyEarned)
+    {
+        this.isFromOtherPlayers = isFromOtherPlayers;
+        this.moneyEarned = moneyEarned;
+    }
+
     @Override
     public void perform(Player player) 
     {
         if (isFromOtherPlayers)
         {
-            transferOtherPlayersMoneyTo(player);
+            transferOtherPlayersMoneyTo(player, moneyEarned);
         }
         else
         {

@@ -62,7 +62,7 @@ public abstract class Property extends Cell
     {
         if (player.getMoney() >= getPrice() && player.isWillingToBuyProperty())
         {
-
+            player.payToBank(price);
             setOwner(player);
         }
     }

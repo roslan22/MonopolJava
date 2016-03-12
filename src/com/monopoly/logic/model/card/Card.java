@@ -2,14 +2,26 @@ package com.monopoly.logic.model.card;
 
 import com.monopoly.logic.model.player.Player;
 
-public abstract class Card 
+public abstract class Card
 {
     private String cardText;
 
-    public String getCardText() 
+    public String getCardText()
     {
         return cardText;
     }
-    
+
     public abstract void perform(Player player);
+
+    @Override
+    public boolean equals(Object o)
+    {
+        return this == o;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return getCardText() != null ? getCardText().hashCode() : 0;
+    }
 }

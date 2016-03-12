@@ -12,4 +12,23 @@ public abstract class Cell
     {
         return this == obj;
     }
+
+    public boolean isPlayerParking(Player player)
+    {
+        return false;
+    }
+
+    public boolean isInJail(Player player)
+    {
+        return false;
+    }
+
+    public void exitFromParking(Player player)
+    {
+    }
+
+    public void getPlayerOutOfJail(Player player)
+    {
+
+    }
 }

@@ -52,7 +52,7 @@ public class Engine
 
     public void initializeBoard(MonopolyInitSettings monopolyInitSettings)
     {
-        board = new Board(this, monopolyInitSettings.getCells());
+        board = new Board(this, monopolyInitSettings.getCells(), surpriseCardPack, alertCardPack);
     }
 
     public boolean isStillPlaying()

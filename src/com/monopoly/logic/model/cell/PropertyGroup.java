@@ -17,7 +17,7 @@ public class PropertyGroup
     {
         for (Property p : properties)
         {
-            if (!p.getOwner().equals(player))
+            if (p.isPropertyAvailable() || !p.getOwner().equals(player))
                 return false;
         }
         return true;

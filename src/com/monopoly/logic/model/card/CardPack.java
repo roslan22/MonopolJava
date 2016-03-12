@@ -25,4 +25,14 @@ public class CardPack<T extends Card>
     {
         Collections.shuffle(cards, new Random(System.nanoTime()));
     }
+
+    public void removeFromPack(T surpriseCard)
+    {
+        cards.remove(surpriseCard);
+    }
+
+    public void returnToPack(T card)
+    {
+        cards.add((currentCardIndex - 1) % cards.size() ,card);
+    }
 }
