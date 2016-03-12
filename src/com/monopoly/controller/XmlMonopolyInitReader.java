@@ -4,7 +4,9 @@ import com.monopoly.logic.engine.MonopolyInitSettings;
 
 public class XmlMonopolyInitReader
 {
-    public static MonopolyInitSettings getSettings(String PATH) {
+    public static MonopolyInitSettings getSettings(String PATH)
+    {
+        new DoNotCompile();
         return new MonopolyInitSettings();
     }
 }
