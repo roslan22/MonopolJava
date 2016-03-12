@@ -20,20 +20,43 @@ public class Controller
         this.engine = engine;
     }
 
-    public void startGame()
+    public void play()
     {
-        createPlayers();
-        engine.initialize(XmlMonopolyInitReader.getSettings(PATH));
-        
+        startGame();
         while (engine.isStillPlaying())
         {
             Player player = engine.getCurrentPlayer();
-            
-            CubesResult cr = engine.throwCubes();
-            engine.movePlayer(player, cr.getResult());
-            
+            playTurn(player);
             engine.nextPlayer();
         }
+    }
+
+    private void startGame()
+    {
+        createPlayers();
+        engine.initializeBoard(XmlMonopolyInitReader.getSettings(PATH));
+        engine.putPlayersAtFirstCell();
+    }
+
+    private void playTurn(Player player)
+    {
+        if (engine.isPlayerInParking(player))
+            movePlayer(player);
+        else
+            engine.exitPlayerFromParking(player);
+    }
+
+    private void movePlayer(Player player)
+    {
+        CubesResult cr = engine.throwCubes();
+        if (engine.isPlayerInJail(player))
+        {
+            if (cr.isDouble())
+                engine.takePlayerOutOfJail(player);
+            else
+                return;
+        }
+        engine.movePlayer(player, cr.getResult());
     }
 
     private void createPlayers()
