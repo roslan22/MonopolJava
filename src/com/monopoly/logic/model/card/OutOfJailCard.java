@@ -1,18 +1,19 @@
 package com.monopoly.logic.model.card;
 
+import com.monopoly.logic.model.Board;
 import com.monopoly.logic.model.player.Player;
 
 public class OutOfJailCard extends SurpriseCard
 {
     @Override
-    public void perform(Player player)
+    public void perform(Player player, Board board)
     {
-        removeCardFromSurprisePack(this);
+        board.removeCardFromSurprisePack(this);
         player.receiveOutOfJailCard(this);
     }
 
-    public void returnToPack()
+    public void returnToPack(Board board)
     {
-        returnCardToSurprisePack(this);
+        board.returnCardToSurprisePack(this);
     }
 }

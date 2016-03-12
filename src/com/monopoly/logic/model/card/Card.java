@@ -1,5 +1,6 @@
 package com.monopoly.logic.model.card;
 
+import com.monopoly.logic.model.Board;
 import com.monopoly.logic.model.player.Player;
 
 public abstract class Card
@@ -11,7 +12,7 @@ public abstract class Card
         return cardText;
     }
 
-    public abstract void perform(Player player);
+    public abstract void perform(Player player, Board board);
 
     @Override
     public boolean equals(Object o)

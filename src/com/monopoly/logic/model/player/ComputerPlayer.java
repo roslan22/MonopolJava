@@ -17,4 +17,14 @@ public class ComputerPlayer extends Player
     {
         super(getNextName());
     }
+
+    @Override
+    public boolean isWillingToBuyProperty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isWillingToBuyHouse() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
