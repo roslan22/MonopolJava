@@ -1,5 +1,14 @@
 package com.monopoly.logic.model.cell;
 
+import com.monopoly.logic.model.player.Player;
+
 public class RoadStart extends Cell
 {
+    public static final int ROAD_START_MONEY = 200;
+
+    @Override
+    public void perform(Player player)
+    {
+        player.receiveMoney(ROAD_START_MONEY);
+    }
 }
