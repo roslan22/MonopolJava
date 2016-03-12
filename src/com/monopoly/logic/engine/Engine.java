@@ -14,6 +14,7 @@ import java.util.Random;
 public class Engine
 {
     public static final int FIRST_PLAYER_INDEX = 0;
+    public static final int END_OF_ROUND_MONEY_EARN = 200;
 
     private List<Player> players = new ArrayList<>();
     private Board board;
@@ -49,14 +50,14 @@ public class Engine
         }
     }
 
-    public void initialize(MonopolyInitSettings monopolyInitSettings)
+    public void initializeBoard(MonopolyInitSettings monopolyInitSettings)
     {
-        return new DoNotCompile();
+        board = new Board(this, monopolyInitSettings.getCells());
     }
 
     public boolean isStillPlaying()
     {
-        return false;
+        return players.size() < 2;
     }
     
     public CubesResult throwCubes()
@@ -72,7 +73,7 @@ public class Engine
 
     public void playerFinishedARound(Player player) 
     {
-        return new DoNotCompile();
+        player.receiveMoney(END_OF_ROUND_MONEY_EARN);
     }
 
     public void nextPlayer() 
@@ -81,4 +82,28 @@ public class Engine
         currentPlayer = players.get(nextPlayerIndex);
     }
 
+    public void putPlayersAtFirstCell()
+    {
+        players.forEach(player -> player.setCurrentCellDoNotPerform(board.getFirstCell()));
+    }
+
+    public boolean isPlayerInParking(Player player) 
+    {
+        return player.isParking();
+    }
+
+    public boolean isPlayerInJail(Player player)
+    {
+        return player.isInJail();
+    }
+
+    public void exitPlayerFromParking(Player player)
+    {
+        player.exitFromParking();
+    }
+
+    public void takePlayerOutOfJail(Player player)
+    {
+        player.getOutOfJail();
+    }
 }
