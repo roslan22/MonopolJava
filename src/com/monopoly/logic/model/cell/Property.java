@@ -5,11 +5,22 @@ import com.monopoly.logic.model.player.Player;
 public abstract class Property extends Cell
 {
     private Player owner;
-    private int price;
+    private int    price;
+    private PropertyGroup propertyGroup;
 
     public Property(int price)
     {
         this.price = price;
+    }
+
+    public void setPropertyGroup(PropertyGroup propertyGroup)
+    {
+        this.propertyGroup = propertyGroup;
+    }
+
+    public PropertyGroup getPropertyGroup()
+    {
+        return propertyGroup;
     }
 
     public Player getOwner()
@@ -35,22 +46,23 @@ public abstract class Property extends Cell
     }
 
     @Override
-    public void perform(Player player) {
-        if (isPropertyAvailable()) 
+    public void perform(Player player)
+    {
+        if (isPropertyAvailable())
         {
             buyProperty(player);
-        } 
-        else 
+        }
+        else
         {
             player.payToOtherPlayer(getOwner(), getRentPrice());
         }
     }
 
-    private void buyProperty(Player player) 
+    private void buyProperty(Player player)
     {
-        if (player.getMoney() >= getPrice() && offerToBuyProperty(player))
+        if (player.getMoney() >= getPrice() && player.isWillingToBuyProperty())
         {
-            
+
             setOwner(player);
         }
     }

@@ -11,7 +11,6 @@ public class City extends Property
     private int houseCounter = 0;
     private int     housePrice;
     private int[]   rentPrices;
-    private Country country;
 
     public City(String cityName, int propertyPrice, int housePrice, int[] rentPrices)
     {
@@ -19,11 +18,6 @@ public class City extends Property
         this.cityName = cityName;
         this.housePrice = housePrice;
         setRentPrices(rentPrices);
-    }
-
-    public void setCountry(Country country)
-    {
-        this.country = country;
     }
 
     private void setRentPrices(int[] rentPrices)
@@ -55,14 +49,14 @@ public class City extends Property
 
     private boolean canBuyHouse(Player player)
     {
-        return getOwner().equals(player) && country.hasMonopoly(player);
+        return getOwner().equals(player) && getPropertyGroup().hasMonopoly(player);
     }
 
     private void buyHouse(Player player)
     {
         if (player.getMoney() >= housePrice && houseCounter < MAX_HOUSES_AVAILABLE)
         {
-            if (offerToBuyHouse(player))
+            if (player.isWillingToBuyHouse())
             {
 
                 houseCounter++;
