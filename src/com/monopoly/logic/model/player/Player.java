@@ -2,6 +2,8 @@ package com.monopoly.logic.model.player;
 
 import com.monopoly.logic.model.card.OutOfJailCard;
 import com.monopoly.logic.model.cell.Cell;
+import com.monopoly.logic.model.cell.Jail;
+import com.monopoly.logic.model.cell.Parking;
 
 public abstract class Player
 {
@@ -60,16 +62,21 @@ public abstract class Player
 
     public abstract boolean isWillingToBuyProperty();
 
-    public void payToOtherPlayer(Player owner, int rentPrice)
+    public void payToOtherPlayer(Player player, int amount)
     {
+        if (player.equals(this) || money <= 0)
+            return;
 
+        int actualPayedAmount = money > amount ? amount : money;
+        player.receiveMoney(actualPayedAmount);
+        money -= actualPayedAmount;
     }
 
     public abstract boolean isWillingToBuyHouse();
 
-    public void payToBank(int housePrice)
+    public void payToBank(int amount)
     {
-
+        money -= money > amount ? amount : money;
     }
 
     public boolean isParking()
@@ -84,12 +91,18 @@ public abstract class Player
 
     public void exitFromParking()
     {
-        getCurrentCell().exitFromParking(this);
+        if (getCurrentCell() instanceof Parking)
+        {
+            ((Parking) getCurrentCell()).exitFromParking(this);
+        }
     }
 
     public void getOutOfJail()
     {
-        getCurrentCell().getPlayerOutOfJail(this);
+        if (getCurrentCell() instanceof Jail)
+        {
+            ((Jail) getCurrentCell()).getPlayerOutOfJail(this);
+        }
     }
 
     @Override
