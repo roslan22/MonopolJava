@@ -21,9 +21,11 @@ public class Parking extends Cell
         return !parkingPlayers.contains(player);
     }
 
-    @Override
     public void exitFromParking(Player player)
     {
-        parkingPlayers.remove(player);
+        if (parkingPlayers.contains(player))
+        {
+            parkingPlayers.remove(player);
+        }
     }
 }

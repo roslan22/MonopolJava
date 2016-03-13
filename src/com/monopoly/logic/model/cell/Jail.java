@@ -27,7 +27,6 @@ public class Jail extends Cell
         return playersInJail.contains(player);
     }
 
-    @Override
     public void getPlayerOutOfJail(Player player)
     {
         if (playersInJail.contains(player))

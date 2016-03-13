@@ -22,13 +22,4 @@ public abstract class Cell
     {
         return false;
     }
-
-    public void exitFromParking(Player player)
-    {
-    }
-
-    public void getPlayerOutOfJail(Player player)
-    {
-
-    }
 }
