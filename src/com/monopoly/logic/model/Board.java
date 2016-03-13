@@ -7,6 +7,8 @@ import com.monopoly.logic.model.card.SurpriseCard;
 import com.monopoly.logic.model.cell.AlertCell;
 import com.monopoly.logic.model.cell.Cell;
 import com.monopoly.logic.model.cell.Jail;
+import com.monopoly.logic.model.cell.Parking;
+import com.monopoly.logic.model.cell.Property;
 import com.monopoly.logic.model.cell.SurpriseCell;
 import com.monopoly.logic.model.player.Player;
 
@@ -27,6 +29,7 @@ public class Board
     private List<AlertCell> alertCells = new ArrayList<>();
     private List<SurpriseCell> surpriseCells = new ArrayList<>();
     private Jail jailCell = new Jail();
+    private Parking parkingcCell = new Parking();
 
     public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack)
     {
@@ -50,6 +53,8 @@ public class Board
             surpriseCells.add((SurpriseCell) cell);
         if (cell instanceof AlertCell)
             alertCells.add((AlertCell) cell);
+        if (cell instanceof Parking)
+            parkingcCell = (Parking) cell;
     }
 
     public List<Cell> getCells()
@@ -163,12 +168,30 @@ public class Board
 
     public void payToEveryoneElse(Player player, int moneyToPay)
     {
-
+        engine.payToEveryoneElse(player, moneyToPay);
     }
 
     public void transferOtherPlayersMoneyTo(Player player, int moneyEarned)
     {
+        engine.transferOtherPlayersMoneyTo(player, moneyEarned);
+    }
 
+    public void playerLost(Player player)
+    {
+        jailCell.getPlayerOutOfJail(player);
+        parkingcCell.exitFromParking(player);
+        clearPropertiesOwner(player);
+    }
+
+    private void clearPropertiesOwner(Player player)
+    {
+        cells.stream().filter(cell -> cell instanceof Property).forEach(cell -> {
+            Property propertyCell = (Property) cell;
+            if (!propertyCell.isPropertyAvailable() && propertyCell.getOwner().equals(player))
+            {
+                propertyCell.setOwner(null);
+            }
+        });
     }
 
     public static class PlayerNotOnBoard extends RuntimeException
