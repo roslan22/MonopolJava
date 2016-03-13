@@ -6,7 +6,6 @@ public class XmlMonopolyInitReader
 {
     public static MonopolyInitSettings getSettings(String PATH)
     {
-        new DoNotCompile();
         return new MonopolyInitSettings();
     }
 }

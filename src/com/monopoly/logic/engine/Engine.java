@@ -13,16 +13,16 @@ import java.util.Random;
 
 public class Engine
 {
-    public static final int FIRST_PLAYER_INDEX = 0;
+    public static final int FIRST_PLAYER_INDEX      = 0;
     public static final int END_OF_ROUND_MONEY_EARN = 200;
 
     private List<Player> players = new ArrayList<>();
-    private Board board;
+    private Board  board;
     private Player currentPlayer;
 
     public Player getCurrentPlayer()
     {
-        if (currentPlayer == null) 
+        if (currentPlayer == null)
         {
             throw new IllegalStateException("There is no current player. Have you called createPlayers(...) ?");
         }
@@ -41,7 +41,7 @@ public class Engine
     {
         Collections.shuffle(players, new Random(System.nanoTime()));
     }
-    
+
     private void createComputerPlayers(int computerPlayersCount)
     {
         for (int i = 0; i < computerPlayersCount; i++)
@@ -52,31 +52,34 @@ public class Engine
 
     public void initializeBoard(MonopolyInitSettings monopolyInitSettings)
     {
-        board = new Board(this, monopolyInitSettings.getCells(), surpriseCardPack, alertCardPack);
+        board = new Board(this,
+                          monopolyInitSettings.getCells(),
+                          monopolyInitSettings.getSurpriseCards(),
+                          monopolyInitSettings.getAlertCards());
     }
 
     public boolean isStillPlaying()
     {
         return players.size() < 2;
     }
-    
+
     public CubesResult throwCubes()
     {
         Random r = new Random(System.nanoTime());
         return new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
     }
 
-    public void movePlayer(Player player, int result) 
+    public void movePlayer(Player player, int result)
     {
         board.movePlayer(player, result);
     }
 
-    public void playerFinishedARound(Player player) 
+    public void playerFinishedARound(Player player)
     {
         player.receiveMoney(END_OF_ROUND_MONEY_EARN);
     }
 
-    public void nextPlayer() 
+    public void nextPlayer()
     {
         final int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
         currentPlayer = players.get(nextPlayerIndex);
@@ -87,7 +90,7 @@ public class Engine
         players.forEach(player -> player.setCurrentCellDoNotPerform(board.getFirstCell()));
     }
 
-    public boolean isPlayerInParking(Player player) 
+    public boolean isPlayerInParking(Player player)
     {
         return player.isParking();
     }

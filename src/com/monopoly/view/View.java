@@ -11,38 +11,37 @@ public class View
     public int getHumanPlayersNumber()
     {
         System.out.print("Please enter a number of Human players: ");
-	int humanPlayers  = scanner.nextInt();
-        
-        return humanPlayers;
+        return scanner.nextInt();
     }
 
     public int getComputerPlayersNumber()
     {
         System.out.print("Please enter a number of Computer players: ");
-	int humanPlayers  = scanner.nextInt();
-        
-        return humanPlayers;
+        return scanner.nextInt();
     }
 
     public List<String> getHumanPlayerNames(int humanPlayersNumber)
     {
-        List<String> playerNames = new ArrayList<String>();
-        String inputName;
-        
-        System.out.println("Please enter names of human players: ");
+        System.out.println("Please enter the names of the human players: ");
 
-        for(int i = 0; i < humanPlayersNumber; i++)
+        List<String> playerNames = new ArrayList<>();
+        for (int i = 0; i < humanPlayersNumber; i++)
         {
-            System.out.println("Player number " + i + " is:");
-            inputName = scanner.nextLine();  //TODO: check if it's ok
-            playerNames.add(inputName);
-            //clear the scanner buffer from the Enter
-            scanner.nextLine();
+            playerNames.add(getNextName(i));
         }
-        
+
         return playerNames;
     }
-    
+
+    private String getNextName(int playerNumber)
+    {
+        System.out.println("Player number " + playerNumber + " is:");
+        String inputName = scanner.nextLine();  //TODO: check if it's ok
+        //clear the scanner buffer from the Enter
+        scanner.nextLine();
+        return inputName;
+    }
+
     public void BoardChange(String change)
     {
         //TODO: implement

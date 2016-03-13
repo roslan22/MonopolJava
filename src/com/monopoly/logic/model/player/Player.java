@@ -1,6 +1,5 @@
 package com.monopoly.logic.model.player;
 
-import com.monopoly.logic.model.Board;
 import com.monopoly.logic.model.card.OutOfJailCard;
 import com.monopoly.logic.model.cell.Cell;
 
@@ -63,14 +62,14 @@ public abstract class Player
 
     public void payToOtherPlayer(Player owner, int rentPrice)
     {
-        return new DoNotCompile();
+
     }
 
     public abstract boolean isWillingToBuyHouse();
 
     public void payToBank(int housePrice)
     {
-        return new DoNotCompile();
+
     }
 
     public boolean isParking()

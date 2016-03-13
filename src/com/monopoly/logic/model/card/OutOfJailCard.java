@@ -5,15 +5,20 @@ import com.monopoly.logic.model.player.Player;
 
 public class OutOfJailCard extends SurpriseCard
 {
+    private Board board;
+
     @Override
     public void perform(Player player, Board board)
     {
-        board.removeCardFromSurprisePack(this);
+        this.board.removeCardFromSurprisePack(this);
         player.receiveOutOfJailCard(this);
     }
 
-    public void returnToPack(Board board)
+    public void returnToPack()
     {
+        if (board == null)
+            return;
         board.returnCardToSurprisePack(this);
+        board = null;
     }
 }

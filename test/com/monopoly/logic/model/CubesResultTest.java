@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class CubesResultTest
 {
@@ -33,7 +32,7 @@ public class CubesResultTest
         }
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testCreateNewCubeResult_shouldThrowsIllegalArgumentException() throws Exception
     {
         int[] availableIllegalCubeResults = {NEGATIVE_ILLEGAL_RESULT, ZERO_ILLEGAL_RESULT, TOO_HIGH_RESULT};
@@ -50,12 +49,7 @@ public class CubesResultTest
 
     private void testIllegalCubeResult(int firstCubeResult, int secondCubeResult)
     {
-        try
-        {
-            new CubesResult(firstCubeResult, secondCubeResult);
-            fail("Illegal cube result was expected");
-        }
-        catch (IllegalArgumentException e) {}
+        new CubesResult(firstCubeResult, secondCubeResult);
     }
 
     @Test

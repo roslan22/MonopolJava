@@ -1,8 +1,5 @@
 package com.monopoly.logic.model.player;
 
-import java.util.Random;
-
-
 public class ComputerPlayer extends Player
 {
     private static int computerNameCount = 0;
@@ -19,12 +16,14 @@ public class ComputerPlayer extends Player
     }
 
     @Override
-    public boolean isWillingToBuyProperty() {
+    public boolean isWillingToBuyProperty()
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean isWillingToBuyHouse() {
+    public boolean isWillingToBuyHouse()
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

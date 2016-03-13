@@ -161,6 +161,16 @@ public class Board
         return distanceToClosestCell(surpriseCells, playerCurrentPlace);
     }
 
+    public void payToEveryoneElse(Player player, int moneyToPay)
+    {
+
+    }
+
+    public void transferOtherPlayersMoneyTo(Player player, int moneyEarned)
+    {
+
+    }
+
     public static class PlayerNotOnBoard extends RuntimeException
     {
     }

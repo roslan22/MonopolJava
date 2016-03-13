@@ -15,11 +15,11 @@ public class MoneyEarnCard extends SurpriseCard
     }
 
     @Override
-    public void perform(Player player) 
+    public void perform(Player player, Board board)
     {
         if (isFromOtherPlayers)
         {
-            transferOtherPlayersMoneyTo(player, moneyEarned);
+            board.transferOtherPlayersMoneyTo(player, moneyEarned);
         }
         else
         {

@@ -3,7 +3,6 @@ package com.monopoly.logic.model.cell;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.Card;
 import com.monopoly.logic.model.card.CardPack;
-import com.monopoly.logic.model.player.Player;
 
 public class AlertCell extends CardCell
 {
@@ -20,8 +19,4 @@ public class AlertCell extends CardCell
         return alertCardPack.getNext();
     }
 
-    @Override
-    public void perform(Player player) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

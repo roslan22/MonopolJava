@@ -18,11 +18,7 @@ public class Parking extends Cell
     @Override
     public boolean isPlayerParking(Player player)
     {
-        if (parkingPlayers.contains(player))
-        {
-            return false;
-        }
-        return true;
+        return !parkingPlayers.contains(player);
     }
 
     @Override
