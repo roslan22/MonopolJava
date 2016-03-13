@@ -4,25 +4,29 @@ import com.monopoly.logic.engine.Engine;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
+import com.monopoly.logic.model.cell.AlertCell;
 import com.monopoly.logic.model.cell.Cell;
 import com.monopoly.logic.model.cell.Jail;
+import com.monopoly.logic.model.cell.SurpriseCell;
 import com.monopoly.logic.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Board
 {
     public static final int FIRST_CELL_INDEX        = 0;
-    public static final int FIRST_ALERT_CELL_INDEX  = 9;
-    public static final int SECOND_ALERT_CELL_INDEX = 23;
-    public static final int SURPRISE_CELL_INDEX     = 4;
-    public static final int JAIL_CELL_INDEX         = 10; //TODO: check if jail index is constant
 
     private Engine engine;
     private List<Cell> cells = new ArrayList<>();
     private CardPack<SurpriseCard> surpriseCardPack;
     private CardPack<AlertCard>    alertCardPack;
+
+    private List<AlertCell> alertCells = new ArrayList<>();
+    private List<SurpriseCell> surpriseCells = new ArrayList<>();
+    private Jail jailCell = new Jail();
 
     public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack)
     {
@@ -30,6 +34,22 @@ public class Board
         this.engine = engine;
         this.surpriseCardPack = surpriseCardPack;
         this.alertCardPack = alertCardPack;
+        mapKeyCells();
+    }
+
+    private void mapKeyCells()
+    {
+        cells.forEach(this::mapCell);
+    }
+
+    private void mapCell(Cell cell)
+    {
+        if (cell instanceof Jail)
+            jailCell = (Jail) cell;
+        if (cell instanceof SurpriseCell)
+            surpriseCells.add((SurpriseCell) cell);
+        if (cell instanceof AlertCell)
+            alertCells.add((AlertCell) cell);
     }
 
     public List<Cell> getCells()
@@ -75,7 +95,7 @@ public class Board
 
     public void moveToJail(Player player)
     {
-        ((Jail) cells.get(JAIL_CELL_INDEX)).putInJail(player);
+        jailCell.putInJail(player);
     }
 
     private int distanceToRoadStart(int playerCurrentPlace)
@@ -95,13 +115,26 @@ public class Board
 
     private int distanceToNextAlertCard(int playerCurrentPlace)
     {
-        if (playerCurrentPlace == FIRST_CELL_INDEX)
+        return distanceToClosestCell(alertCells, playerCurrentPlace);
+    }
+
+    private <T extends Cell> int distanceToClosestCell(List<T> cells, int comparedIndex)
+    {
+        List<Integer> distances = cells.stream().map(cell -> distanceToCell(cell, comparedIndex))
+                .collect(Collectors.toList());
+        return Collections.min(distances);
+    }
+
+    private int distanceToCell(Cell cell, int comparedIndex)
+    {
+        int firstCellIndex = cells.indexOf(cell);
+        if (comparedIndex >= firstCellIndex)
         {
-            return SECOND_ALERT_CELL_INDEX - FIRST_CELL_INDEX;
+            return cells.size() - comparedIndex + firstCellIndex;
         }
         else
         {
-            return (cells.size() - SECOND_ALERT_CELL_INDEX) + FIRST_CELL_INDEX;
+            return firstCellIndex - comparedIndex;
         }
     }
 
@@ -125,7 +158,7 @@ public class Board
 
     private int distanceToNextSurprise(int playerCurrentPlace)
     {
-        return cells.size(); //TODO: check if there is only one surprise cell in Game
+        return distanceToClosestCell(surpriseCells, playerCurrentPlace);
     }
 
     public static class PlayerNotOnBoard extends RuntimeException
