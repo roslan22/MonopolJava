@@ -140,7 +140,7 @@ public class Board
 
     private void movePlayerSkipRoadStart(Player player, int steps)
     {
-        int newPlayerPlace = cells.indexOf(player.getCurrentCell()) + steps;
+        int newPlayerPlace = getPlayerCurrentPlace(player) + steps;
         player.setCurrentCell(cells.get(newPlayerPlace % cells.size()));
     }
 
