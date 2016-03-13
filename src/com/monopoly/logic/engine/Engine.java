@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class Engine
 {
@@ -19,6 +20,11 @@ public class Engine
     private List<Player> players = new ArrayList<>();
     private Board  board;
     private Player currentPlayer;
+
+    public List<Player> getAllPlayers()
+    {
+        return players;
+    }
 
     public Player getCurrentPlayer()
     {
@@ -31,10 +37,35 @@ public class Engine
 
     public void createPlayers(List<String> humanPlayerNames, int computerPlayersCount)
     {
+        humanPlayerNames = handleDuplicateNames(humanPlayerNames);
         humanPlayerNames.forEach(name -> players.add(new HumanPlayer(name)));
         createComputerPlayers(computerPlayersCount);
         randomizePlayersOrder();
         currentPlayer = players.get(FIRST_PLAYER_INDEX);
+    }
+
+    private List<String> handleDuplicateNames(List<String> names)
+    {
+        List<String> humanPlayerNamesNoDup = new ArrayList<>();
+        for (int i = 0; i < names.size(); i++)
+        {
+            humanPlayerNamesNoDup.add(getNameWithSuffix(names, i));
+        }
+        return humanPlayerNamesNoDup;
+    }
+
+    private String getNameWithSuffix(List<String> names, int nameIndex)
+    {
+        int occurrencesCounter = 0;
+        for (int i = 0; i < nameIndex; i++)
+        {
+            if (names.get(nameIndex).equals(names.get(i)))
+            {
+                occurrencesCounter++;
+            }
+        }
+        String nameSuffix = occurrencesCounter > 0 ? String.valueOf(nameIndex) : "";
+        return names.get(nameIndex) + nameSuffix;
     }
 
     private void randomizePlayersOrder()
@@ -108,5 +139,31 @@ public class Engine
     public void takePlayerOutOfJail(Player player)
     {
         player.getOutOfJail();
+    }
+
+    public void payToEveryoneElse(Player payingPlayer, int amount)
+    {
+        players.forEach(p -> payingPlayer.payToOtherPlayer(p, amount));
+
+        if (payingPlayer.getMoney() <= 0)
+        {
+            playerLost(payingPlayer);
+        }
+    }
+
+    public void transferOtherPlayersMoneyTo(Player player, int amount)
+    {
+        for (Player p : players)
+        {
+            p.payToOtherPlayer(player, amount);
+        }
+        Stream<Player> loosingPlayers = players.stream().filter(p -> p.getMoney() <= 0);
+        loosingPlayers.forEach(this::playerLost);
+    }
+
+    private void playerLost(Player player)
+    {
+        players.remove(player);
+        board.playerLost(player);
     }
 }
