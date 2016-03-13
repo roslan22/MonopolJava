@@ -40,7 +40,7 @@ public class Controller
 
     private void playTurn(Player player)
     {
-        if (engine.isPlayerInParking(player))
+        if (!engine.isPlayerInParking(player))
             movePlayer(player);
         else
             engine.exitPlayerFromParking(player);
