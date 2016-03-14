@@ -166,4 +166,8 @@ public class Engine
         players.remove(player);
         board.playerLost(player);
     }
+
+    public Board getBoard() {
+        return board;
+    }
 }

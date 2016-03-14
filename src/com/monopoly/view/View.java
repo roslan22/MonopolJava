@@ -42,8 +42,9 @@ public class View
         return inputName;
     }
 
-    public void BoardChange(String change)
+    public void boardChange(String change)
     {
+        System.out.println(change);
         //TODO: implement
     }
 }

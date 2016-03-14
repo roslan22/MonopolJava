@@ -1,5 +1,7 @@
 package com.monopoly.logic.model;
 
+import com.monopoly.Event;
+import com.monopoly.Notifier;
 import com.monopoly.logic.engine.Engine;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
@@ -30,7 +32,8 @@ public class Board
     private List<SurpriseCell> surpriseCells = new ArrayList<>();
     private Jail jailCell = new Jail();
     private Parking parkingcCell = new Parking();
-
+    private Notifier<String> boardChange = new Notifier<>();
+            
     public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack)
     {
         this.cells = cells;
@@ -197,4 +200,15 @@ public class Board
     public static class PlayerNotOnBoard extends RuntimeException
     {
     }
+    
+    public Event<String> getBoardChangeNotifier()
+    {
+        return boardChange;
+    }
+    
+    private void onBoardChange()
+    {
+        boardChange.doNotify("Board was changed to.....");
+    }
+            
 }
