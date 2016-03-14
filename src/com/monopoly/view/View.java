@@ -26,7 +26,7 @@ public class View
         System.out.println("Please enter the names of the human players: ");
 
         List<String> playerNames = new ArrayList<>();
-        for (int i = 0; i < humanPlayersNumber; i++)
+        for (int i = 1; i <= humanPlayersNumber; i++)
         {
             playerNames.add(getNextName(i));
         }
@@ -36,10 +36,10 @@ public class View
 
     private String getNextName(int playerNumber)
     {
-        System.out.println("Player number " + playerNumber + " is:");
-        String inputName = scanner.nextLine();  //TODO: check if it's ok
-        //clear the scanner buffer from the Enter
-        scanner.nextLine();
+        scanner = new Scanner(System.in);
+        System.out.println("Please enter a name for " + playerNumber + " player:");
+        String inputName = scanner.nextLine();  
+        
         return inputName;
     }
 

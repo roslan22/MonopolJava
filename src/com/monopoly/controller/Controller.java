@@ -33,7 +33,7 @@ public class Controller
     public void initGame()
     {
         createPlayers();
-        engine.initializeBoard(XmlMonopolyInitReader.getSettings(PATH));
+        engine.initializeBoard(XmlMonopolyInitReader.getSettings(PATH)); //
         engine.putPlayersAtFirstCell();
     }
 
