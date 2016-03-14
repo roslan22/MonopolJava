@@ -1,5 +1,6 @@
 package com.monopoly.view;
 
+import com.monopoly.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,13 +12,13 @@ public class View
     public int getHumanPlayersNumber()
     {
         System.out.print("Please enter a number of Human players: ");
-        return scanner.nextInt();
+        return getNumberFromUser();
     }
 
     public int getComputerPlayersNumber()
     {
         System.out.print("Please enter a number of Computer players: ");
-        return scanner.nextInt();
+        return getNumberFromUser();
     }
 
     public List<String> getHumanPlayerNames(int humanPlayersNumber)
@@ -46,5 +47,18 @@ public class View
     {
         System.out.println(change);
         //TODO: implement
+    }
+    
+    private int getNumberFromUser()
+    {
+        Integer inputNum = Utils.tryParseInt(scanner.next());
+        
+        while(inputNum == null)
+        {
+            System.out.println("Bad input format, please try again:");
+            inputNum = Utils.tryParseInt(scanner.next());
+        }
+        
+        return inputNum;
     }
 }
