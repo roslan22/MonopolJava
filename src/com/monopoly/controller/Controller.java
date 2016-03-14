@@ -22,7 +22,6 @@ public class Controller
 
     public void play()
     {
-        startGame();
         while (engine.isStillPlaying())
         {
             Player player = engine.getCurrentPlayer();
@@ -31,10 +30,10 @@ public class Controller
         }
     }
 
-    private void startGame()
+    public void initGame()
     {
         createPlayers();
-        engine.initializeBoard(XmlMonopolyInitReader.getSettings(PATH));
+        engine.initializeBoard(XmlMonopolyInitReader.getSettings(PATH)); //
         engine.putPlayersAtFirstCell();
     }
 
