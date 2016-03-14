@@ -13,9 +13,10 @@ public class Main
         View view = new View();
         Engine engine = new Engine();
         Controller controller = new Controller(view,engine);
+        
+        controller.initGame();
         engine.getBoard().getBoardChangeNotifier().addListener(view::boardChange);
-        controller.play();
-        view.getComputerPlayersNumber();
+        controller.play(); //game Starts here
     }
 
 }
