@@ -22,4 +22,9 @@ public abstract class Cell
     {
         return false;
     }
+
+    public CellType getType()
+    {
+        return CellType.DEFAULT;
+    }
 }

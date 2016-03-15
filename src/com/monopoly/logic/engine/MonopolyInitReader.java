@@ -2,6 +2,7 @@
 package com.monopoly.logic.engine;
 
 
+import com.monopoly.logic.model.board.KeyCells;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
@@ -16,4 +17,8 @@ public interface MonopolyInitReader
     CardPack<AlertCard> getAlertCards();
 
     CardPack<SurpriseCard> getSurpriseCards();
+
+    KeyCells getKeyCells();
+
+    void read();
 }

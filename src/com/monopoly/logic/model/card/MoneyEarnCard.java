@@ -1,6 +1,6 @@
 package com.monopoly.logic.model.card;
 
-import com.monopoly.logic.model.Board;
+import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.player.Player;
 
 public class MoneyEarnCard extends SurpriseCard
@@ -8,8 +8,9 @@ public class MoneyEarnCard extends SurpriseCard
     private boolean isFromOtherPlayers;
     private int     amount;
 
-    public MoneyEarnCard(boolean isFromOtherPlayers, int amount)
+    public MoneyEarnCard(String text, int amount, boolean isFromOtherPlayers)
     {
+        super(text);
         this.isFromOtherPlayers = isFromOtherPlayers;
         this.amount = amount;
     }

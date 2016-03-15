@@ -27,7 +27,7 @@
             <City name="Tel-Aviv" property_price="160" house_price="100" rent="12" rent_one_house="60" rent_two_houses="180"
                   rent_three_houses="500"/>
         </Country>
-        <Company type="Services" name="Electricity Company" property_price="150" rent="25" monopoly_rent="100"/>
+        <Company type="services" name="Electricity Company" property_price="150" rent="25" monopoly_rent="100"/>
         <Company type="Transportation" name="Bus" property_price="200" rent="50" monopoly_rent="200"/>
         <Country name="Italy">
             <City name="Venezia" property_price="180" house_price="100" rent="14" rent_one_house="70" rent_two_houses="200"
@@ -65,7 +65,7 @@
             <City name="Shanghai" property_price="320" house_price="200" rent="28" rent_one_house="450" rent_two_houses="450"
                   rent_three_houses="900"/>
         </Country>
-        <Company type="Services" name="Water Work" property_price="150" rent="25" monopoly_rent="100"/>
+        <Company type="services" name="Water Work" property_price="150" rent="25" monopoly_rent="100"/>
         <Company type="Transportation" name="Sea Port" property_price="200" rent="50" monopoly_rent="200"/>
         <Country name="United States">
             <City name="Chicago" property_price="340" house_price="200" rent="35" rent_one_house="175" rent_two_houses="500"

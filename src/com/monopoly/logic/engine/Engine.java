@@ -1,6 +1,6 @@
 package com.monopoly.logic.engine;
 
-import com.monopoly.logic.model.Board;
+import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.player.ComputerPlayer;
 import com.monopoly.logic.model.player.HumanPlayer;
@@ -83,10 +83,12 @@ public class Engine
 
     public void initializeBoard(MonopolyInitReader monopolyInitReader)
     {
+        monopolyInitReader.read();
         board = new Board(this,
                           monopolyInitReader.getCells(),
                           monopolyInitReader.getSurpriseCards(),
-                          monopolyInitReader.getAlertCards());
+                          monopolyInitReader.getAlertCards(),
+                          monopolyInitReader.getKeyCells());
     }
 
     public boolean isStillPlaying()

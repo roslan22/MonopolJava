@@ -6,11 +6,18 @@ import java.util.List;
 
 public class PropertyGroup
 {
-    private List<Property> properties;
+    private String name;
+    private List<? extends Property> properties;
 
-    public PropertyGroup(List<Property> countryCities)
+    public PropertyGroup(String name, List<? extends Property> countryCities)
     {
+        this.name = name;
         this.properties = countryCities;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     public boolean hasMonopoly(Player player)

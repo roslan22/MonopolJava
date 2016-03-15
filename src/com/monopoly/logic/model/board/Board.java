@@ -1,4 +1,4 @@
-package com.monopoly.logic.model;
+package com.monopoly.logic.model.board;
 
 import com.monopoly.Event;
 import com.monopoly.Notifier;
@@ -6,12 +6,8 @@ import com.monopoly.logic.engine.Engine;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
-import com.monopoly.logic.model.cell.AlertCell;
 import com.monopoly.logic.model.cell.Cell;
-import com.monopoly.logic.model.cell.Jail;
-import com.monopoly.logic.model.cell.Parking;
 import com.monopoly.logic.model.cell.Property;
-import com.monopoly.logic.model.cell.SurpriseCell;
 import com.monopoly.logic.model.player.Player;
 
 import java.util.ArrayList;
@@ -21,43 +17,37 @@ import java.util.stream.Collectors;
 
 public class Board
 {
-    public static final int FIRST_CELL_INDEX        = 0;
+    public static final int FIRST_CELL_INDEX = 0;
 
     private Engine engine;
     private List<Cell> cells = new ArrayList<>();
     private CardPack<SurpriseCard> surpriseCardPack;
     private CardPack<AlertCard>    alertCardPack;
 
-    private List<AlertCell> alertCells = new ArrayList<>();
-    private List<SurpriseCell> surpriseCells = new ArrayList<>();
-    private Jail jailCell = new Jail();
-    private Parking parkingcCell = new Parking();
+    private KeyCells keyCells;
     private Notifier<String> boardChange = new Notifier<>();
-            
-    public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack)
+
+    public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack,
+                 KeyCells keyCells)
     {
         this.cells = cells;
         this.engine = engine;
         this.surpriseCardPack = surpriseCardPack;
         this.alertCardPack = alertCardPack;
-        mapKeyCells();
+        this.keyCells = keyCells;
+        initBoard();
     }
 
-    private void mapKeyCells()
+    private void initBoard()
     {
-        cells.forEach(this::mapCell);
+        setCardCellsBoard();
+        keyCells.getJailGate().setJailCell(keyCells.getJailCell());
     }
 
-    private void mapCell(Cell cell)
+    private void setCardCellsBoard()
     {
-        if (cell instanceof Jail)
-            jailCell = (Jail) cell;
-        if (cell instanceof SurpriseCell)
-            surpriseCells.add((SurpriseCell) cell);
-        if (cell instanceof AlertCell)
-            alertCells.add((AlertCell) cell);
-        if (cell instanceof Parking)
-            parkingcCell = (Parking) cell;
+        keyCells.getAlertCells().forEach(alertCell -> alertCell.setBoard(this));
+        keyCells.getSurpriseCells().forEach(surpriseCell -> surpriseCell.setBoard(this));
     }
 
     public List<Cell> getCells()
@@ -103,7 +93,7 @@ public class Board
 
     public void moveToJail(Player player)
     {
-        jailCell.putInJail(player);
+        keyCells.getJailCell().putInJail(player);
     }
 
     private int distanceToRoadStart(int playerCurrentPlace)
@@ -123,7 +113,7 @@ public class Board
 
     private int distanceToNextAlertCard(int playerCurrentPlace)
     {
-        return distanceToClosestCell(alertCells, playerCurrentPlace);
+        return distanceToClosestCell(keyCells.getAlertCells(), playerCurrentPlace);
     }
 
     private <T extends Cell> int distanceToClosestCell(List<T> cells, int comparedIndex)
@@ -166,7 +156,7 @@ public class Board
 
     private int distanceToNextSurprise(int playerCurrentPlace)
     {
-        return distanceToClosestCell(surpriseCells, playerCurrentPlace);
+        return distanceToClosestCell(keyCells.getSurpriseCells(), playerCurrentPlace);
     }
 
     public void payToEveryoneElse(Player player, int moneyToPay)
@@ -181,8 +171,8 @@ public class Board
 
     public void playerLost(Player player)
     {
-        jailCell.getPlayerOutOfJail(player);
-        parkingcCell.exitFromParking(player);
+        keyCells.getJailCell().getPlayerOutOfJail(player);
+        keyCells.getParkingCell().exitFromParking(player);
         clearPropertiesOwner(player);
     }
 
@@ -200,15 +190,15 @@ public class Board
     public static class PlayerNotOnBoard extends RuntimeException
     {
     }
-    
+
     public Event<String> getBoardChangeNotifier()
     {
         return boardChange;
     }
-    
+
     private void onBoardChange()
     {
         boardChange.doNotify("Board was changed to.....");
     }
-            
+
 }
