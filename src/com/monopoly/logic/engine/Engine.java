@@ -81,12 +81,12 @@ public class Engine
         }
     }
 
-    public void initializeBoard(MonopolyInitSettings monopolyInitSettings)
+    public void initializeBoard(MonopolyInitReader monopolyInitReader)
     {
         board = new Board(this,
-                          monopolyInitSettings.getCells(),
-                          monopolyInitSettings.getSurpriseCards(),
-                          monopolyInitSettings.getAlertCards());
+                          monopolyInitReader.getCells(),
+                          monopolyInitReader.getSurpriseCards(),
+                          monopolyInitReader.getAlertCards());
     }
 
     public boolean isStillPlaying()
