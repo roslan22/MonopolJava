@@ -295,7 +295,7 @@ public class XmlMonopolyInitReader implements MonopolyInitReader
         NodeList boardNodeList = document.getElementsByTagName(tagName);
         if (boardNodeList.getLength() != 1)
         {
-            throw new CouldNotParseXMLFile("There should be only one Board");
+            throw new CouldNotParseXMLFile("There should be only one " + tagName);
         }
         return boardNodeList.item(ONLY_ELEMENT_INDEX);
     }

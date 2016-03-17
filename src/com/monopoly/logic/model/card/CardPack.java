@@ -35,4 +35,9 @@ public class CardPack<T extends Card>
     {
         cards.add((currentCardIndex - 1) % cards.size() ,card);
     }
+
+    public int getSize()
+    {
+        return cards.size();
+    }
 }
