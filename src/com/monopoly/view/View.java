@@ -1,5 +1,6 @@
 package com.monopoly.view;
 
+import com.monopoly.GameEvent;
 import com.monopoly.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,12 @@ import java.util.Scanner;
 public class View
 {
     private Scanner scanner = new Scanner(System.in);
+    private PlayerBuyHouseDecision playerBuyHouseDecision;
 
+    public void setPlayerBuyHouseDecision(PlayerBuyHouseDecision playerBuyHouseDecision) {
+        this.playerBuyHouseDecision = playerBuyHouseDecision;
+    }
+    
     public int getHumanPlayersNumber()
     {
         System.out.print("Please enter a number of Human players: ");
@@ -60,5 +66,42 @@ public class View
         }
         
         return inputNum;
+    }
+    
+    public void showCurrentPlayerName(String playerName)
+    {
+        System.out.println("Now " + playerName + "'s turn");
+    }
+
+    public void showEvents(List<GameEvent> events) {
+        for(GameEvent event : events)
+        {
+            showEvent(event);
+        }
+    }
+
+    private void showEvent(GameEvent event) {
+            if(event.getEventType() == GameEvent.EventType.MOVE)
+            {
+                playerMoveEvent(event);
+            }
+            if(event.getEventType() == GameEvent.EventType.PROMT_PLAYER_TO_BUY_HOUSE)
+            {
+                promtPlayerToBuyHouse();
+            }
+    }
+
+    private void playerMoveEvent(GameEvent event) {
+          System.out.println("Player " + event.getPlayerName() + " moved to " + 
+                  event.getBoardSquareID() + " cell.");
+    }
+
+    private void promtPlayerToBuyHouse() {
+        //ask player and get result
+        boolean answer = false;
+        System.out.println("Do you want to buy house, press 1-Yes 2-No");
+         
+        playerBuyHouseDecision.onAnswer(answer);
+        
     }
 }

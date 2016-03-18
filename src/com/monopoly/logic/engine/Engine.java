@@ -1,5 +1,8 @@
 package com.monopoly.logic.engine;
 
+import com.monopoly.Event;
+import com.monopoly.GameEvent;
+import com.monopoly.Notifier;
 import com.monopoly.logic.model.Board;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.player.ComputerPlayer;
@@ -14,13 +17,32 @@ import java.util.stream.Stream;
 
 public class Engine
 {
-    public static final int FIRST_PLAYER_INDEX      = 0;
+    public static final int FIRST_PLAYER_INDEX = 0;
     public static final int END_OF_ROUND_MONEY_EARN = 200;
+    public static final int MINIMUM_GAME_PLAYERS = 2;
 
     private List<Player> players = new ArrayList<>();
     private Board  board;
     private Player currentPlayer;
+    private Notifier<String> currentPlayerNotifier = new Notifier<String>();
+    private List<GameEvent> events = new ArrayList<>();
+    private int lastEventID = 0;
 
+    public int getLastEventID() {
+        return lastEventID;
+    }
+            
+    public List<GameEvent> getEvents() {
+        return events;
+    }
+    
+    public void addEventToEventList(GameEvent event)
+    {
+        lastEventID++;
+        events.add(event);
+    }
+
+    
     public List<Player> getAllPlayers()
     {
         return players;
@@ -91,7 +113,7 @@ public class Engine
 
     public boolean isStillPlaying()
     {
-        return players.size() < 2;
+        return players.size() < MINIMUM_GAME_PLAYERS;
     }
 
     public CubesResult throwCubes()
@@ -114,6 +136,7 @@ public class Engine
     {
         final int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
         currentPlayer = players.get(nextPlayerIndex);
+        onPlayerChange();
     }
 
     public void putPlayersAtFirstCell()
@@ -169,5 +192,27 @@ public class Engine
 
     public Board getBoard() {
         return board;
+    }
+    
+    public Event<String> getCurrentPlayerNotifier()
+    {
+        return currentPlayerNotifier;
+    }
+    
+    private void onPlayerChange()
+    {
+        currentPlayerNotifier.doNotify(currentPlayer.getName());
+    } 
+
+    public void doAction(int actionNumber) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<GameEvent> getEvents(int playerID, Integer get) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void onPlayerBuyHouseAnswer(boolean answer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

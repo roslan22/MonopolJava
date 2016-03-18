@@ -1,6 +1,7 @@
 package com.monopoly.logic.model;
 
 import com.monopoly.Event;
+import com.monopoly.GameEvent;
 import com.monopoly.Notifier;
 import com.monopoly.logic.engine.Engine;
 import com.monopoly.logic.model.card.AlertCard;
@@ -32,7 +33,7 @@ public class Board
     private List<SurpriseCell> surpriseCells = new ArrayList<>();
     private Jail jailCell = new Jail();
     private Parking parkingcCell = new Parking();
-    private Notifier<String> boardChange = new Notifier<>();
+    private Notifier<String> boardNotifier = new Notifier<>();
             
     public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack)
     {
@@ -78,6 +79,7 @@ public class Board
             engine.playerFinishedARound(player);
         }
         player.setCurrentCell(cells.get(newPlayerPlace % cells.size()));
+        onBoardChange(player);
     }
 
     public Cell getFirstCell()
@@ -184,6 +186,7 @@ public class Board
         jailCell.getPlayerOutOfJail(player);
         parkingcCell.exitFromParking(player);
         clearPropertiesOwner(player);
+        engine.addEventToEventList(CreatePlayerLostEvent(player));
     }
 
     private void clearPropertiesOwner(Player player)
@@ -197,18 +200,29 @@ public class Board
         });
     }
 
+    private GameEvent CreatePlayerLostEvent(Player player) {
+        GameEvent gameEvent = new GameEvent(engine.getLastEventID(),GameEvent.EventType.PLAYER_LOST);
+        gameEvent.setPlayerName(player.getName());
+        return gameEvent;
+    }
+
     public static class PlayerNotOnBoard extends RuntimeException
     {
     }
     
     public Event<String> getBoardChangeNotifier()
     {
-        return boardChange;
+        return boardNotifier;
     }
     
-    private void onBoardChange()
+    private void onBoardChange(Player player)
     {
-        boardChange.doNotify("Board was changed to.....");
+        engine.addEventToEventList(CreateBoardChangeEvent(player));
     }
-            
+    
+    private GameEvent CreateBoardChangeEvent(Player player) {
+        GameEvent gameEvent = new GameEvent(engine.getLastEventID(),GameEvent.EventType.MOVE);
+        gameEvent.setPlayerName(player.getName());
+        return gameEvent;
+    }
 }

@@ -10,6 +10,8 @@ public abstract class Player
     private static final int START_MONEY_AMOUNT = 1500;
     
     private String name;
+    private int playerID;
+
     private int money = START_MONEY_AMOUNT;
     private Cell currentCell;
     private OutOfJailCard outOfJailCard;
@@ -48,6 +50,14 @@ public abstract class Player
     {
         this.currentCell = currentCell;
         currentCell.perform(this);
+    }
+    
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
     }
 
     public void setCurrentCellDoNotPerform(Cell currentCell)
