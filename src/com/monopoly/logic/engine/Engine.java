@@ -1,9 +1,8 @@
 package com.monopoly.logic.engine;
 
-import com.monopoly.Event;
 import com.monopoly.GameEvent;
 import com.monopoly.Notifier;
-import com.monopoly.logic.model.Board;
+import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.player.ComputerPlayer;
 import com.monopoly.logic.model.player.HumanPlayer;
@@ -28,6 +27,7 @@ public class Engine
     private List<GameEvent> events = new ArrayList<>();
     private int lastEventID = 0;
 
+    
     public int getLastEventID() {
         return lastEventID;
     }
@@ -103,12 +103,14 @@ public class Engine
         }
     }
 
-    public void initializeBoard(MonopolyInitSettings monopolyInitSettings)
+    public void initializeBoard(MonopolyInitReader monopolyInitReader)
     {
+        monopolyInitReader.read();
         board = new Board(this,
-                          monopolyInitSettings.getCells(),
-                          monopolyInitSettings.getSurpriseCards(),
-                          monopolyInitSettings.getAlertCards());
+                          monopolyInitReader.getCells(),
+                          monopolyInitReader.getSurpriseCards(),
+                          monopolyInitReader.getAlertCards(),
+                          monopolyInitReader.getKeyCells());
     }
 
     public boolean isStillPlaying()
@@ -192,11 +194,6 @@ public class Engine
 
     public Board getBoard() {
         return board;
-    }
-    
-    public Event<String> getCurrentPlayerNotifier()
-    {
-        return currentPlayerNotifier;
     }
     
     private void onPlayerChange()

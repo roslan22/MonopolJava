@@ -28,4 +28,10 @@ public class Parking extends Cell
             parkingPlayers.remove(player);
         }
     }
+
+    @Override
+    public CellType getType()
+    {
+        return CellType.PARKING;
+    }
 }

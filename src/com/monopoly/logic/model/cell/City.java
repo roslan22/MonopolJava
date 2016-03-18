@@ -34,6 +34,22 @@ public class City extends Property
         return cityName;
     }
 
+    public int getHousePrice()
+    {
+        return housePrice;
+    }
+
+    public int[] getRentPrices()
+    {
+        return rentPrices;
+    }
+
+    @Override
+    public int getRentPrice()
+    {
+        return rentPrices[houseCounter];
+    }
+
     @Override
     public void perform(Player player)
     {
@@ -61,12 +77,6 @@ public class City extends Property
             player.payToBank(housePrice);
             houseCounter++;
         }
-    }
-
-    @Override
-    public int getRentPrice()
-    {
-        return rentPrices[houseCounter];
     }
 
     public static class IllegalRentPricesAmount extends RuntimeException

@@ -19,4 +19,9 @@ public class AlertCell extends CardCell
         return alertCardPack.getNext();
     }
 
+    @Override
+    public CellType getType()
+    {
+        return CellType.ALERT_CELL;
+    }
 }

@@ -115,6 +115,21 @@ public abstract class Player
         }
     }
 
+    public void receiveOutOfJailCard(OutOfJailCard outOfJailCard)
+    {
+        this.outOfJailCard = outOfJailCard;
+    }
+
+    public boolean hasOutOfJailCard()
+    {
+        return this.outOfJailCard != null;
+    }
+
+    public void returnOutOfJailCardToPack()
+    {
+        this.outOfJailCard.returnToPack();
+    }
+
     @Override
     public int hashCode()
     {
@@ -136,20 +151,5 @@ public abstract class Player
         Player player = (Player) o;
 
         return getName().equals(player.getName());
-    }
-
-    public void receiveOutOfJailCard(OutOfJailCard outOfJailCard)
-    {
-        this.outOfJailCard = outOfJailCard;
-    }
-
-    public boolean hasOutOfJailCard()
-    {
-        return this.outOfJailCard != null;
-    }
-
-    public void returnOutOfJailCardToPack()
-    {
-        this.outOfJailCard.returnToPack();
     }
 }

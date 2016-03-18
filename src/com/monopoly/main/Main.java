@@ -16,7 +16,6 @@ public class Main
         
         controller.initGame();
         engine.getBoard().getBoardChangeNotifier().addListener(view::boardChange);
-        engine.getCurrentPlayerNotifier().addListener(view::showCurrentPlayerName);
         controller.play(); //game Starts here
     }
 

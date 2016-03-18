@@ -34,4 +34,10 @@ public class Jail extends Cell
             playersInJail.remove(player);
         }
     }
+
+    @Override
+    public CellType getType()
+    {
+        return CellType.JAIL;
+    }
 }

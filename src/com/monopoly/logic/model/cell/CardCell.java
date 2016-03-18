@@ -1,6 +1,6 @@
 package com.monopoly.logic.model.cell;
 
-import com.monopoly.logic.model.Board;
+import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.card.Card;
 import com.monopoly.logic.model.player.Player;
 

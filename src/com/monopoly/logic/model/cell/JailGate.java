@@ -6,7 +6,7 @@ public class JailGate extends Cell
 {
     private Jail jailCell;
 
-    public JailGate(Jail jailCell)
+    public void setJailCell(Jail jailCell)
     {
         this.jailCell = jailCell;
     }
@@ -15,5 +15,11 @@ public class JailGate extends Cell
     public void perform(Player player)
     {
         jailCell.putInJail(player);
+    }
+
+    @Override
+    public CellType getType()
+    {
+        return CellType.JAIL_GATE;
     }
 }

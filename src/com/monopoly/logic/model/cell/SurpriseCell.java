@@ -18,4 +18,10 @@ public class SurpriseCell extends CardCell
     {
         return surpriseCardPack.getNext();
     }
+
+    @Override
+    public CellType getType()
+    {
+        return CellType.SURPRISE_CELL;
+    }
 }

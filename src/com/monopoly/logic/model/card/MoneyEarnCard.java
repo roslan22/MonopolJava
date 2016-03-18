@@ -1,17 +1,18 @@
 package com.monopoly.logic.model.card;
 
-import com.monopoly.logic.model.Board;
+import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.player.Player;
 
 public class MoneyEarnCard extends SurpriseCard
 { 
     private boolean isFromOtherPlayers;
-    private int moneyEarned;
+    private int     amount;
 
-    public MoneyEarnCard(boolean isFromOtherPlayers, int moneyEarned)
+    public MoneyEarnCard(String text, int amount, boolean isFromOtherPlayers)
     {
+        super(text);
         this.isFromOtherPlayers = isFromOtherPlayers;
-        this.moneyEarned = moneyEarned;
+        this.amount = amount;
     }
 
     @Override
@@ -19,11 +20,11 @@ public class MoneyEarnCard extends SurpriseCard
     {
         if (isFromOtherPlayers)
         {
-            board.transferOtherPlayersMoneyTo(player, moneyEarned);
+            board.transferOtherPlayersMoneyTo(player, amount);
         }
         else
         {
-            player.receiveMoney(moneyEarned);
+            player.receiveMoney(amount);
         }
     }
     

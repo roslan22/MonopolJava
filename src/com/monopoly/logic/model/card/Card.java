@@ -1,11 +1,16 @@
 package com.monopoly.logic.model.card;
 
-import com.monopoly.logic.model.Board;
+import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.player.Player;
 
 public abstract class Card
 {
     private String cardText;
+
+    public Card(String cardText)
+    {
+        this.cardText = cardText;
+    }
 
     public String getCardText()
     {

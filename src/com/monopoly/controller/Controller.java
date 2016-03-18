@@ -45,7 +45,7 @@ public class Controller
     public void initGame()
     {
         createPlayers();
-        engine.initializeBoard(XmlMonopolyInitReader.getSettings(PATH)); //not compiling, have to implement
+        engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
         engine.putPlayersAtFirstCell();
     }
 
