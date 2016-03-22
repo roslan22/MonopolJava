@@ -26,4 +26,9 @@ public class ComputerPlayer extends Player
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public PlayerType getPlayerType() {
+        return Player.PlayerType.COMPUTER;
+    }
 }

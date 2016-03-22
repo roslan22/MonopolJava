@@ -7,14 +7,25 @@ import com.monopoly.logic.model.cell.Parking;
 
 public abstract class Player
 {
-    private static final int START_MONEY_AMOUNT = 1500;
+    public static enum PlayerType {HUMAN,COMPUTER};
     
+    private static final int START_MONEY_AMOUNT = 1500;
     private String name;
     private int playerID;
+    private PlayerType playerType;
 
     private int money = START_MONEY_AMOUNT;
     private Cell currentCell;
     private OutOfJailCard outOfJailCard;
+
+
+    public OutOfJailCard getOutOfJailCard() {
+        return outOfJailCard;
+    }
+
+    public void setOutOfJailCard(OutOfJailCard outOfJailCard) {
+        this.outOfJailCard = outOfJailCard;
+    }
 
     public Player(String name)
     {
@@ -129,7 +140,9 @@ public abstract class Player
     {
         this.outOfJailCard.returnToPack();
     }
-
+    
+    abstract public PlayerType getPlayerType();
+    
     @Override
     public int hashCode()
     {

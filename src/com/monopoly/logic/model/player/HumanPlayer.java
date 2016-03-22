@@ -19,5 +19,11 @@ public class HumanPlayer extends Player
         return false;
     }
 
+    @Override
+    public PlayerType getPlayerType() {
+        return Player.PlayerType.HUMAN;
+    }
+        
+
 
 }

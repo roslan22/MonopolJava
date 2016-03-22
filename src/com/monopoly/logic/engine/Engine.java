@@ -23,9 +23,9 @@ public class Engine
     private List<Player> players = new ArrayList<>();
     private Board  board;
     private Player currentPlayer;
-    private Notifier<String> currentPlayerNotifier = new Notifier<String>();
     private List<GameEvent> events = new ArrayList<>();
     private int lastEventID = 0;
+    private CubesResult currentCubeResult = null;
 
     
     public int getLastEventID() {
@@ -38,8 +38,8 @@ public class Engine
     
     public void addEventToEventList(GameEvent event)
     {
-        lastEventID++;
         events.add(event);
+        lastEventID++;
     }
 
     
@@ -118,15 +118,50 @@ public class Engine
         return players.size() < MINIMUM_GAME_PLAYERS;
     }
 
-    public CubesResult throwCubes()
+    public void throwCubes()
     {
         Random r = new Random(System.nanoTime());
-        return new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
+        currentCubeResult =  new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
+        GameEvent throwCubesEvent = new GameEvent(nextEventId(), GameEvent.EventType.DICE_ROLL);
+        throwCubesEvent.setFirstDiceResult(currentCubeResult.getFirstCubeResult());
+        throwCubesEvent.setSecondDiceResult(currentCubeResult.getSecondCuberResult());
+        this.addEventToEventList(throwCubesEvent);
     }
-
-    public void movePlayer(Player player, int result)
+    
+    public void startGame()
     {
-        board.movePlayer(player, result);
+        continueGame();
+    }
+    
+    public void continueGame()
+    {
+        while(currentPlayer.getPlayerType() != Player.PlayerType.HUMAN)
+        {
+           throwCubes();
+           movePlayer();
+           if(!isGameOver())
+           {
+            nextPlayer();
+           }
+        }
+        moveHumanPlayer();
+    }
+    
+    public void movePlayer() 
+    {   /*  ??????? before paking? *****
+        if (isPlayerInJail(currentPlayer))  //No need for current
+        {
+            if (cr.isDouble())
+                takePlayerOutOfJail(currentPlayer);
+            else
+                return;
+        }
+        */
+        
+        if (!isCurrentPlayerInParking())
+             board.movePlayer(currentPlayer, currentCubeResult.getResult());
+        else
+            exitCurrentPlayerFromParking();
     }
 
     public void playerFinishedARound(Player player)
@@ -134,11 +169,11 @@ public class Engine
         player.receiveMoney(END_OF_ROUND_MONEY_EARN);
     }
 
-    public void nextPlayer()
+    private void nextPlayer()
     {
         final int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
         currentPlayer = players.get(nextPlayerIndex);
-        onPlayerChange();
+        //TODO: check if to add event that player changed
     }
 
     public void putPlayersAtFirstCell()
@@ -146,9 +181,9 @@ public class Engine
         players.forEach(player -> player.setCurrentCellDoNotPerform(board.getFirstCell()));
     }
 
-    public boolean isPlayerInParking(Player player)
+    public boolean isCurrentPlayerInParking()
     {
-        return player.isParking();
+        return currentPlayer.isParking();
     }
 
     public boolean isPlayerInJail(Player player)
@@ -156,9 +191,9 @@ public class Engine
         return player.isInJail();
     }
 
-    public void exitPlayerFromParking(Player player)
+    public void exitCurrentPlayerFromParking()
     {
-        player.exitFromParking();
+        currentPlayer.exitFromParking();
     }
 
     public void takePlayerOutOfJail(Player player)
@@ -195,21 +230,54 @@ public class Engine
     public Board getBoard() {
         return board;
     }
-    
-    private void onPlayerChange()
-    {
-        currentPlayerNotifier.doNotify(currentPlayer.getName());
-    } 
-
-    public void doAction(int actionNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public List<GameEvent> getEvents(int playerID, Integer get) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void onPlayerBuyHouseAnswer(boolean answer) {
+    private void moveHumanPlayer() 
+    {
+        throwCubes();
+        movePlayer();
+    }
+    
+    public void buy(int playerID, int eventID, boolean buy)
+    {
+        //only on human player
+        
+        //IMPLEMENT LOGIC
+        
+        nextPlayer();
+        continueGame();
+    }
+    
+    public boolean resign(int playerID)
+    {
+        Boolean isPlayerFound = false;
+        int counter = 0;
+        Player player;
+        
+        while (!isPlayerFound && counter < players.size())
+        {
+            player = players.get(counter);
+            if(player.getPlayerID() == playerID)
+            {
+                isPlayerFound = true;
+                GameEvent resignEvent = new GameEvent(getLastEventID(), 
+                        GameEvent.EventType.PLAYER_RESIGNED);
+                resignEvent.setPlayerName(player.getName());
+                events.add(resignEvent);
+            }
+        }
+        
+        return isPlayerFound;
+    }
+    
+    private int nextEventId() {
+        return lastEventID + 1;
+    }
+
+    private boolean isGameOver() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

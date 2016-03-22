@@ -17,7 +17,7 @@ public class Controller
 
     private View view;
     private Engine engine;
-    private Map<Player, Integer> lastEventID = new HashMap<Player, Integer>();
+    private Map<Player, Integer> lastReceivedEventIds = new HashMap<Player, Integer>();
     private List<GameEvent> events;
     
     public Controller(View view, Engine engine)
@@ -27,18 +27,19 @@ public class Controller
         view.setPlayerBuyHouseDecision(new PlayerBuyHouseDecision() {
             @Override
             public void onAnswer(boolean answer) {
-                onPlayerBuyHouseAnswer(answer);
+                //engine.buy(answer);
             }
         });
     }
 
     public void play()
     {
+        engine.startGame();
         while (engine.isStillPlaying())
         {
-            Player player = engine.getCurrentPlayer();
-            playTurn(player);
-            engine.nextPlayer();
+            Player player = engine.getCurrentPlayer(); //TODO: need to decide what player's events to pull
+            events = engine.getEvents(player.getPlayerID(), lastReceivedEventIds.get(player));
+            view.showEvents(events);
         }
     }
 
@@ -48,36 +49,7 @@ public class Controller
         engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
         engine.putPlayersAtFirstCell();
     }
-
-    private void playTurn(Player player)
-    {
-        if (!engine.isPlayerInParking(player))
-            movePlayer(player);
-        else
-            engine.exitPlayerFromParking(player);
-        
-        events = engine.getEvents(player.getPlayerID(), lastEventID.get(player));
-        view.showEvents(events);
-    }
-
-    private void movePlayer(Player player)
-    {
-        CubesResult cr = engine.throwCubes();
-        if (engine.isPlayerInJail(player)) //wrong logic of game in controller
-        {
-            if (cr.isDouble())
-                engine.takePlayerOutOfJail(player);
-            else
-                return;
-        }
-        engine.movePlayer(player, cr.getResult());
-    }
     
-    private void onPlayerBuyHouseAnswer(boolean answer)
-    {
-        engine.onPlayerBuyHouseAnswer(answer);
-    }
-
     private void createPlayers()
     {
         int humanPlayersNumber = view.getHumanPlayersNumber();
@@ -93,7 +65,7 @@ public class Controller
          List<Player> players =  engine.getAllPlayers();
          for(Player player : players)
          {
-            lastEventID.put(player, 0);
+            lastReceivedEventIds.put(player, 0);
          }
     }
 }
