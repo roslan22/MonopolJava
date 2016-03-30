@@ -1,5 +1,6 @@
 package com.monopoly.logic.engine;
 
+import com.monopoly.EventsManager;
 import com.monopoly.GameEvent;
 import com.monopoly.Notifier;
 import com.monopoly.logic.model.board.Board;
@@ -23,25 +24,16 @@ public class Engine
     private List<Player> players = new ArrayList<>();
     private Board  board;
     private Player currentPlayer;
-    private List<GameEvent> events = new ArrayList<>();
-    private int lastEventID = 0;
     private CubesResult currentCubeResult = null;
-
+    private EventsManager eventsManager = new EventsManager();
     
     public int getLastEventID() {
-        return lastEventID;
+        return eventsManager.getLastEventID();
     }
             
     public List<GameEvent> getEvents() {
-        return events;
+        return eventsManager.getEvents();
     }
-    
-    public void addEventToEventList(GameEvent event)
-    {
-        events.add(event);
-        lastEventID++;
-    }
-
     
     public List<Player> getAllPlayers()
     {
@@ -122,10 +114,10 @@ public class Engine
     {
         Random r = new Random(System.nanoTime());
         currentCubeResult =  new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
-        GameEvent throwCubesEvent = new GameEvent(nextEventId(), GameEvent.EventType.DICE_ROLL);
+        GameEvent throwCubesEvent = new GameEvent(eventsManager.getNewEventId(), GameEvent.EventType.DICE_ROLL);
         throwCubesEvent.setFirstDiceResult(currentCubeResult.getFirstCubeResult());
         throwCubesEvent.setSecondDiceResult(currentCubeResult.getSecondCuberResult());
-        this.addEventToEventList(throwCubesEvent);
+        eventsManager.addEvent(throwCubesEvent);
     }
     
     public void startGame()
@@ -266,15 +258,11 @@ public class Engine
                 GameEvent resignEvent = new GameEvent(getLastEventID(), 
                         GameEvent.EventType.PLAYER_RESIGNED);
                 resignEvent.setPlayerName(player.getName());
-                events.add(resignEvent);
+                eventsManager.addEvent(resignEvent);
             }
         }
         
         return isPlayerFound;
-    }
-    
-    private int nextEventId() {
-        return lastEventID + 1;
     }
 
     private boolean isGameOver() {
