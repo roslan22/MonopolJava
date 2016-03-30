@@ -125,6 +125,11 @@ public class Engine
         continueGame();
     }
     
+    public void addEventToEventManager(GameEvent event)
+    {
+        eventsManager.addEvent(event);
+    }
+    
     public void continueGame()
     {
         while(currentPlayer.getPlayerType() != Player.PlayerType.HUMAN)

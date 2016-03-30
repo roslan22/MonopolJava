@@ -176,7 +176,7 @@ public class Board
         keyCells.getJailCell().getPlayerOutOfJail(player);
         keyCells.getParkingCell().exitFromParking(player);
         clearPropertiesOwner(player);
-        engine.addEventToEventList(CreatePlayerLostEvent(player));
+        engine.addEventToEventManager(CreatePlayerLostEvent(player));
     }
 
     private void clearPropertiesOwner(Player player)
@@ -207,7 +207,7 @@ public class Board
     
     private void onBoardChange(Player player)
     {
-        engine.addEventToEventList(CreateBoardChangeEvent(player));
+        engine.addEventToEventManager(CreateBoardChangeEvent(player));
     }
     
     private GameEvent CreateBoardChangeEvent(Player player) {
