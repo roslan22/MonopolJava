@@ -15,7 +15,7 @@ public class Main
         Controller controller = new Controller(view, engine);
         
         controller.initGame();
-        engine.getBoard().getBoardChangeNotifier().addListener(view::boardChange);
+        //engine.getBoard().getBoardChangeNotifier().addListener(view::boardChange);
         controller.play(); //game Starts here
     }
 

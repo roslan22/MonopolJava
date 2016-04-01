@@ -2,8 +2,8 @@ package com.monopoly.controller;
 
 import com.monopoly.GameEvent;
 import com.monopoly.logic.engine.Engine;
-import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.player.Player;
+import com.monopoly.view.PlayerBuyAssetDecision;
 import com.monopoly.view.View;
 import com.monopoly.view.PlayerBuyHouseDecision;
 import java.util.HashMap;
@@ -24,11 +24,11 @@ public class Controller
     {
         this.view = view;
         this.engine = engine;
-        view.setPlayerBuyHouseDecision(new PlayerBuyHouseDecision() {
-            @Override
-            public void onAnswer(boolean answer) {
-                //engine.buy(answer);  //NEED TO IMPLEMENT
-            }
+        view.setPlayerBuyHouseDecision((int eventID, boolean answer) -> {
+            buy(1, eventID, answer); //TODO: IN EXERCISE 3 CHANGE TO  PLAYERID
+        });
+        view.setPlayerBuyAssetDecision((int eventID, boolean answer) -> {
+            buy(1, eventID, answer); //TODO: IN EXERCISE 3 CHANGE TO PLAYERID
         });
     }
 
@@ -40,9 +40,10 @@ public class Controller
             Player player = engine.getCurrentPlayer(); //TODO: need to decide what player's events to pull
             events = engine.getEvents(player.getPlayerID(), lastReceivedEventIds.get(player));
             view.showEvents(events);
-        }
+        }   engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
+        engine.putPlayersAtFirstCell();
     }
-
+    
     public void initGame()
     {
         createPlayers();
@@ -68,4 +69,10 @@ public class Controller
             lastReceivedEventIds.put(player, 0);
          }
     }
+    
+    private void buy(int playerID, int eventID, boolean answer) 
+    {
+        engine.buy(playerID, eventID, answer);
+    }
+    
 }

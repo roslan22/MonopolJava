@@ -8,11 +8,21 @@ import java.util.Scanner;
 
 public class View
 {
+    public static final int YES = 1;
+    public static final int NO = 2;
+    
     private Scanner scanner = new Scanner(System.in);
     private PlayerBuyHouseDecision playerBuyHouseDecision;
-
-    public void setPlayerBuyHouseDecision(PlayerBuyHouseDecision playerBuyHouseDecision) {
+    private PlayerBuyAssetDecision playerBuyAssetDecision;
+    
+    public void setPlayerBuyHouseDecision(PlayerBuyHouseDecision playerBuyHouseDecision) 
+    {
         this.playerBuyHouseDecision = playerBuyHouseDecision;
+    }
+    
+    public void setPlayerBuyAssetDecision(PlayerBuyAssetDecision playerBuyAssetDecision) 
+    {
+        this.playerBuyAssetDecision = playerBuyAssetDecision;
     }
     
     public int getHumanPlayersNumber()
@@ -31,9 +41,9 @@ public class View
     {
         System.out.println("Please enter the names of the human players: ");
 
-        List<String> playerNames = new ArrayList<>();
+        List<String> playerNames = new ArrayList<>();        {
+
         for (int i = 1; i <= humanPlayersNumber; i++)
-        {
             playerNames.add(getNextName(i));
         }
 
@@ -80,28 +90,181 @@ public class View
         }
     }
 
-    private void showEvent(GameEvent event) {
-            if(event.getEventType() == GameEvent.EventType.MOVE)
-            {
-                playerMoveEvent(event);
-            }
-            if(event.getEventType() == GameEvent.EventType.PROMT_PLAYER_TO_BUY_HOUSE)
-            {
-                promtPlayerToBuyHouse();
-            }
+    private void showEvent(GameEvent event) 
+    {
+       GameEvent.EventType eventType = event.getEventType();
+       
+        switch (eventType) 
+        {
+            case GAME_START: showGameStartedMsg();
+                     break;
+            case GAME_OVER:  showGameOverMsg();
+                     break;
+            case MOVE: showPlayerMove(event);
+                     break;
+            case DICE_ROLL: showDiceRollResult(event);
+                    break;
+            case GAME_WINNER: showGameWinner(event);
+                    break;
+            case PROMT_PLAYER_TO_BUY_ASSET: promtPlayerToBuyAsset(event);
+                    break;
+            case PROMT_PLAYER_TO_BUY_HOUSE: promtPlayerToBuyHouse(event);
+                    break;
+            case GET_OUT_OF_JAIL_CARD: showOutOfJailCard(event);  
+                    break;
+            case GO_TO_JAIL: showGoToJailMsg(event);
+                    break;
+            case ASSET_BOUGHT_MESSAGE: showAssetBoughtMsg(event);
+                    break;
+            case HOUSE_BOUGHT_MESSAGE: showHouseBoughtMsg(event);
+                    break;
+            case LANDED_ON_START_SQUARE: showLandedOnStartSquareMsg(event);
+                    break;
+            case PASSED_START_SQUARE: showPassedStartSquareMsg(event);
+                    break;
+            case PAYMENT: showPaymentMsg(event);
+                    break;
+            case PLAYER_LOST: showPlayerLostMsg(event);
+                    break;
+            case PLAYER_RESIGNED: showPlayerResignMsg(event);
+                    break;
+            case PLAYER_USED_OUT_OF_JAIL_CARD: showUsedOutOfJailCardMsg(event);
+                    break;
+            case SUPRISE_CARD: showSupriseCardMsg(event);
+                    break;
+            case WARRANT_CARD: showWarrantCardMsg(event);
+                    break;
+            default:  unknownEvent();
+        }
+                
     }
 
-    private void playerMoveEvent(GameEvent event) {
+    private void showPlayerMove(GameEvent event) 
+    {
           System.out.println("Player " + event.getPlayerName() + " moved to " + 
                   event.getBoardSquareID() + " cell.");
     }
 
-    private void promtPlayerToBuyHouse() {
-        //ask player and get result
-        boolean answer = false;
-        System.out.println("Do you want to buy house, press 1-Yes 2-No");
-         
-        playerBuyHouseDecision.onAnswer(answer);
+    private void promtPlayerToBuyHouse(GameEvent event) 
+    {
+        boolean isUserWillingToBuy = false;
+        System.out.println("Do you want to buy " + event.getEventMessage() +  "press 1-Yes 2-No:");
+        isUserWillingToBuy = isUserWillingToBuy();
         
+        playerBuyHouseDecision.onAnswer(event.getEventID(), isUserWillingToBuy);
     }
+    
+    private void promtPlayerToBuyAsset(GameEvent event) 
+    {
+        boolean isUserWillingToBuy = false;
+        System.out.println("Do you want to buy " + event.getEventMessage() +  "press 1-Yes 2-No:");
+        isUserWillingToBuy = isUserWillingToBuy();
+        
+        playerBuyAssetDecision.onAnswer(event.getEventID(), isUserWillingToBuy);    
+    }
+        
+    private boolean isUserWillingToBuy() 
+    {
+        boolean isUserWillingToBuy = false;
+        int decision = getNumberFromUser();
+        while(decision != YES || decision != NO)
+        {
+            System.out.println("Wrong input, try again:");
+            decision = getNumberFromUser();
+        }
+        
+        if(decision == YES)
+        {
+            isUserWillingToBuy = true;
+        }
+        return isUserWillingToBuy;
+    }
+
+    private void showGameStartedMsg() 
+    {
+        System.out.println("Game Started");
+    }
+
+    private void showGameOverMsg() 
+    {
+        System.out.println("Game Over!");
+    }
+
+    private void showDiceRollResult(GameEvent event) 
+    {
+         System.out.println("Dice roll result is:" + event.getFirstDiceResult() 
+                 + " " + event.getSecondDiceResult());
+    }
+
+    private void showGameWinner(GameEvent event) 
+    {
+        System.out.println("Game winner is: " + event.getPlayerName());
+    }
+
+
+
+    private void showAssetBoughtMsg(GameEvent event) 
+    {
+        System.out.println(event.getEventMessage() + " by " + event.getPlayerName());
+    }
+
+    private void showHouseBoughtMsg(GameEvent event) 
+    {
+        System.out.println(event.getEventMessage() + " by " + event.getPlayerName());
+    }
+
+    private void showLandedOnStartSquareMsg(GameEvent event) 
+    {
+        System.out.println(event.getPlayerName() + " landed on start square");
+    }
+
+    private void showPassedStartSquareMsg(GameEvent event) 
+    {
+        System.out.println("Player " + event.getPlayerName() + " passed start square");
+    }
+
+    private void showPaymentMsg(GameEvent event) 
+    {
+        System.out.println(event.getEventMessage());
+    }
+
+    private void showPlayerLostMsg(GameEvent event) 
+    {
+        System.out.println("Player " + event.getPlayerName() + " passed start square");
+    }
+
+    private void showPlayerResignMsg(GameEvent event) 
+    {
+        System.out.println("Player " + event.getPlayerName() + " resigned");
+    }
+
+    private void showUsedOutOfJailCardMsg(GameEvent event) 
+    {
+        System.out.println("Player " + event.getPlayerName() + " used - Out of "
+                + "jail card");
+    }
+
+    private void showSupriseCardMsg(GameEvent event) 
+    {
+        System.out.println("Player " + event.getPlayerName() + "got suprise card: " +
+                event.getEventMessage());    
+    }
+
+    private void showWarrantCardMsg(GameEvent event) 
+    {
+        System.out.println(event.getEventMessage());      
+    }
+    
+    private void showOutOfJailCard(GameEvent event) {
+        System.out.println("Out of jail card was used by " + event.getPlayerName());      
+    }
+
+    private void showGoToJailMsg(GameEvent event) {
+        System.out.println("Player " + event.getPlayerName() + " goes to jail");      
+    }
+    
+    private void unknownEvent() {
+        //implement
+    }
+
 }

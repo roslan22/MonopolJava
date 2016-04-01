@@ -1,6 +1,6 @@
 package com.monopoly.view;
 
-public interface PlayerBuyHouseDecision 
+public interface PlayerBuyAssetDecision 
 {
     void onAnswer(int eventID, boolean answer);
 }
