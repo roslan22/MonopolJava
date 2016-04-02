@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ================================================================================ -->
+  <!-- Type Definitions-->
+  <!-- ================================================================================ -->
+
+  <!-- assets -->
+
+  <xs:complexType name="assetType" abstract="true">
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="cost" type="xs:unsignedInt" use="required" />
+    <xs:attribute name="stayCost" type="xs:unsignedInt" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="cityType">
+    <xs:complexContent>
+      <xs:extension base="assetType">
+        <xs:attribute name="houseCost" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="stayCost1" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="stayCost2" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="stayCost3" type="xs:unsignedInt" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="simpleAssetType">
+    <xs:complexContent>
+      <xs:extension base="assetType" />
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- cards -->
+
+  <xs:complexType name="cardBase" abstract="true">
+    <xs:attribute name="num" type="xs:unsignedInt" use="required" />
+    <xs:attribute name="text" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="monetaryCard">
+    <xs:complexContent>
+      <xs:extension base="cardBase">
+        <xs:attribute name="who" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="TREASURY"/>
+              <xs:enumeration value="PLAYERS"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="sum" type="xs:unsignedInt" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="gotoCard">
+    <xs:complexContent>
+      <xs:extension base="cardBase">
+        <xs:attribute name="to" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="START"/>
+              <xs:enumeration value="NEXT_SURPRISE"/>
+              <xs:enumeration value="JAIL"/>
+              <xs:enumeration value="NEXT_WARRANT"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="getOutOfJailCard">
+    <xs:complexContent>
+      <xs:extension base="cardBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:group name="warrantCards">
+    <xs:choice>
+      <xs:element name="monetary" type="monetaryCard"/>
+      <xs:element name="goto" type="gotoCard"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="surpriseCards">
+    <xs:choice>
+      <xs:group ref="warrantCards"/>
+      <xs:element name="getOutOfJail" type="getOutOfJailCard"/>
+    </xs:choice>
+  </xs:group>
+
+  <!-- squares -->
+
+  <xs:complexType name="squareBase" abstract="true"/>
+
+  <xs:complexType name="startSquareType">
+    <xs:complexContent>
+      <xs:extension base="squareBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="jailSlashFreeSpaceSquareType">
+    <xs:complexContent>
+      <xs:extension base="squareBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="parkingSquareType">
+    <xs:complexContent>
+      <xs:extension base="squareBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="gotoJailSquareType">
+    <xs:complexContent>
+      <xs:extension base="squareBase"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="squareType">
+    <xs:complexContent>
+      <xs:extension base="squareBase">
+        <xs:attribute name="type">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="CITY"/>
+              <xs:enumeration value="UTILITY"/>
+              <xs:enumeration value="TRANSPORTATION"/>
+              <xs:enumeration value="SURPRISE"/>
+              <xs:enumeration value="WARRANT"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- ================================================================================ -->
+  <!-- monopoly_config definition -->
+  <!-- ================================================================================ -->
+
+  <xs:element name="monopoly">
+    <xs:complexType>
+      <xs:sequence>
+
+        <!-- ================================================================================ -->
+        <!-- assets -->
+        <!-- ================================================================================ -->
+
+        <xs:element name="assets" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+
+              <!-- ================================================================================ -->
+              <!-- countries -->
+              <!-- ================================================================================ -->
+
+              <xs:element name="countries" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="country">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="city" type="cityType" />
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <!-- ================================================================================ -->
+              <!-- utilities -->
+              <!-- ================================================================================ -->
+
+              <xs:element name="utilities" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="utility" type="simpleAssetType" />
+                  </xs:sequence>
+                  <xs:attribute name="stayCost" type="xs:unsignedInt" use="required" />
+                </xs:complexType>
+              </xs:element>
+
+              <!-- ================================================================================ -->
+              <!-- trnasportations -->
+              <!-- ================================================================================ -->
+
+              <xs:element name="transportations" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="transportation" type="simpleAssetType" />
+                  </xs:sequence>
+                  <xs:attribute name="stayCost" type="xs:unsignedInt" use="required" />
+                </xs:complexType>
+              </xs:element>
+
+              <!-- ================================================================================ -->
+
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- ================================================================================ -->
+
+        
+        <!-- ================================================================================ -->
+        <!-- surprise cards -->
+        <!-- ================================================================================ -->
+
+        <xs:element name="surprise" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:group ref="surpriseCards" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- ================================================================================ -->
+        <!-- warrant cards -->
+        <!-- ================================================================================ -->
+
+        <xs:element name="warrant" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:group ref="warrantCards" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- ================================================================================ -->
+        <!-- board -->
+        <!-- ================================================================================ -->
+
+        <xs:element name="board" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="startSquare" type="startSquareType" />
+              <xs:element minOccurs="8" maxOccurs="8" name="square" type="squareType" />
+              <xs:element minOccurs="1" maxOccurs="1" name="jailSlashFreeSpaceSquare" type="jailSlashFreeSpaceSquareType" />
+              <xs:element minOccurs="8" maxOccurs="8" name="square" type="squareType" />
+              <xs:element minOccurs="1" maxOccurs="1" name="parkingSquare" type="parkingSquareType" />
+              <xs:element minOccurs="8" maxOccurs="8" name="square" type="squareType" />
+              <xs:element minOccurs="1" maxOccurs="1" name="gotoJailSquare" type="gotoJailSquareType" />
+              <xs:element minOccurs="8" maxOccurs="8" name="square" type="squareType" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- ================================================================================ -->
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

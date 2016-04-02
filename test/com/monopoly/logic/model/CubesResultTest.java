@@ -68,7 +68,6 @@ public class CubesResultTest
             fail();
         }
         catch (IllegalArgumentException e){}
-        fail();
     }
 
     @Test

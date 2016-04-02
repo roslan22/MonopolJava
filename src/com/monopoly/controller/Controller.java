@@ -1,13 +1,13 @@
 package com.monopoly.controller;
 
-import com.monopoly.GameEvent;
 import com.monopoly.logic.engine.Engine;
+import com.monopoly.logic.engine.MonopolyEngine;
+import com.monopoly.logic.engine.monopolyInitReader.CouldNotReadMonopolyInitReader;
+import com.monopoly.logic.events.Event;
 import com.monopoly.logic.model.player.Player;
-import com.monopoly.view.PlayerBuyAssetDecision;
 import com.monopoly.view.View;
-import com.monopoly.view.PlayerBuyHouseDecision;
-import java.util.HashMap;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +15,12 @@ public class Controller
 {
     private static final String PATH = "";
 
-    private View view;
+    private View   view;
     private Engine engine;
     private Map<Player, Integer> lastReceivedEventIds = new HashMap<Player, Integer>();
-    private List<GameEvent> events;
+    private List<Event> events;
     
-    public Controller(View view, Engine engine)
+    public Controller(View view, MonopolyEngine engine)
     {
         this.view = view;
         this.engine = engine;
@@ -40,14 +40,27 @@ public class Controller
             Player player = engine.getCurrentPlayer(); //TODO: need to decide what player's events to pull
             events = engine.getEvents(player.getPlayerID(), lastReceivedEventIds.get(player));
             view.showEvents(events);
-        }   engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
+        }
+        try
+        {
+            engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
+        } catch (CouldNotReadMonopolyInitReader couldNotReadMonopolyInitReader)
+        {
+            couldNotReadMonopolyInitReader.printStackTrace();
+        }
         engine.putPlayersAtFirstCell();
     }
     
     public void initGame()
     {
         createPlayers();
-        engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
+        try
+        {
+            engine.initializeBoard(new XmlMonopolyInitReader(PATH)); //
+        } catch (CouldNotReadMonopolyInitReader couldNotReadMonopolyInitReader)
+        {
+            couldNotReadMonopolyInitReader.printStackTrace();
+        }
         engine.putPlayersAtFirstCell();
     }
     

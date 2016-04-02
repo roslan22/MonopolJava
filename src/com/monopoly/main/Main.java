@@ -1,9 +1,8 @@
 package com.monopoly.main;
 
 import com.monopoly.controller.Controller;
-import com.monopoly.logic.engine.Engine;
+import com.monopoly.logic.engine.MonopolyEngine;
 import com.monopoly.view.View;
-import java.util.function.Consumer;
 
 
 public class Main
@@ -11,7 +10,7 @@ public class Main
     public static void main(String[] args)
     {
         View view = new View();
-        Engine engine = new Engine();
+        MonopolyEngine engine = new MonopolyEngine();
         Controller controller = new Controller(view, engine);
         
         controller.initGame();

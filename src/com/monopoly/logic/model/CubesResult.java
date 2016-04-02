@@ -38,4 +38,10 @@ public class CubesResult
     }
 
     public boolean isDouble(){return firstCubeResult == secondCuberResult;}
+
+    @Override
+    public String toString()
+    {
+        return firstCubeResult + ", " + secondCuberResult;
+    }
 }

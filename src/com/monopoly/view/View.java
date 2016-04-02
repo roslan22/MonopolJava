@@ -1,6 +1,7 @@
 package com.monopoly.view;
 
-import com.monopoly.GameEvent;
+import com.monopoly.logic.events.Event;
+import com.monopoly.logic.events.EventType;
 import com.monopoly.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,16 +84,16 @@ public class View
         System.out.println("Now " + playerName + "'s turn");
     }
 
-    public void showEvents(List<GameEvent> events) {
-        for(GameEvent event : events)
+    public void showEvents(List<Event> events) {
+        for(Event event : events)
         {
             showEvent(event);
         }
     }
 
-    private void showEvent(GameEvent event) 
+    private void showEvent(Event event)
     {
-       GameEvent.EventType eventType = event.getEventType();
+       EventType eventType = event.getEventType();
        
         switch (eventType) 
         {
@@ -106,9 +107,9 @@ public class View
                     break;
             case GAME_WINNER: showGameWinner(event);
                     break;
-            case PROMT_PLAYER_TO_BUY_ASSET: promtPlayerToBuyAsset(event);
+            case PROMPT_PLAYER_TO_BUY_ASSET: promtPlayerToBuyAsset(event);
                     break;
-            case PROMT_PLAYER_TO_BUY_HOUSE: promtPlayerToBuyHouse(event);
+            case PROMPT_PLAYER_TO_BUY_HOUSE: promtPlayerToBuyHouse(event);
                     break;
             case GET_OUT_OF_JAIL_CARD: showOutOfJailCard(event);  
                     break;
@@ -130,7 +131,7 @@ public class View
                     break;
             case PLAYER_USED_OUT_OF_JAIL_CARD: showUsedOutOfJailCardMsg(event);
                     break;
-            case SUPRISE_CARD: showSupriseCardMsg(event);
+            case SURPRISE_CARD: showSupriseCardMsg(event);
                     break;
             case WARRANT_CARD: showWarrantCardMsg(event);
                     break;
@@ -139,13 +140,13 @@ public class View
                 
     }
 
-    private void showPlayerMove(GameEvent event) 
+    private void showPlayerMove(Event event)
     {
           System.out.println("Player " + event.getPlayerName() + " moved to " + 
                   event.getBoardSquareID() + " cell.");
     }
 
-    private void promtPlayerToBuyHouse(GameEvent event) 
+    private void promtPlayerToBuyHouse(Event event)
     {
         boolean isUserWillingToBuy = false;
         System.out.println("Do you want to buy " + event.getEventMessage() +  "press 1-Yes 2-No:");
@@ -154,7 +155,7 @@ public class View
         playerBuyHouseDecision.onAnswer(event.getEventID(), isUserWillingToBuy);
     }
     
-    private void promtPlayerToBuyAsset(GameEvent event) 
+    private void promtPlayerToBuyAsset(Event event)
     {
         boolean isUserWillingToBuy = false;
         System.out.println("Do you want to buy " + event.getEventMessage() +  "press 1-Yes 2-No:");
@@ -190,76 +191,76 @@ public class View
         System.out.println("Game Over!");
     }
 
-    private void showDiceRollResult(GameEvent event) 
+    private void showDiceRollResult(Event event)
     {
          System.out.println("Dice roll result is:" + event.getFirstDiceResult() 
                  + " " + event.getSecondDiceResult());
     }
 
-    private void showGameWinner(GameEvent event) 
+    private void showGameWinner(Event event)
     {
         System.out.println("Game winner is: " + event.getPlayerName());
     }
 
 
 
-    private void showAssetBoughtMsg(GameEvent event) 
+    private void showAssetBoughtMsg(Event event)
     {
         System.out.println(event.getEventMessage() + " by " + event.getPlayerName());
     }
 
-    private void showHouseBoughtMsg(GameEvent event) 
+    private void showHouseBoughtMsg(Event event)
     {
         System.out.println(event.getEventMessage() + " by " + event.getPlayerName());
     }
 
-    private void showLandedOnStartSquareMsg(GameEvent event) 
+    private void showLandedOnStartSquareMsg(Event event)
     {
         System.out.println(event.getPlayerName() + " landed on start square");
     }
 
-    private void showPassedStartSquareMsg(GameEvent event) 
+    private void showPassedStartSquareMsg(Event event)
     {
         System.out.println("Player " + event.getPlayerName() + " passed start square");
     }
 
-    private void showPaymentMsg(GameEvent event) 
+    private void showPaymentMsg(Event event)
     {
         System.out.println(event.getEventMessage());
     }
 
-    private void showPlayerLostMsg(GameEvent event) 
+    private void showPlayerLostMsg(Event event)
     {
         System.out.println("Player " + event.getPlayerName() + " passed start square");
     }
 
-    private void showPlayerResignMsg(GameEvent event) 
+    private void showPlayerResignMsg(Event event)
     {
         System.out.println("Player " + event.getPlayerName() + " resigned");
     }
 
-    private void showUsedOutOfJailCardMsg(GameEvent event) 
+    private void showUsedOutOfJailCardMsg(Event event)
     {
         System.out.println("Player " + event.getPlayerName() + " used - Out of "
                 + "jail card");
     }
 
-    private void showSupriseCardMsg(GameEvent event) 
+    private void showSupriseCardMsg(Event event)
     {
         System.out.println("Player " + event.getPlayerName() + "got suprise card: " +
                 event.getEventMessage());    
     }
 
-    private void showWarrantCardMsg(GameEvent event) 
+    private void showWarrantCardMsg(Event event)
     {
         System.out.println(event.getEventMessage());      
     }
     
-    private void showOutOfJailCard(GameEvent event) {
+    private void showOutOfJailCard(Event event) {
         System.out.println("Out of jail card was used by " + event.getPlayerName());      
     }
 
-    private void showGoToJailMsg(GameEvent event) {
+    private void showGoToJailMsg(Event event) {
         System.out.println("Player " + event.getPlayerName() + " goes to jail");      
     }
     

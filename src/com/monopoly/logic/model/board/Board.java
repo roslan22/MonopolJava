@@ -1,9 +1,7 @@
 package com.monopoly.logic.model.board;
 
-import com.monopoly.Event;
-import com.monopoly.GameEvent;
-import com.monopoly.Notifier;
-import com.monopoly.logic.engine.Engine;
+import com.monopoly.logic.engine.MonopolyEngine;
+import com.monopoly.logic.events.Event;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
@@ -20,16 +18,15 @@ public class Board
 {
     public static final int FIRST_CELL_INDEX = 0;
 
-    private Engine engine;
+    private MonopolyEngine engine;
     private List<Cell> cells = new ArrayList<>();
     private CardPack<SurpriseCard> surpriseCardPack;
     private CardPack<AlertCard>    alertCardPack;
 
-    private Notifier<String> boardNotifier = new Notifier<>();
-     private KeyCells keyCells;
+    private KeyCells keyCells;
             
-   public Board(Engine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack,
-                 KeyCells keyCells)
+   public Board(MonopolyEngine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack,
+                KeyCells keyCells)
     {
         this.cells = cells;
         this.engine = engine;
@@ -176,7 +173,7 @@ public class Board
         keyCells.getJailCell().getPlayerOutOfJail(player);
         keyCells.getParkingCell().exitFromParking(player);
         clearPropertiesOwner(player);
-        engine.addEventToEventManager(CreatePlayerLostEvent(player));
+//        engine.addEventToEventManager(CreatePlayerLostEvent(player));
     }
 
     private void clearPropertiesOwner(Player player)
@@ -190,29 +187,28 @@ public class Board
         });
     }
 
-    private GameEvent CreatePlayerLostEvent(Player player) {
-        GameEvent gameEvent = new GameEvent(engine.getLastEventID(),GameEvent.EventType.PLAYER_LOST);
-        gameEvent.setPlayerName(player.getName());
-        return gameEvent;
+    private Event CreatePlayerLostEvent(Player player) {
+//        Event event = new EventBuilder().setEventID(engine.getLastEventID())
+//                .setEventType(EventType.PLAYER_LOST).createGameEvent();
+//        event.setPlayerName(player.getName());
+//        return event;
+        return null;
     }
 
     public static class PlayerNotOnBoard extends RuntimeException
     {
     }
-
-    public Event<String> getBoardChangeNotifier()
-    {
-        return boardNotifier;
-    }
     
     private void onBoardChange(Player player)
     {
-        engine.addEventToEventManager(CreateBoardChangeEvent(player));
+//        engine.addEventToEventManager(CreateBoardChangeEvent(player));
     }
     
-    private GameEvent CreateBoardChangeEvent(Player player) {
-        GameEvent gameEvent = new GameEvent(engine.getLastEventID(),GameEvent.EventType.MOVE);
-        gameEvent.setPlayerName(player.getName());
-        return gameEvent;
+    private Event CreateBoardChangeEvent(Player player) {
+//        Event event = new EventBuilder().setEventID(engine.getLastEventID()).setEventType(EventType.MOVE)
+//                .createGameEvent();
+//        event.setPlayerName(player.getName());
+//        return event;
+        return null;
     }
 }

@@ -1,80 +1,81 @@
-<Settings>
+<?xml version="1.0"?>
+<monopoly>
     <Board>
         <RoadStart/>
-        <Country name="Uzbekistan">
-            <City name="Tashkent" property_price="60" house_price="50" rent="2" rent_one_house="10" rent_two_houses="30"
+        <country name="Uzbekistan">
+            <city name="Tashkent" property_price="60" house_price="50" rent="2" rent_one_house="10" rent_two_houses="30"
                   rent_three_houses="90"/>
-            <City name="Namangan" property_price="60" house_price="50" rent="4" rent_one_house="20" rent_two_houses="60"
+            <city name="Namangan" property_price="60" house_price="50" rent="4" rent_one_house="20" rent_two_houses="60"
                   rent_three_houses="180"/>
-        </Country>
+        </country>
         <Surprise/>
         <Company type="Transportation" name="Train" property_price="200" rent="50" monopoly_rent="200"/>
-        <Country name="Turkey">
-            <City name="Izmir" property_price="100" house_price="50" rent="6" rent_one_house="30" rent_two_houses="90"
+        <country name="Turkey">
+            <city name="Izmir" property_price="100" house_price="50" rent="6" rent_one_house="30" rent_two_houses="90"
                   rent_three_houses="270"/>
-            <City name="Ankara" property_price="100" house_price="50" rent="6" rent_one_house="30" rent_two_houses="90"
+            <city name="Ankara" property_price="100" house_price="50" rent="6" rent_one_house="30" rent_two_houses="90"
                   rent_three_houses="270"/>
-            <City name="Istanbul" property_price="120" house_price="50" rent="8" rent_one_house="40" rent_two_houses="100"
+            <city name="Istanbul" property_price="120" house_price="50" rent="8" rent_one_house="40" rent_two_houses="100"
                   rent_three_houses="300"/>
-        </Country>
+        </country>
         <Alert/>
         <Jail/>
-        <Country name="Israel">
-            <City name="Eilat" property_price="140" house_price="100" rent="10" rent_one_house="50" rent_two_houses="150"
+        <country name="Israel">
+            <city name="Eilat" property_price="140" house_price="100" rent="10" rent_one_house="50" rent_two_houses="150"
                   rent_three_houses="450"/>
-            <City name="Jerusalem" property_price="140" house_price="100" rent="10" rent_one_house="50" rent_two_houses="150"
+            <city name="Jerusalem" property_price="140" house_price="100" rent="10" rent_one_house="50" rent_two_houses="150"
                   rent_three_houses="450"/>
-            <City name="Tel-Aviv" property_price="160" house_price="100" rent="12" rent_one_house="60" rent_two_houses="180"
+            <city name="Tel-Aviv" property_price="160" house_price="100" rent="12" rent_one_house="60" rent_two_houses="180"
                   rent_three_houses="500"/>
-        </Country>
+        </country>
         <Company type="Services" name="Electricity Company" property_price="150" rent="25" monopoly_rent="100"/>
         <Company type="Transportation" name="Bus" property_price="200" rent="50" monopoly_rent="200"/>
-        <Country name="Italy">
-            <City name="Venezia" property_price="180" house_price="100" rent="14" rent_one_house="70" rent_two_houses="200"
+        <country name="Italy">
+            <city name="Venezia" property_price="180" house_price="100" rent="14" rent_one_house="70" rent_two_houses="200"
                   rent_three_houses="550"/>
-            <City name="Rome" property_price="180" house_price="100" rent="14" rent_one_house="70" rent_two_houses="200"
+            <city name="Rome" property_price="180" house_price="100" rent="14" rent_one_house="70" rent_two_houses="200"
                   rent_three_houses="550"/>
-            <City name="Milano" property_price="200" house_price="100" rent="16" rent_one_house="80" rent_two_houses="220"
+            <city name="Milano" property_price="200" house_price="100" rent="16" rent_one_house="80" rent_two_houses="220"
                   rent_three_houses="600"/>
-        </Country>
+        </country>
         <Parking/>
-        <Country name="Russia">
-            <City name="Novosibirsk" property_price="220" house_price="150" rent="18" rent_one_house="90"
+        <country name="Russia">
+            <city name="Novosibirsk" property_price="220" house_price="150" rent="18" rent_one_house="90"
                   rent_two_houses="250" rent_three_houses="700"/>
-            <City name="Saint Petersburg" property_price="220" house_price="150" rent="18" rent_one_house="90"
+            <city name="Saint Petersburg" property_price="220" house_price="150" rent="18" rent_one_house="90"
                   rent_two_houses="250" rent_three_houses="700"/>
-            <City name="Moscow" property_price="240" house_price="150" rent="20" rent_one_house="100" rent_two_houses="300"
+            <city name="Moscow" property_price="240" house_price="150" rent="20" rent_one_house="100" rent_two_houses="300"
                   rent_three_houses="750"/>
-        </Country>
+        </country>
         <Alert/>
         <Company type="Transportation" name="Air Port" property_price="200" rent="50" monopoly_rent="200"/>
-        <Country name="Germany">
-            <City name="Frankfurt" property_price="260" house_price="150" rent="22" rent_one_house="110"
+        <country name="Germany">
+            <city name="Frankfurt" property_price="260" house_price="150" rent="22" rent_one_house="110"
                   rent_two_houses="330" rent_three_houses="800"/>
-            <City name="Munich" property_price="260" house_price="150" rent="22" rent_one_house="110" rent_two_houses="330"
+            <city name="Munich" property_price="260" house_price="150" rent="22" rent_one_house="110" rent_two_houses="330"
                   rent_three_houses="800"/>
-            <City name="Berlin" property_price="280" house_price="150" rent="24" rent_one_house="120" rent_two_houses="360"
+            <city name="Berlin" property_price="280" house_price="150" rent="24" rent_one_house="120" rent_two_houses="360"
                   rent_three_houses="850"/>
-        </Country>
+        </country>
         <GoToJail/>
-        <Country name="China">
-            <City name="Hong Kong" property_price="300" house_price="200" rent="26" rent_one_house="130"
+        <country name="China">
+            <city name="Hong Kong" property_price="300" house_price="200" rent="26" rent_one_house="130"
                   rent_two_houses="390" rent_three_houses="900"/>
-            <City name="Beijing" property_price="300" house_price="200" rent="26" rent_one_house="130" rent_two_houses="390"
+            <city name="Beijing" property_price="300" house_price="200" rent="26" rent_one_house="130" rent_two_houses="390"
                   rent_three_houses="900"/>
-            <City name="Shanghai" property_price="320" house_price="200" rent="28" rent_one_house="450" rent_two_houses="450"
+            <city name="Shanghai" property_price="320" house_price="200" rent="28" rent_one_house="450" rent_two_houses="450"
                   rent_three_houses="900"/>
-        </Country>
+        </country>
         <Company type="Services" name="Water Work" property_price="150" rent="25" monopoly_rent="100"/>
         <Company type="Transportation" name="Sea Port" property_price="200" rent="50" monopoly_rent="200"/>
-        <Country name="United States">
-            <City name="Chicago" property_price="340" house_price="200" rent="35" rent_one_house="175" rent_two_houses="500"
+        <country name="United States">
+            <city name="Chicago" property_price="340" house_price="200" rent="35" rent_one_house="175" rent_two_houses="500"
                   rent_three_houses="1100"/>
-            <City name="Los Angeles" property_price="340" house_price="200" rent="35" rent_one_house="175"
+            <city name="Los Angeles" property_price="340" house_price="200" rent="35" rent_one_house="175"
                   rent_two_houses="500" rent_three_houses="1100"/>
-            <City name="New York" property_price="380" house_price="200" rent="50" rent_one_house="200" rent_two_houses="600"
+            <city name="New York" property_price="380" house_price="200" rent="50" rent_one_house="200" rent_two_houses="600"
                   rent_three_houses="1400"/>
-        </Country>
+        </country>
     </Board>
     <SurpriseCardPack>
         <GoToRoadStartCard text="Go to Road Start and collect ₪400"/>
@@ -83,7 +84,7 @@
         <GetOutOfJailCard text="Go out of jail card"/>
         <MoneyEarnCard text="Bank pays you dividend of ₪50" amount="50" is_from_other_players="false"/>
         <MoneyEarnCard text="Your building loan matures – Collect ₪150" amount="150" is_from_other_players="false"/>
-        <MoneyEarnCard text="You have won a crossword competition - Collect ₪25 from each player" amount="100"
+        <MoneyEarnCard text="You have won a crossword competition - Collect ₪25 from each player" amount="25"
                        is_from_other_players="true"/>
     </SurpriseCardPack>
     <AlertCardPack>
@@ -94,4 +95,4 @@
         <MoneyPenaltyCard text="You have been elected Chairman of the Board – Pay each player ₪50" amount="50"
                           is_to_other_players="true"/>
     </AlertCardPack>
-</Settings>
+</monopoly>
