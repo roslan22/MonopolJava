@@ -1,5 +1,5 @@
 
-package com.monopoly.logic.engine;
+package com.monopoly.logic.engine.monopolyInitReader;
 
 
 import com.monopoly.logic.model.board.KeyCells;
@@ -20,5 +20,5 @@ public interface MonopolyInitReader
 
     KeyCells getKeyCells();
 
-    void read();
+    void read() throws CouldNotReadMonopolyInitReader;
 }

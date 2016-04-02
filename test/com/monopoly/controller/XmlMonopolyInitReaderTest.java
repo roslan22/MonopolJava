@@ -1,5 +1,6 @@
 package com.monopoly.controller;
 
+import com.monopoly.logic.engine.monopolyInitReader.CouldNotReadMonopolyInitReader;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
@@ -109,14 +110,14 @@ public class XmlMonopolyInitReaderTest
         monopolyInitReader.getKeyCells();
     }
 
-    @Test(expected = XmlMonopolyInitReader.CouldNotParseXMLFile.class)
+    @Test(expected = CouldNotReadMonopolyInitReader.class)
     public void testReadInvalidAlertCardFile() throws Exception
     {
         monopolyInitReader = new XmlMonopolyInitReader(INVALID_ALERT_CARD_XML_FILE_PATH);
         monopolyInitReader.read();
     }
 
-    @Test(expected = XmlMonopolyInitReader.CouldNotParseXMLFile.class)
+    @Test(expected = CouldNotReadMonopolyInitReader.class)
     public void testReadInvalidSurpriseCardFile() throws Exception
     {
         monopolyInitReader = new XmlMonopolyInitReader(INVALID_SURPRISE_CARD_XML_FILE_PATH);
