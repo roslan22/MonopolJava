@@ -7,15 +7,13 @@ public class City extends Property
     private static final int MAX_HOUSES_AVAILABLE = 3;
     public static final  int RENT_PRICES_AMOUNT   = MAX_HOUSES_AVAILABLE + 1;
 
-    private String cityName;
     private int houseCounter = 0;
     private int   housePrice;
     private int[] rentPrices;
 
     public City(String cityName, int propertyPrice, int housePrice, int[] rentPrices)
     {
-        super(propertyPrice);
-        this.cityName = cityName;
+        super(propertyPrice, cityName);
         this.housePrice = housePrice;
         setRentPrices(rentPrices);
     }
@@ -27,11 +25,6 @@ public class City extends Property
             throw new IllegalRentPricesAmount();
         }
         this.rentPrices = rentPrices;
-    }
-
-    public String getCityName()
-    {
-        return cityName;
     }
 
     public int getHousePrice()
@@ -55,7 +48,7 @@ public class City extends Property
     {
         if (canBuyHouse(player))
         {
-            buyHouse(player);
+            player.askToBuyHouse(this);
         }
         else
         {
@@ -67,12 +60,12 @@ public class City extends Property
     {
         return getPropertyGroup().hasMonopoly(player) &&
                 houseCounter < MAX_HOUSES_AVAILABLE &&
-                player.getMoney() >= housePrice;
+                player.getMoneyAmount() >= housePrice;
     }
 
-    private void buyHouse(Player player)
+    public void buyHouse(Player player)
     {
-        if (player.isWillingToBuyHouse())
+        if (canBuyHouse(player))
         {
             player.payToBank(housePrice);
             houseCounter++;

@@ -13,6 +13,7 @@ public class GotoAlertCard extends AlertCard
     @Override
     public void perform(Player player, Board board) 
     {
+        super.perform(player, board);
          board.moveToNextAlertCard(player);
     }
 }

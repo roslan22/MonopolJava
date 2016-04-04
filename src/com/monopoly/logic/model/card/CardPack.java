@@ -23,7 +23,7 @@ public class CardPack<T extends Card>
 
     public void randomizePack()
     {
-        Collections.shuffle(cards, new Random(System.nanoTime()));
+        Collections.shuffle(cards, new Random());
     }
 
     public void removeFromPack(T surpriseCard)

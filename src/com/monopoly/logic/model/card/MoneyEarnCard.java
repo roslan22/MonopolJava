@@ -18,6 +18,7 @@ public class MoneyEarnCard extends SurpriseCard
     @Override
     public void perform(Player player, Board board)
     {
+        super.perform(player, board);
         if (isFromOtherPlayers)
         {
             board.transferOtherPlayersMoneyTo(player, amount);

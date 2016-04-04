@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MonopolyEngine implements Engine
 {
@@ -23,71 +24,64 @@ public class MonopolyEngine implements Engine
     public static final int END_OF_ROUND_MONEY_EARN = 200;
     public static final int MINIMUM_GAME_PLAYERS    = 2;
 
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players     = new ArrayList<>();
+    private List<Player> lostPlayers = new ArrayList<>();
+    private int    numberOfPlayers;
     private Board  board;
     private Player currentPlayer;
-    private CubesResult   currentCubeResult = null;
 
     private EventList events = new EventList();
+    private OnBuyDecisionTaken onBuyDecisionTaken;
 
     @Override
     public Event[] getEvents(int playerID, int eventID)
     {
-        if (eventID < 0 || eventID >= events.size())
+        if (eventID < 0 || (events.size() > 0 && eventID >= events.size()))
         {
             throw new InvalidParameterException("eventID should be between 0 and " + events.size());
         }
-        int fromIndex = eventID == 0 ? 0 : eventID + 1;
+        int fromIndex = (eventID == 0) ? 0 : eventID + 1;
         return events.getEventsClone().subList(fromIndex, events.size()).toArray(new Event[events.size() - fromIndex]);
-    }
-
-    @Override
-    public void resign(int playerID)
-    {
-        Boolean isPlayerFound = false;
-        int counter = 0;
-        Player player;
-
-        while (!isPlayerFound && counter < players.size())
-        {
-            player = players.get(counter);
-            if (player.getPlayerID() == playerID)
-            {
-                isPlayerFound = true;
-//                Event resignEvent = new EventBuilder( ).setEventID(getLastEventID())
-//                        .setEventType(EventType.PLAYER_RESIGNED).createGameEvent();
-//                resignEvent.setPlayerName(player.getName());
-//                eventsManager.addEvent(resignEvent);
-            }
-        }
-    }
-
-    @Override
-    public void buy(int playerID, int eventID, boolean buy)
-    {
-        //only on human player
-
-        //IMPLEMENT LOGIC
-
-        nextPlayer();
-        continueGame();
     }
 
     @Override
     public void createGame(String gameName, int computerPlayers, int humanPlayers)
     {
-
+        numberOfPlayers = computerPlayers + humanPlayers;
+        createComputerPlayers(computerPlayers);
+        startGame();
     }
 
     @Override
-    public int joinGame(String gameName, String playerName)
+    public int joinGame(String gameName, String playerName) throws PlayerNameAlreadyExists
     {
-        return 0;
+        if (players.stream().anyMatch(player -> player.getName().equals(playerName)))
+        {
+            throw new PlayerNameAlreadyExists();
+        }
+
+        HumanPlayer newPlayer = new HumanPlayer(playerName, players.size(), this);
+        players.add(newPlayer);
+        startGame();
+        return newPlayer.getPlayerID();
     }
 
-    public List<Player> getAllPlayers()
+    @Override
+    public void buy(int playerID, int eventID, boolean buy)
     {
-        return players;
+        onBuyDecisionTaken.buy(buy);
+        onBuyDecisionTaken = null;
+        playGame();
+    }
+
+    @Override
+    public void resign(int playerID)
+    {
+        onBuyDecisionTaken = null;
+        Player resignedPlayer = players.stream().filter(p -> p.getPlayerID() == playerID).findFirst()
+                .orElseThrow(Board.PlayerNotOnBoard::new);
+        playerLost(resignedPlayer);
+        events.addPlayerResignEvent(resignedPlayer);
     }
 
     public Player getCurrentPlayer()
@@ -99,50 +93,9 @@ public class MonopolyEngine implements Engine
         return currentPlayer;
     }
 
-    public void createPlayers(List<String> humanPlayerNames, int computerPlayersCount)
-    {
-        humanPlayerNames = handleDuplicateNames(humanPlayerNames);
-        humanPlayerNames.forEach(name -> players.add(new HumanPlayer(name)));
-        createComputerPlayers(computerPlayersCount);
-        randomizePlayersOrder();
-        currentPlayer = players.get(FIRST_PLAYER_INDEX);
-    }
-
-    private List<String> handleDuplicateNames(List<String> names)
-    {
-        List<String> humanPlayerNamesNoDup = new ArrayList<>();
-        for (int i = 0; i < names.size(); i++)
-        {
-            humanPlayerNamesNoDup.add(getNameWithSuffix(names, i));
-        }
-        return humanPlayerNamesNoDup;
-    }
-
-    private String getNameWithSuffix(List<String> names, int nameIndex)
-    {
-        int occurrencesCounter = 0;
-        for (int i = 0; i < nameIndex; i++)
-        {
-            if (names.get(nameIndex).equals(names.get(i)))
-            {
-                occurrencesCounter++;
-            }
-        }
-        String nameSuffix = occurrencesCounter > 0 ? String.valueOf(nameIndex) : "";
-        return names.get(nameIndex) + nameSuffix;
-    }
-
-    private void randomizePlayersOrder()
-    {
-        Collections.shuffle(players, new Random(System.nanoTime()));
-    }
-
     private void createComputerPlayers(int computerPlayersCount)
     {
-        for (int i = 0; i < computerPlayersCount; i++)
-        {
-            players.add(new ComputerPlayer());
-        }
+        IntStream.range(0, computerPlayersCount).forEach(i -> players.add(new ComputerPlayer(players.size(), this)));
     }
 
     public void initializeBoard(MonopolyInitReader monopolyInitReader) throws CouldNotReadMonopolyInitReader
@@ -157,66 +110,105 @@ public class MonopolyEngine implements Engine
 
     public boolean isStillPlaying()
     {
-        return players.size() < MINIMUM_GAME_PLAYERS;
+        return (players.size() - lostPlayers.size()) > MINIMUM_GAME_PLAYERS;
     }
 
-    public void throwCubes()
+    public CubesResult throwCubes()
     {
-        Random r = new Random(System.nanoTime());
-        currentCubeResult = new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
-        events.addThrowCubesEvent(currentPlayer, currentCubeResult);
+        Random r = new Random();
+        CubesResult cr = new CubesResult(r.nextInt(6) + 1, r.nextInt(6) + 1);
+        events.addThrowCubesEvent(currentPlayer, cr);
+        return cr;
     }
 
     public void startGame()
     {
-        continueGame();
+        if (players.size() < numberOfPlayers)
+        {
+            return;
+        }
+        Collections.shuffle(players);
+        putPlayersAtFirstCell();
+        events.addGameStartEvent();
+        playGame();
     }
 
-    public void continueGame()
+    public void playGame()
     {
-        while (currentPlayer.getPlayerType() != Player.PlayerType.HUMAN)
+        while (isStillPlaying() && !isWaitingForPlayer())
         {
-            throwCubes();
+            nextPlayer();
             movePlayer();
-            if (!isGameOver())
-            {
-                nextPlayer();
-            }
         }
-        moveHumanPlayer();
+        finishGame();
+    }
+
+    private boolean isWaitingForPlayer()
+    {
+        return onBuyDecisionTaken != null;
+    }
+
+    private void finishGame()
+    {
+        if (!isStillPlaying())
+        {
+            events.addGameWinnerEvent(getPlayingPlayers().get(FIRST_PLAYER_INDEX));
+            events.addGameOver();
+        }
     }
 
     public void movePlayer()
-    {   /*  ??????? before paking? *****
-        if (isPlayerInJail(currentPlayer))  //No need for current
+    {
+        if (currentPlayer.isParking())
+        {
+            addMovePlayerEvent(currentPlayer, board.getParkingCellIndex(), board.getParkingCellIndex());
+            currentPlayer.exitFromParking();
+            return;
+        }
+
+        CubesResult cr = throwCubes();
+        if (currentPlayer.isInJail())
         {
             if (cr.isDouble())
-                takePlayerOutOfJail(currentPlayer);
+            {
+                currentPlayer.getOutOfJail();
+            }
             else
+            {
+                addMovePlayerEvent(currentPlayer, board.getJailCellIndex(), board.getJailCellIndex());
                 return;
+            }
         }
-        */
 
-        if (!isCurrentPlayerInParking())
-        {
-            board.movePlayer(currentPlayer, currentCubeResult.getResult());
-        }
-        else
-        {
-            exitCurrentPlayerFromParking();
-        }
+        board.movePlayer(currentPlayer, cr.getResult());
     }
 
     public void playerFinishedARound(Player player)
     {
         player.receiveMoney(END_OF_ROUND_MONEY_EARN);
+        events.addPlayerPassedStartEvent(player, END_OF_ROUND_MONEY_EARN);
     }
 
     private void nextPlayer()
     {
-        final int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
-        currentPlayer = players.get(nextPlayerIndex);
-        //TODO: check if to add event that player changed
+        if (currentPlayer == null)
+        {
+            currentPlayer = players.get(FIRST_PLAYER_INDEX);
+        }
+        else
+        {
+            moveTurnToNextPlayer();
+        }
+    }
+
+    private void moveTurnToNextPlayer()
+    {
+        do
+        {
+            final int nextPlayerIndex = (players.indexOf(currentPlayer) + 1) % players.size();
+            currentPlayer = players.get(nextPlayerIndex);
+        }
+        while (lostPlayers.contains(currentPlayer));
     }
 
     public void putPlayersAtFirstCell()
@@ -224,65 +216,118 @@ public class MonopolyEngine implements Engine
         players.forEach(player -> player.setCurrentCellDoNotPerform(board.getFirstCell()));
     }
 
-    public boolean isCurrentPlayerInParking()
-    {
-        return currentPlayer.isParking();
-    }
-
-    public boolean isPlayerInJail(Player player)
-    {
-        return player.isInJail();
-    }
-
-    public void exitCurrentPlayerFromParking()
-    {
-        currentPlayer.exitFromParking();
-    }
-
-    public void takePlayerOutOfJail(Player player)
-    {
-        player.getOutOfJail();
-    }
-
     public void payToEveryoneElse(Player payingPlayer, int amount)
     {
-        players.forEach(p -> payingPlayer.payToOtherPlayer(p, amount));
-
-        if (payingPlayer.getMoney() <= 0)
+        getPlayingPlayers().stream().filter(p -> !p.equals(payingPlayer))
+                .forEach(p -> payingPlayer.payToOtherPlayer(p, amount));
+        if (payingPlayer.getMoneyAmount() <= 0)
         {
             playerLost(payingPlayer);
         }
     }
 
-    public void transferOtherPlayersMoneyTo(Player player, int amount)
+    private List<Player> getPlayingPlayers()
     {
-        for (Player p : players)
-        {
-            p.payToOtherPlayer(player, amount);
-        }
-        Stream<Player> loosingPlayers = players.stream().filter(p -> p.getMoney() <= 0);
-        loosingPlayers.forEach(this::playerLost);
+        List<Player> playingPlayers = new ArrayList<>(players);
+        playingPlayers.removeAll(lostPlayers);
+        return playingPlayers;
+    }
+
+    public void transferOtherPlayersMoneyTo(Player receivePlayer, int amount)
+    {
+        getPlayingPlayers().stream().filter(p -> !p.equals(receivePlayer))
+                .forEach(p -> p.payToOtherPlayer(receivePlayer, amount));
+        getPlayingPlayers().stream().filter(p -> p.getMoneyAmount() <= 0).collect(Collectors.toList()).stream()
+                .forEach(this::playerLost);
     }
 
     private void playerLost(Player player)
     {
-        players.remove(player);
+        lostPlayers.add(player);
+        events.addPlayerLostEvent(player);
         board.playerLost(player);
     }
 
-    public Board getBoard()
+    public void addMovePlayerEvent(Player player, int from, int to)
     {
-        return board;
+        events.addMovePlayerEvent(player, from, to);
     }
 
-    private void moveHumanPlayer()
+    public void addGoToJailEvent(Player player)
     {
-        throwCubes();
-        movePlayer();
+        events.addGoToJailEvent(player);
     }
 
-    private boolean isGameOver()
+    public void addSurpriseCardEvent(Player player, String cardText)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        events.addSurpriseCardEvent(player, cardText);
+    }
+
+    public void addAlertCardEvent(Player player, String cardText)
+    {
+        events.addAlertCardEvent(player, cardText);
+    }
+
+    public void addOutOfJailEvent(Player player)
+    {
+        events.addOutOfJailEvent(player);
+    }
+
+    public void addPlayerUsedOutOfJailCard(Player player)
+    {
+        events.addPlayerUsedOutOfJailCard(player);
+    }
+
+    public void addLandedOnStartSquareEvent(Player player)
+    {
+        events.addLandedOnStartSquareEvent(player);
+    }
+
+    public void askToBuyProperty(Player player,String propertyGroupName, String propertyName, int price,
+                                 OnBuyDecisionTaken onBuyDecisionTaken)
+    {
+        this.onBuyDecisionTaken = onBuyDecisionTaken;
+        events.addPromptPlayerToBuyAssetEvent(player, propertyGroupName, propertyName, price);
+    }
+
+    public void askToBuyHouse(Player player, String cityName, int housePrice, OnBuyDecisionTaken onBuyDecisionTaken)
+    {
+        this.onBuyDecisionTaken = onBuyDecisionTaken;
+        events.addPromptPlayerToBuyHouseEvent(player, cityName, housePrice);
+    }
+
+    public void addHouseBoughtEvent(Player player, String cityName)
+    {
+        events.addHouseBoughtEvent(player, cityName);
+    }
+
+    public void addAssetBoughtEvent(Player player, String assetName)
+    {
+        events.addAssertBoughtEvent(player, assetName);
+    }
+
+    public void addPayToBankEvent(Player player, int amount)
+    {
+        events.addPayToBankEvent(player, amount);
+    }
+
+    public void addPayToOtherPlayerEvent(Player payingPlayer, Player payedPlayer, int amount)
+    {
+        events.addPayToOtherPlayerEvent(payingPlayer, payedPlayer, amount);
+    }
+
+    public void addPaymentFromBankEvent(Player player, int amount)
+    {
+        events.addPaymentFromBankEvent(player, amount);
+    }
+
+    public List<Player> getAllPlayers()
+    {
+        return players;
+    }
+
+    public interface OnBuyDecisionTaken
+    {
+        void buy(boolean buyDecision);
     }
 }

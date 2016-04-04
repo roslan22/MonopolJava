@@ -2,14 +2,12 @@ package com.monopoly.logic.model.cell;
 
 public class Company extends Property
 {
-    private String    name;
     private final int rentPrice;
     private final int monopolyRentPrice;
 
     public Company(String name, int propertyPrice, int rentPrice, int monopolyRentPrice)
     {
-        super(propertyPrice);
-        this.name = name;
+        super(propertyPrice, name);
         this.rentPrice = rentPrice;
         this.monopolyRentPrice = monopolyRentPrice;
     }
@@ -23,4 +21,5 @@ public class Company extends Property
         }
         return rentPrice;
     }
+
 }

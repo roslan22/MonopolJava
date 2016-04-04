@@ -77,7 +77,7 @@ public class XmlMonopolyInitReaderTest
 
     private void testProperties(City city)
     {
-        assertEquals(city.getCityName(), FIRST_CITY_NAME);
+        assertEquals(city.getName(), FIRST_CITY_NAME);
         assertEquals(city.getPrice(), FIRST_CITY_PRICE);
         assertArrayEquals(city.getRentPrices(), FIRST_CITY_RENT_PRICES);
         assertEquals(city.getPropertyGroup().getName(), FIRST_COUNTRY_NAME);

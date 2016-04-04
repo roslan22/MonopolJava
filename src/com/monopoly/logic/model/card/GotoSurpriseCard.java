@@ -13,7 +13,7 @@ public class GotoSurpriseCard extends SurpriseCard
     @Override
     public void perform(Player player, Board board)
     {
+        super.perform(player, board);
         board.moveToNextSurpriseCard(player);
-        //TODO: board.boardChangedNotifier
     }
 }

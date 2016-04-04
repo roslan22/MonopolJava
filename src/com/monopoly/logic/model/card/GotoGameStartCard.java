@@ -13,6 +13,7 @@ public class GotoGameStartCard extends SurpriseCard
     @Override
     public void perform(Player player, Board board) 
     {
-         board.moveToRoadStart(player);
+        super.perform(player, board);
+        board.moveToRoadStart(player);
     }
 }

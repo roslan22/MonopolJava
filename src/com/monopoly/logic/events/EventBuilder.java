@@ -5,16 +5,16 @@ public class EventBuilder
     private int       eventID;
     private EventType eventType;
     private int       timeoutCount;
-    private String    playerName;
-    private String    eventMessage;
+    private String    playerName = "";
+    private String    eventMessage = "";
     private int       boardSquareID;
     private int       firstDiceResult;
     private int       secondDiceResult;
-    private boolean   playerMove;
+    private boolean   playerMove = true;
     private int       nextBoardSquareID;
     private boolean   paymentToOrFromTreasury;
     private boolean   paymentFromUser;
-    private String    paymentToPlayerName;
+    private String    paymentToPlayerName = "";
     private int       paymentAmount;
 
     public EventBuilder(int eventID, EventType eventType)

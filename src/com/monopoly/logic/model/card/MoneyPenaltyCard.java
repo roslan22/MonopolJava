@@ -18,6 +18,7 @@ public class MoneyPenaltyCard extends AlertCard
     @Override
     public void perform(Player player, Board board)
     {
+        super.perform(player, board);
         if (isToOtherPlayers)
         {
             board.payToEveryoneElse(player, moneyPenalty);

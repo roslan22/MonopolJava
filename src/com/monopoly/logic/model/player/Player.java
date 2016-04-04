@@ -1,35 +1,40 @@
 package com.monopoly.logic.model.player;
 
+import com.monopoly.logic.engine.MonopolyEngine;
 import com.monopoly.logic.model.card.OutOfJailCard;
 import com.monopoly.logic.model.cell.Cell;
+import com.monopoly.logic.model.cell.City;
 import com.monopoly.logic.model.cell.Jail;
 import com.monopoly.logic.model.cell.Parking;
+import com.monopoly.logic.model.cell.Property;
 
 public abstract class Player
 {
-    public static enum PlayerType {HUMAN,COMPUTER};
-    
     private static final int START_MONEY_AMOUNT = 1500;
-    private String name;
-    private int playerID;
-    private PlayerType playerType;
+    protected MonopolyEngine engine;
+    private   String         name;
+    private   int            playerID;
 
     private int money = START_MONEY_AMOUNT;
-    private Cell currentCell;
+    private Cell          currentCell;
     private OutOfJailCard outOfJailCard;
 
 
-    public OutOfJailCard getOutOfJailCard() {
+    public OutOfJailCard getOutOfJailCard()
+    {
         return outOfJailCard;
     }
 
-    public void setOutOfJailCard(OutOfJailCard outOfJailCard) {
+    public void setOutOfJailCard(OutOfJailCard outOfJailCard)
+    {
         this.outOfJailCard = outOfJailCard;
     }
 
-    public Player(String name)
+    public Player(String name, int playerID, MonopolyEngine engine)
     {
         this.name = name;
+        this.playerID = playerID;
+        this.engine = engine;
     }
 
     public String getName()
@@ -41,15 +46,10 @@ public abstract class Player
     {
         this.name = name;
     }
-    
-    public int getMoney() 
+
+    public int getMoneyAmount()
     {
         return money;
-    }
-
-    public void setMoney(int money) 
-    {
-        this.money = money;
     }
 
     public Cell getCurrentCell()
@@ -62,12 +62,14 @@ public abstract class Player
         this.currentCell = currentCell;
         currentCell.perform(this);
     }
-    
-    public int getPlayerID() {
+
+    public int getPlayerID()
+    {
         return playerID;
     }
 
-    public void setPlayerID(int playerID) {
+    public void setPlayerID(int playerID)
+    {
         this.playerID = playerID;
     }
 
@@ -76,27 +78,37 @@ public abstract class Player
         this.currentCell = currentCell;
     }
 
-    public void receiveMoney(int moneyEarned)
+    public void receiveMoney(int amount)
     {
-        money += moneyEarned;
+        engine.addPaymentFromBankEvent(this, amount);
+        money += amount;
     }
 
-    public abstract boolean isWillingToBuyProperty();
+    public abstract void askToBuyProperty(Property property);
 
     public void payToOtherPlayer(Player player, int amount)
     {
         if (player.equals(this) || money <= 0)
+        {
             return;
+        }
 
         int actualPayedAmount = money > amount ? amount : money;
-        player.receiveMoney(actualPayedAmount);
+        engine.addPayToOtherPlayerEvent(this, player, amount);
+        player.receiveMoneyFromOtherPlayer(actualPayedAmount);
         money -= actualPayedAmount;
     }
 
-    public abstract boolean isWillingToBuyHouse();
+    private void receiveMoneyFromOtherPlayer(int amount)
+    {
+        money += amount;
+    }
+
+    public abstract void askToBuyHouse(City city);
 
     public void payToBank(int amount)
     {
+        engine.addPayToBankEvent(this, amount);
         money -= money > amount ? amount : money;
     }
 
@@ -140,9 +152,7 @@ public abstract class Player
     {
         this.outOfJailCard.returnToPack();
     }
-    
-    abstract public PlayerType getPlayerType();
-    
+
     @Override
     public int hashCode()
     {

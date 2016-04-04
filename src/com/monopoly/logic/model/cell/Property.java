@@ -4,13 +4,15 @@ import com.monopoly.logic.model.player.Player;
 
 public abstract class Property extends Cell
 {
-    private Player owner;
-    private int    price;
-    private PropertyGroup propertyGroup;
+    protected String        name;
+    private   Player        owner;
+    private   int           price;
+    private   PropertyGroup propertyGroup;
 
-    public Property(int price)
+    public Property(int price, String name)
     {
         this.price = price;
+        this.name = name;
     }
 
     public void setPropertyGroup(PropertyGroup propertyGroup)
@@ -48,9 +50,9 @@ public abstract class Property extends Cell
     @Override
     public void perform(Player player)
     {
-        if (isPropertyAvailable())
+        if (isAbleToBuyHouse(player))
         {
-            buyProperty(player);
+            player.askToBuyProperty(this);
         }
         else
         {
@@ -58,12 +60,22 @@ public abstract class Property extends Cell
         }
     }
 
-    private void buyProperty(Player player)
+    private boolean isAbleToBuyHouse(Player player)
     {
-        if (player.getMoney() >= getPrice() && player.isWillingToBuyProperty())
+        return isPropertyAvailable() && player.getMoneyAmount() >= getPrice();
+    }
+
+    public void buyProperty(Player player)
+    {
+        if (isAbleToBuyHouse(player))
         {
             player.payToBank(price);
             setOwner(player);
         }
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }

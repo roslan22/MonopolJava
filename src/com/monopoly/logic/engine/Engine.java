@@ -5,7 +5,7 @@ import com.monopoly.logic.events.Event;
 public interface Engine
 {
     void createGame(String gameName, int computerPlayers, int humanPlayers);
-    int joinGame (String gameName, String playerName);
+    int joinGame (String gameName, String playerName) throws PlayerNameAlreadyExists;
 
     Event[] getEvents(int playerID, int eventID);
     void buy(int playerID, int eventID, boolean buy);

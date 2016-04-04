@@ -1,29 +1,42 @@
 package com.monopoly.logic.model.player;
 
+import com.monopoly.logic.engine.MonopolyEngine;
+import com.monopoly.logic.model.cell.City;
+import com.monopoly.logic.model.cell.Property;
+
 public class HumanPlayer extends Player
 {
-    public HumanPlayer(String name)
+
+    public HumanPlayer(String name, int playerId, MonopolyEngine engine)
     {
-        super(name);
+        super(name, playerId, engine);
     }
 
     @Override
-    public boolean isWillingToBuyProperty()
+    public void askToBuyProperty(Property property)
     {
-        return false;
+        engine.askToBuyProperty(this,
+                                property.getPropertyGroup().getName(),
+                                property.getName(),
+                                property.getPrice(),
+                                buyDecision -> {
+                                    if (buyDecision)
+                                    {
+                                        engine.addAssetBoughtEvent(this, property.getName());
+                                        property.buyProperty(HumanPlayer.this);
+                                    }
+                                });
     }
 
     @Override
-    public boolean isWillingToBuyHouse()
+    public void askToBuyHouse(City city)
     {
-        return false;
+        engine.askToBuyHouse(this, city.getName(), city.getHousePrice(), buyDecision -> {
+            if (buyDecision)
+            {
+                engine.addHouseBoughtEvent(this, city.getName());
+                city.buyHouse(HumanPlayer.this);
+            }
+        });
     }
-
-    @Override
-    public PlayerType getPlayerType() {
-        return Player.PlayerType.HUMAN;
-    }
-        
-
-
 }

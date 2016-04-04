@@ -1,5 +1,9 @@
 package com.monopoly.logic.model.player;
 
+import com.monopoly.logic.engine.MonopolyEngine;
+import com.monopoly.logic.model.cell.City;
+import com.monopoly.logic.model.cell.Property;
+
 public class ComputerPlayer extends Player
 {
     private static int computerNameCount = 0;
@@ -10,25 +14,22 @@ public class ComputerPlayer extends Player
         return "Computer" + String.valueOf(computerNameCount);
     }
     
-    public ComputerPlayer()
+    public ComputerPlayer(int playerId, MonopolyEngine engine)
     {
-        super(getNextName());
+        super(getNextName(), playerId, engine);
     }
 
     @Override
-    public boolean isWillingToBuyProperty()
+    public void askToBuyProperty(Property property)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        engine.addAssetBoughtEvent(this, property.getName());
+        property.buyProperty(this);
     }
 
     @Override
-    public boolean isWillingToBuyHouse()
+    public void askToBuyHouse(City city)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PlayerType getPlayerType() {
-        return Player.PlayerType.COMPUTER;
+        engine.addHouseBoughtEvent(this, city.getName());
+        city.buyHouse(this);
     }
 }

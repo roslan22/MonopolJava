@@ -1,7 +1,6 @@
 package com.monopoly.logic.model.board;
 
 import com.monopoly.logic.engine.MonopolyEngine;
-import com.monopoly.logic.events.Event;
 import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
@@ -39,6 +38,7 @@ public class Board
     private void initBoard()
     {
         setCardCellsBoard();
+        keyCells.getJailCell().setBoard(this);
         keyCells.getJailGate().setJailCell(keyCells.getJailCell());
     }
 
@@ -48,25 +48,27 @@ public class Board
         keyCells.getSurpriseCells().forEach(surpriseCell -> surpriseCell.setBoard(this));
     }
 
-    public List<Cell> getCells()
-    {
-        return cells;
-    }
-
-    public void setCells(List<Cell> cells)
-    {
-        this.cells = cells;
-    }
-
     public void movePlayer(Player player, int stepsToMove)
     {
-        int newPlayerPlace = getPlayerCurrentPlace(player) + stepsToMove;
-        if (newPlayerPlace >= cells.size())
+        int currentPlayerPlace = getPlayerCurrentPlace(player);
+        int newPlayerPlace = currentPlayerPlace + stepsToMove;
+        if (newPlayerPlace > cells.size())
         {
             engine.playerFinishedARound(player);
         }
-        player.setCurrentCell(cells.get(newPlayerPlace % cells.size()));
-        onBoardChange(player);
+        if (newPlayerPlace == cells.size())
+        {
+            engine.addLandedOnStartSquareEvent(player);
+        }
+
+        int destinationCellIndex = newPlayerPlace % cells.size();
+        addMovePlayerEvent(player, currentPlayerPlace, destinationCellIndex);
+        player.setCurrentCell(cells.get(destinationCellIndex));
+    }
+
+    public void addMovePlayerEvent(Player player, int currentPlayerPlace, int destinationCellIndex)
+    {
+        engine.addMovePlayerEvent(player, currentPlayerPlace, destinationCellIndex);
     }
 
     public Cell getFirstCell()
@@ -137,8 +139,10 @@ public class Board
 
     private void movePlayerSkipRoadStart(Player player, int steps)
     {
-        int newPlayerPlace = getPlayerCurrentPlace(player) + steps;
-        player.setCurrentCell(cells.get(newPlayerPlace % cells.size()));
+        int playerCurrentPlace = getPlayerCurrentPlace(player);
+        int newPlayerPlace = (playerCurrentPlace + steps) % cells.size();
+        addMovePlayerEvent(player, playerCurrentPlace, newPlayerPlace);
+        player.setCurrentCell(cells.get(newPlayerPlace));
     }
 
     public void moveToNextAlertCard(Player player)
@@ -173,7 +177,6 @@ public class Board
         keyCells.getJailCell().getPlayerOutOfJail(player);
         keyCells.getParkingCell().exitFromParking(player);
         clearPropertiesOwner(player);
-//        engine.addEventToEventManager(CreatePlayerLostEvent(player));
     }
 
     private void clearPropertiesOwner(Player player)
@@ -187,28 +190,43 @@ public class Board
         });
     }
 
-    private Event CreatePlayerLostEvent(Player player) {
-//        Event event = new EventBuilder().setEventID(engine.getLastEventID())
-//                .setEventType(EventType.PLAYER_LOST).createGameEvent();
-//        event.setPlayerName(player.getName());
-//        return event;
-        return null;
+    public void addSurpriseCardEvent(Player player, String cardText)
+    {
+        engine.addSurpriseCardEvent(player, cardText);
+    }
+
+    public void addAlertCardEvent(Player player, String cardText)
+    {
+        engine.addAlertCardEvent(player, cardText);
+    }
+
+    public void addOutOfJailEvent(Player player)
+    {
+        engine.addOutOfJailEvent(player);
+    }
+
+    public void addMovePlayerToJailEvent(Player player)
+    {
+        engine.addGoToJailEvent(player);
+        engine.addMovePlayerEvent(player, getPlayerCurrentPlace(player), cells.indexOf(keyCells.getJailCell()));
+    }
+
+    public void addPlayerUsedOutOfJailCard(Player player)
+    {
+        engine.addPlayerUsedOutOfJailCard(player);
+    }
+
+    public int getParkingCellIndex()
+    {
+        return cells.indexOf(keyCells.getParkingCell());
+    }
+
+    public int getJailCellIndex()
+    {
+        return cells.indexOf(keyCells.getJailCell());
     }
 
     public static class PlayerNotOnBoard extends RuntimeException
     {
-    }
-    
-    private void onBoardChange(Player player)
-    {
-//        engine.addEventToEventManager(CreateBoardChangeEvent(player));
-    }
-    
-    private Event CreateBoardChangeEvent(Player player) {
-//        Event event = new EventBuilder().setEventID(engine.getLastEventID()).setEventType(EventType.MOVE)
-//                .createGameEvent();
-//        event.setPlayerName(player.getName());
-//        return event;
-        return null;
     }
 }

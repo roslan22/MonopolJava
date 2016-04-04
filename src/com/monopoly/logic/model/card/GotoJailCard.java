@@ -13,7 +13,7 @@ public class GotoJailCard extends AlertCard
     @Override
     public void perform(Player player, Board board)
     {
+        super.perform(player, board);
         board.moveToJail(player);
-        //TODO: board.boardChangedNotifier
     }
 }
