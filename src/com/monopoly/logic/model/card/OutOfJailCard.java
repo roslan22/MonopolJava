@@ -16,8 +16,9 @@ public class OutOfJailCard extends SurpriseCard
     public void perform(Player player, Board board)
     {
         super.perform(player, board);
+        this.board = board;
         board.addOutOfJailEvent(player);
-        this.board.removeCardFromSurprisePack(this);
+        board.removeCardFromSurprisePack(this);
         player.receiveOutOfJailCard(this);
     }
 
