@@ -6,6 +6,8 @@ import com.monopoly.logic.events.Event;
 import com.monopoly.logic.events.EventList;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.board.Board;
+import com.monopoly.logic.model.cell.Jail;
+import com.monopoly.logic.model.cell.Parking;
 import com.monopoly.logic.model.player.ComputerPlayer;
 import com.monopoly.logic.model.player.HumanPlayer;
 import com.monopoly.logic.model.player.Player;
@@ -161,7 +163,10 @@ public class MonopolyEngine implements Engine
     {
         if (currentPlayer.isParking())
         {
-            addMovePlayerEvent(currentPlayer, board.getParkingCellIndex(), board.getParkingCellIndex());
+            addMovePlayerEvent(currentPlayer,
+                               board.getParkingCellIndex(),
+                               board.getParkingCellIndex(),
+                               Parking.class.getSimpleName());
             currentPlayer.exitFromParking();
             return;
         }
@@ -175,7 +180,10 @@ public class MonopolyEngine implements Engine
             }
             else
             {
-                addMovePlayerEvent(currentPlayer, board.getJailCellIndex(), board.getJailCellIndex());
+                addMovePlayerEvent(currentPlayer,
+                                   board.getJailCellIndex(),
+                                   board.getJailCellIndex(),
+                                   Jail.class.getSimpleName());
                 return;
             }
         }
@@ -185,8 +193,8 @@ public class MonopolyEngine implements Engine
 
     public void playerFinishedARound(Player player)
     {
-        player.receiveMoney(END_OF_ROUND_MONEY_EARN);
         events.addPlayerPassedStartEvent(player, END_OF_ROUND_MONEY_EARN);
+        player.receiveMoneyFromBank(END_OF_ROUND_MONEY_EARN);
     }
 
     private void nextPlayer()
@@ -248,9 +256,9 @@ public class MonopolyEngine implements Engine
         board.playerLost(player);
     }
 
-    public void addMovePlayerEvent(Player player, int from, int to)
+    public void addMovePlayerEvent(Player player, int from, int to, String destinationName)
     {
-        events.addMovePlayerEvent(player, from, to);
+        events.addMovePlayerEvent(player, from, to, destinationName);
     }
 
     public void addGoToJailEvent(Player player)
@@ -283,7 +291,7 @@ public class MonopolyEngine implements Engine
         events.addLandedOnStartSquareEvent(player);
     }
 
-    public void askToBuyProperty(Player player,String propertyGroupName, String propertyName, int price,
+    public void askToBuyProperty(Player player, String propertyGroupName, String propertyName, int price,
                                  OnBuyDecisionTaken onBuyDecisionTaken)
     {
         this.onBuyDecisionTaken = onBuyDecisionTaken;

@@ -4,6 +4,7 @@ package com.monopoly.logic.engine;
 import com.monopoly.controller.XmlMonopolyInitReader;
 import com.monopoly.controller.XmlMonopolyInitReaderTest;
 import com.monopoly.logic.events.EventType;
+import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.player.ComputerPlayer;
 import com.monopoly.logic.model.player.Player;
 
@@ -12,9 +13,11 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,14 +26,15 @@ import static org.junit.Assert.assertTrue;
 
 public class MonopolyEngineTest
 {
-    public static final  int    HUMAN_PLAYERS_COUNT    = 3;
-    public static final  int    COMPUTER_PLAYERS_COUNT = 3;
-    public static final  int    MAX_CUBE_RESULT        = 6;
-    public static final  int    MIN_CUBE_RESULT        = 1;
-    public static final  String GAME_NAME              = "GameName";
-    public static final  String PLAYER_NAME_1          = "PlayerName1";
-    private static final String PLAYER_NAME_2          = "PlayerName2";
-    private static final String PLAYER_NAME_3          = "PlayerName3";
+    public static final  int    HUMAN_PLAYERS_COUNT               = 0;
+    public static final  int    COMPUTER_PLAYERS_COUNT            = 6;
+    public static final  int    MAX_CUBE_RESULT                   = 6;
+    public static final  int    MIN_CUBE_RESULT                   = 1;
+    public static final  String GAME_NAME                         = "GameName";
+    public static final  String PLAYER_NAME_1                     = "PlayerName1";
+    private static final String PLAYER_NAME_2                     = "PlayerName2";
+    private static final String PLAYER_NAME_3                     = "PlayerName3";
+    public static final  int    CUBE_THROWS_FOR_DISTRIBUTION_TEST = 100000;
 
     private MonopolyEngine engine;
 
@@ -107,13 +111,25 @@ public class MonopolyEngineTest
     {
         addAllHumanPlayers();
         assertTrue("Should throw cubes after all the players joined the game",
-                    Arrays.stream(engine.getEvents(1, 0)).anyMatch(p -> p.getEventType() == EventType.DICE_ROLL));
+                   Arrays.stream(engine.getEvents(1, 0)).anyMatch(p -> p.getEventType() == EventType.DICE_ROLL));
     }
 
     @Test
     public void testThrowCubes() throws Exception
     {
+        addAllHumanPlayers();
+        Map<Integer, Integer> cubeNumberToResultCount = new HashMap<>();
+        IntStream.range(0, CUBE_THROWS_FOR_DISTRIBUTION_TEST).forEach(i -> incrementCubeResult(cubeNumberToResultCount));
+        testCubeResultDistribute(cubeNumberToResultCount);
+    }
 
+    private void incrementCubeResult(Map<Integer, Integer> cubeNumberToResultCount)
+    {
+        CubesResult result = engine.throwCubes();
+        testCubeResultAddToCounter(result.getFirstCubeResult());
+        cubeNumberToResultCount.put(result.getFirstCubeResult(), cubeNumberToResultCount.getOrDefault(result, 0));
+        testCubeResultAddToCounter(result.getSecondCuberResult());
+        cubeNumberToResultCount.put(result.getSecondCuberResult(), cubeNumberToResultCount.getOrDefault(result, 0));
     }
 
     private void testCubeResultDistribute(Map<Integer, Integer> cubeNumberToResultCount)
@@ -124,21 +140,9 @@ public class MonopolyEngineTest
         assertNotEquals(maximumDelta, maxValue - minValue);
     }
 
-    private Map<Integer, Integer> addAvailableCubeResults(Map<Integer, Integer> cubeNumberToResultCount)
+    private void testCubeResultAddToCounter(int cubeResult)
     {
-        cubeNumberToResultCount.put(1, 0);
-        cubeNumberToResultCount.put(2, 0);
-        cubeNumberToResultCount.put(3, 0);
-        cubeNumberToResultCount.put(4, 0);
-        cubeNumberToResultCount.put(5, 0);
-        cubeNumberToResultCount.put(6, 0);
-        return cubeNumberToResultCount;
-    }
-
-    private void testCubeResultAddToCounter(Map<Integer, Integer> cubeNumberToResultCount, int cubeResult)
-    {
-        assertFalse("Cubes result is too high", cubeResult > MAX_CUBE_RESULT);
-        assertFalse("Cubes result is too small", cubeResult < MIN_CUBE_RESULT);
-        cubeNumberToResultCount.put(cubeResult, cubeNumberToResultCount.get(cubeResult) + 1);
+        assertFalse("Cubes result " + cubeResult + " is too high", cubeResult > MAX_CUBE_RESULT);
+        assertFalse("Cubes result " + cubeResult + " is too small", cubeResult < MIN_CUBE_RESULT);
     }
 }

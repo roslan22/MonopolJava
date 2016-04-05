@@ -9,6 +9,6 @@ public class RoadStart extends Cell
     @Override
     public void perform(Player player)
     {
-        player.receiveMoney(ROAD_START_MONEY);
+        player.receiveMoneyFromBank(ROAD_START_MONEY);
     }
 }

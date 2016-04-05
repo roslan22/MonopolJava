@@ -33,7 +33,8 @@ public class CardPack<T extends Card>
 
     public void returnToPack(T card)
     {
-        cards.add((currentCardIndex - 1) % cards.size() ,card);
+        int cycleCardIndex = currentCardIndex == 0 ? cards.size() - 1 : currentCardIndex - 1;
+        cards.add(cycleCardIndex ,card);
     }
 
     public int getSize()

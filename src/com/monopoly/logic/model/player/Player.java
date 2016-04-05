@@ -78,10 +78,10 @@ public abstract class Player
         this.currentCell = currentCell;
     }
 
-    public void receiveMoney(int amount)
+    public void receiveMoneyFromBank(int amount)
     {
-        engine.addPaymentFromBankEvent(this, amount);
         money += amount;
+        engine.addPaymentFromBankEvent(this, amount);
     }
 
     public abstract void askToBuyProperty(Property property);
@@ -94,9 +94,9 @@ public abstract class Player
         }
 
         int actualPayedAmount = money > amount ? amount : money;
-        engine.addPayToOtherPlayerEvent(this, player, amount);
         player.receiveMoneyFromOtherPlayer(actualPayedAmount);
         money -= actualPayedAmount;
+        engine.addPayToOtherPlayerEvent(this, player, amount);
     }
 
     private void receiveMoneyFromOtherPlayer(int amount)
@@ -108,8 +108,8 @@ public abstract class Player
 
     public void payToBank(int amount)
     {
-        engine.addPayToBankEvent(this, amount);
         money -= money > amount ? amount : money;
+        engine.addPayToBankEvent(this, amount);
     }
 
     public boolean isParking()

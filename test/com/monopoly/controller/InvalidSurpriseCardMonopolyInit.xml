@@ -87,7 +87,7 @@
     <warrant>
         <goto num="1" text="Go To Jail!" to="JAIL"/>
         <goto num="1" text="Go to next Alert cell. If you pass through Road Start you wont collect 200₪" to="NEXT_WARRANT"/>
-        <monetary num="1" text="Make general repairs on all your property. Pay ₪50" who="TREASURY" sum="50"/>
+        <monetary num="1" text="Make general repairs on all your properties. Pay ₪50" who="TREASURY" sum="50"/>
         <monetary num="1" text="Pay poor tax of ₪15" who="TREASURY" sum="15"/>
         <monetary num="1" text="You have been elected Chairman of the Board – Pay each player ₪50" who="PLAYERS" sum="50"/>
     </warrant>

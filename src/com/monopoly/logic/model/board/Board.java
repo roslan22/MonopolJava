@@ -23,9 +23,9 @@ public class Board
     private CardPack<AlertCard>    alertCardPack;
 
     private KeyCells keyCells;
-            
-   public Board(MonopolyEngine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, CardPack<AlertCard> alertCardPack,
-                KeyCells keyCells)
+
+    public Board(MonopolyEngine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack,
+                 CardPack<AlertCard> alertCardPack, KeyCells keyCells)
     {
         this.cells = cells;
         this.engine = engine;
@@ -68,7 +68,8 @@ public class Board
 
     public void addMovePlayerEvent(Player player, int currentPlayerPlace, int destinationCellIndex)
     {
-        engine.addMovePlayerEvent(player, currentPlayerPlace, destinationCellIndex);
+        String destinationName = cells.get(destinationCellIndex).getClass().getSimpleName();
+        engine.addMovePlayerEvent(player, currentPlayerPlace, destinationCellIndex, destinationName);
     }
 
     public Cell getFirstCell()
@@ -208,7 +209,7 @@ public class Board
     public void addMovePlayerToJailEvent(Player player)
     {
         engine.addGoToJailEvent(player);
-        engine.addMovePlayerEvent(player, getPlayerCurrentPlace(player), cells.indexOf(keyCells.getJailCell()));
+        addMovePlayerEvent(player, getPlayerCurrentPlace(player), cells.indexOf(keyCells.getJailCell()));
     }
 
     public void addPlayerUsedOutOfJailCard(Player player)

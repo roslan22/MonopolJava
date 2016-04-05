@@ -25,7 +25,7 @@ public class MoneyEarnCard extends SurpriseCard
         }
         else
         {
-            player.receiveMoney(amount);
+            player.receiveMoneyFromBank(amount);
         }
     }
     

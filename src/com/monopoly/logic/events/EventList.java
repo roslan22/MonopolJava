@@ -48,10 +48,10 @@ public class EventList
         events.add(e);
     }
 
-    public void addMovePlayerEvent(Player player, int from, int to)
+    public void addMovePlayerEvent(Player player, int from, int to, String destenationName)
     {
         String eventMessage = player.getName();
-        eventMessage += from == to ? " stayed at " + from : " moved from " + from + " to " + to;
+        eventMessage += from == to ? " stayed at " + from : " moved from " + from + " to " + to + ", " + destenationName;
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.MOVE).setEventMessage(eventMessage)
                 .setPlayerName(player.getName()).setPlayerMove(from != to).setBoardSquareID(from).setNextBoardSquareID(to)
                 .createGameEvent();
@@ -113,7 +113,7 @@ public class EventList
     public void addAlertCardEvent(Player player, String cardText)
     {
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.WARRANT_CARD).setPlayerName(player.getName())
-                .setEventMessage(player.getName() + " got surprise card: " + cardText).createGameEvent();
+                .setEventMessage(player.getName() + " got warning card: " + cardText).createGameEvent();
         events.add(e);
     }
 
@@ -144,7 +144,8 @@ public class EventList
     public void addPromptPlayerToBuyAssetEvent(Player player, String propertyGroupName, String propertyName, int price)
     {
         String eventMessage = player
-                .getName() + " would you like to buy " + propertyName + " in " + propertyGroupName + " for ₪" + price + "?";
+                .getName() + " would you like to buy " + propertyName + " in " + propertyGroupName + " for ₪" + price + "? You now own ₪" + player
+                .getMoneyAmount();
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.PROMPT_PLAYER_TO_BUY_ASSET)
                 .setEventMessage(eventMessage).setPlayerName(player.getName()).createGameEvent();
         events.add(e);
@@ -152,7 +153,8 @@ public class EventList
 
     public void addPromptPlayerToBuyHouseEvent(Player player, String cityName, int housePrice)
     {
-        String eventMessage = player.getName() + " would you like to buy house in " + cityName + " for ₪" + housePrice + "?";
+        String eventMessage = player.getName() + " would you like to buy house in " + cityName + " for ₪" + housePrice +
+                "? You now own ₪" + player.getMoneyAmount();
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.PROMPT_PLAYER_TO_BUY_HOUSE)
                 .setEventMessage(eventMessage).createGameEvent();
         events.add(e);
@@ -169,30 +171,35 @@ public class EventList
     public void addAssertBoughtEvent(Player player, String assetName)
     {
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.ASSET_BOUGHT_MESSAGE)
-                .setPlayerName(player.getName()).setEventMessage(player.getName() + " bought " + assetName).createGameEvent();
+                .setPlayerName(player.getName()).setEventMessage(player.getName() + " bought " + assetName)
+                .createGameEvent();
         events.add(e);
     }
 
     public void addPayToBankEvent(Player player, int amount)
     {
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.PAYMENT).setPlayerName(player.getName())
-                .setEventMessage(player.getName() + " payed ₪" + amount + " to bank").setPaymentToOrFromTreasury(true)
-                .setPaymentAmount(amount).setPaymentFromUser(true).createGameEvent();
+                .setEventMessage(player.getName() + " payed ₪" + amount + " to bank. Now owns ₪" + player.getMoneyAmount())
+                .setPaymentToOrFromTreasury(true).setPaymentAmount(amount).setPaymentFromUser(true).createGameEvent();
         events.add(e);
     }
 
     public void addPaymentFromBankEvent(Player player, int amount)
     {
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.PAYMENT).setPlayerName(player.getName())
-                .setEventMessage("Bank payed ₪" + amount + " to " + player.getName()).setPaymentToOrFromTreasury(true)
-                .setPaymentAmount(amount).setPaymentFromUser(false).createGameEvent();
+                .setEventMessage("Bank payed ₪" + amount + " to " + player.getName() + ". Now owns ₪" + player
+                        .getMoneyAmount()).setPaymentToOrFromTreasury(true).setPaymentAmount(amount)
+                .setPaymentFromUser(false).createGameEvent();
         events.add(e);
     }
 
     public void addPayToOtherPlayerEvent(Player payingPlayer, Player payedPlayer, int amount)
     {
+        String eventMessage = payingPlayer.getName() + " payed ₪" + amount + " to " + payedPlayer.getName() +
+                ". " + payingPlayer.getName() + ": ₪" + payingPlayer.getMoneyAmount() +
+                ". " + payedPlayer.getName() + ": ₪" + payedPlayer.getMoneyAmount();
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.PAYMENT).setPlayerName(payingPlayer.getName())
-                .setEventMessage(payingPlayer.getName() + " payed ₪" + amount + " to " + payedPlayer.getName())
+                .setEventMessage(eventMessage)
                 .setPaymentToOrFromTreasury(false).setPaymentAmount(amount).setPaymentFromUser(true)
                 .setPaymentToPlayerName(payedPlayer.getName()).createGameEvent();
         events.add(e);
