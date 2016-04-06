@@ -3,10 +3,12 @@ package com.monopoly.logic.engine;
 
 import com.monopoly.controller.XmlMonopolyInitReader;
 import com.monopoly.controller.XmlMonopolyInitReaderTest;
+import static com.monopoly.controller.XmlMonopolyInitReaderTest.systemFilePath;
 import com.monopoly.logic.events.EventType;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.player.ComputerPlayer;
 import com.monopoly.logic.model.player.Player;
+import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -95,6 +97,7 @@ public class MonopolyEngineTest
     private static final String PLAYER_NAME_2                     = "PlayerName2";
     private static final String PLAYER_NAME_3                     = "PlayerName3";
     public static final  int    CUBE_THROWS_FOR_DISTRIBUTION_TEST = 100000;
+    public String systemFilePath;
 
     private MonopolyEngine engine;
 
@@ -103,14 +106,15 @@ public class MonopolyEngineTest
     public void setUp() throws Exception
     {
         engine = new MonopolyEngine();
-        engine.initializeBoard(new XmlMonopolyInitReader(XmlMonopolyInitReaderTest.VALID_XML_RELAVITE_PATH));
+        systemFilePath = new File("").getAbsolutePath(); 
+        engine.initializeBoard(new XmlMonopolyInitReader(systemFilePath + XmlMonopolyInitReaderTest.VALID_XML_RELAVITE_PATH));
         engine.createGame(GAME_NAME, COMPUTER_PLAYERS_COUNT, HUMAN_PLAYERS_COUNT);
     }
 
     @Test
     public void testInitializeBoard_shouldNotThrowException() throws Exception
     {
-        engine.initializeBoard(new XmlMonopolyInitReader(XmlMonopolyInitReaderTest.VALID_XML_RELAVITE_PATH));
+        engine.initializeBoard(new XmlMonopolyInitReader(systemFilePath + XmlMonopolyInitReaderTest.VALID_XML_RELAVITE_PATH));
     }
 
     @Test
