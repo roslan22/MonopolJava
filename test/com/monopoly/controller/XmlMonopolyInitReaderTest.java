@@ -7,6 +7,7 @@ import com.monopoly.logic.model.card.SurpriseCard;
 import com.monopoly.logic.model.cell.Cell;
 import com.monopoly.logic.model.cell.City;
 import com.monopoly.logic.model.cell.RoadStart;
+import java.io.File;
 
 import org.junit.Test;
 
@@ -16,33 +17,85 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import org.junit.Before;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class XmlMonopolyInitReaderTest
 {
-    public static final String VALID_XML_FILE_PATH    = "C:\\Develop\\NetBeans\\MonopolyGameEx1\\test\\com\\monopoly\\controller\\ValidMonopolyInit.xml";
+    public static String VALID_XML_RELAVITE_PATH = "\\test\\com\\monopoly\\controller\\ValidMonopolyInit.xml";   
     public static final int    ROAD_START_CELL_INDEX  = 0;
     public static final int    FIRST_CITY_CELL_INDEX  = 1;
     public static final String FIRST_CITY_NAME        = "Tashkent";
     public static final String FIRST_COUNTRY_NAME     = "Uzbekistan";
     public static final int[]  FIRST_CITY_RENT_PRICES = new int[]{2, 10, 30, 90};
     public static final int    FIRST_CITY_PRICE       = 60;
-
-    public static final String INVALID_ALERT_CARD_XML_FILE_PATH  = "C:\\Develop\\NetBeans\\MonopolyGameEx1\\test\\com\\monopoly\\controller\\InvalidAlertCardMonopolyInit.xml";
-    private static final String INVALID_SURPRISE_CARD_XML_FILE_PATH = "C:\\Develop\\NetBeans\\MonopolyGameEx1\\test\\com\\monopoly\\controller\\InvalidSurpriseCardMonopolyInit.xml";
-
+    public static String systemFilePath;
+    public static String INVALID_ALERT_CARD_XML_RELATIVE_PATH  = "\\test\\com\\monopoly\\controller\\InvalidAlertCardMonopolyInit.xml";
+    private static final String INVALID_SURPRISE_CARD_XML_RELATIVE_PATH = "\\test\\com\\monopoly\\controller\\InvalidSurpriseCardMonopolyInit.xml";
+    
     private XmlMonopolyInitReader monopolyInitReader;
-
+    
+    @Before
+    public void setUp() throws Exception
+    {
+        systemFilePath = new File("").getAbsolutePath();
+    }
+    
     @Test
     public void testReadXMLFile_shouldNotThrowException() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
     }
 
     @Test
     public void testGetCells_countTheCells() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         List<Cell> cells = monopolyInitReader.getCells();
         assertEquals(cells.size(), 36);
@@ -51,7 +104,7 @@ public class XmlMonopolyInitReaderTest
     @Test
     public void testRoadStartCell_shouldBeAtPosition0() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         Cell roadStartCell = monopolyInitReader.getCells().get(ROAD_START_CELL_INDEX);
         assertThat(roadStartCell, instanceOf(RoadStart.class));
@@ -60,7 +113,7 @@ public class XmlMonopolyInitReaderTest
     @Test
     public void testCity_shouldBeAtPosition1() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         Cell firstCity = monopolyInitReader.getCells().get(FIRST_CITY_CELL_INDEX);
         assertThat(firstCity, instanceOf(City.class));
@@ -69,7 +122,7 @@ public class XmlMonopolyInitReaderTest
     @Test
     public void testCityProperties() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         City firstCity = ((City) monopolyInitReader.getCells().get(FIRST_CITY_CELL_INDEX));
         testProperties(firstCity);
@@ -86,7 +139,7 @@ public class XmlMonopolyInitReaderTest
     @Test
     public void testGetAlertCards_countCardAmount() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         CardPack<AlertCard> alertCards = monopolyInitReader.getAlertCards();
         assertEquals(alertCards.getSize(), 5);
@@ -95,7 +148,7 @@ public class XmlMonopolyInitReaderTest
     @Test
     public void testGetSurpriseCards_countCardAmount() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         CardPack<SurpriseCard> surpriseCards = monopolyInitReader.getSurpriseCards();
         assertEquals(surpriseCards.getSize(), 7);
@@ -104,7 +157,7 @@ public class XmlMonopolyInitReaderTest
     @Test
     public void testGetKeyCells_shouldNotThrowException() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(VALID_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + VALID_XML_RELAVITE_PATH);
         monopolyInitReader.read();
         monopolyInitReader.getKeyCells();
         monopolyInitReader.getKeyCells();
@@ -113,14 +166,14 @@ public class XmlMonopolyInitReaderTest
     @Test(expected = CouldNotReadMonopolyInitReader.class)
     public void testReadInvalidAlertCardFile() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(INVALID_ALERT_CARD_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + INVALID_ALERT_CARD_XML_RELATIVE_PATH);
         monopolyInitReader.read();
     }
 
     @Test(expected = CouldNotReadMonopolyInitReader.class)
     public void testReadInvalidSurpriseCardFile() throws Exception
     {
-        monopolyInitReader = new XmlMonopolyInitReader(INVALID_SURPRISE_CARD_XML_FILE_PATH);
+        monopolyInitReader = new XmlMonopolyInitReader(systemFilePath + INVALID_SURPRISE_CARD_XML_RELATIVE_PATH);
         monopolyInitReader.read();
     }
 }
