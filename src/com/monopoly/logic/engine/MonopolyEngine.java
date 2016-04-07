@@ -85,6 +85,7 @@ public class MonopolyEngine implements Engine
                 .orElseThrow(Board.PlayerNotOnBoard::new);
         playerLost(resignedPlayer);
         events.addPlayerResignEvent(resignedPlayer);
+        playGame();
     }
 
     public Player getCurrentPlayer()
