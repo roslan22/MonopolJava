@@ -154,15 +154,15 @@ public class View
 
     private void promtPlayerToBuyHouse(Event event)
     {
-        PLAYER_CHOICE playersChoice;
+        PlayerChoice playersChoice;
         System.out.println(event.getEventMessage() +  "press 1-Yes 2-No 3-Resign:");
         playersChoice = isUserWillingToBuy();
         
-        if(playersChoice == PLAYER_CHOICE.YES)
+        if(playersChoice == PlayerChoice.YES)
         {
             playerBuyHouseDecision.onAnswer(event.getEventID(), true);
         } 
-        else if (playersChoice == PLAYER_CHOICE.NO)
+        else if (playersChoice == PlayerChoice.NO)
         {
             playerBuyAssetDecision.onAnswer(event.getEventID(), false);    
         }
@@ -174,15 +174,15 @@ public class View
     
     private void promtPlayerToBuyAsset(Event event)
     {
-        PLAYER_CHOICE playersChoice;
+        PlayerChoice playersChoice;
         System.out.println(event.getEventMessage() +  "press 1-Yes 2-No 3-Resign:");
         playersChoice = isUserWillingToBuy();
         
-        if(playersChoice == PLAYER_CHOICE.YES)
+        if(playersChoice == PlayerChoice.YES)
         {
             playerBuyAssetDecision.onAnswer(event.getEventID(), true);    
         }
-        else if (playersChoice == PLAYER_CHOICE.NO)
+        else if (playersChoice == PlayerChoice.NO)
         {
             playerBuyAssetDecision.onAnswer(event.getEventID(), false);    
         }
@@ -192,7 +192,7 @@ public class View
         }
     }
         
-    private PLAYER_CHOICE isUserWillingToBuy() 
+    private PlayerChoice isUserWillingToBuy() 
     {
         int maximumAllowed = 3;
         int decision = getNumberFromUser(maximumAllowed);
@@ -202,24 +202,24 @@ public class View
             decision = getNumberFromUser(maximumAllowed);
         }
         
-        if(PLAYER_CHOICE.YES.GetChoice() == decision)
+        if(PlayerChoice.YES.GetChoice() == decision)
         {
-            return PLAYER_CHOICE.YES;
+            return PlayerChoice.YES;
         }
-        else if(PLAYER_CHOICE.NO.GetChoice() == decision)
+        else if(PlayerChoice.NO.GetChoice() == decision)
         {
-            return PLAYER_CHOICE.NO;
+            return PlayerChoice.NO;
         }
         else
         {
-            return PLAYER_CHOICE.RESIGN;
+            return PlayerChoice.RESIGN;
         }
     }
 
     private static boolean isWrongChoiceInserted(int decision) {
-        return (PLAYER_CHOICE.YES.GetChoice() != decision) &&
-               (PLAYER_CHOICE.NO.GetChoice() != decision) &&
-               (PLAYER_CHOICE.RESIGN.GetChoice() != decision);
+        return (PlayerChoice.YES.GetChoice() != decision) &&
+               (PlayerChoice.NO.GetChoice() != decision) &&
+               (PlayerChoice.RESIGN.GetChoice() != decision);
     }
 
     private void showGameStartedMsg() 

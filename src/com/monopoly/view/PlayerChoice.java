@@ -1,13 +1,13 @@
 package com.monopoly.view;
 
-public enum PLAYER_CHOICE 
+public enum PlayerChoice 
 {
     
     YES(1), NO(2), RESIGN(3);
     
     private int choice;
     //Constructor which will initialize the enum
-    PLAYER_CHOICE(int choice)
+    PlayerChoice(int choice)
     {
       this.choice = choice;
     }
