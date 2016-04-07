@@ -26,16 +26,16 @@ public class View
         this.playerBuyAssetDecision = playerBuyAssetDecision;
     }
     
-    public int getHumanPlayersNumber()
+    public int getHumanPlayersNumber(int maximumAllowed)
     {
         System.out.print("Please enter a number of Human players: ");
-        return getNumberFromUser();
+        return getNumberFromUser(maximumAllowed);
     }
 
-    public int getComputerPlayersNumber()
+    public int getComputerPlayersNumber(int maximumAllowed)
     {
         System.out.print("Please enter a number of Computer players: ");
-        return getNumberFromUser();
+        return getNumberFromUser(maximumAllowed);
     }
 
     public List<String> getHumanPlayerNames(int humanPlayersNumber)
@@ -66,11 +66,11 @@ public class View
         //TODO: implement
     }
     
-    private int getNumberFromUser()
+    private int getNumberFromUser(int maximumAllowed)
     {
         Integer inputNum = Utils.tryParseInt(scanner.next());
         
-        while(inputNum == null)
+        while(inputNum == null || inputNum > maximumAllowed)
         {
             System.out.println("Bad input format, please try again:");
             inputNum = Utils.tryParseInt(scanner.next());
@@ -84,7 +84,7 @@ public class View
         System.out.println("Now " + playerName + "'s turn");
     }
 
-    public void showEvents(List<Event> events) {
+    public void showEvents(Event[] events) {
         for(Event event : events)
         {
             showEvent(event);
@@ -149,7 +149,7 @@ public class View
     private void promtPlayerToBuyHouse(Event event)
     {
         boolean isUserWillingToBuy = false;
-        System.out.println("Do you want to buy " + event.getEventMessage() +  "press 1-Yes 2-No:");
+        System.out.println(event.getEventMessage() +  "press 1-Yes 2-No:");
         isUserWillingToBuy = isUserWillingToBuy();
         
         playerBuyHouseDecision.onAnswer(event.getEventID(), isUserWillingToBuy);
@@ -158,7 +158,7 @@ public class View
     private void promtPlayerToBuyAsset(Event event)
     {
         boolean isUserWillingToBuy = false;
-        System.out.println("Do you want to buy " + event.getEventMessage() +  "press 1-Yes 2-No:");
+        System.out.println(event.getEventMessage() +  "press 1-Yes 2-No:");
         isUserWillingToBuy = isUserWillingToBuy();
         
         playerBuyAssetDecision.onAnswer(event.getEventID(), isUserWillingToBuy);    
@@ -167,11 +167,12 @@ public class View
     private boolean isUserWillingToBuy() 
     {
         boolean isUserWillingToBuy = false;
-        int decision = getNumberFromUser();
-        while(decision != YES || decision != NO)
+        int maximumAllowed = 2;
+        int decision = getNumberFromUser(maximumAllowed);
+        while(decision != YES && decision != NO)
         {
             System.out.println("Wrong input, try again:");
-            decision = getNumberFromUser();
+            decision = getNumberFromUser(maximumAllowed);
         }
         
         if(decision == YES)
@@ -193,8 +194,7 @@ public class View
 
     private void showDiceRollResult(Event event)
     {
-         System.out.println("Dice roll result is:" + event.getFirstDiceResult() 
-                 + " " + event.getSecondDiceResult());
+         System.out.println(event.getEventMessage());
     }
 
     private void showGameWinner(Event event)
@@ -206,12 +206,12 @@ public class View
 
     private void showAssetBoughtMsg(Event event)
     {
-        System.out.println(event.getEventMessage() + " by " + event.getPlayerName());
+        System.out.println(event.getEventMessage());
     }
 
     private void showHouseBoughtMsg(Event event)
     {
-        System.out.println(event.getEventMessage() + " by " + event.getPlayerName());
+        System.out.println(event.getEventMessage());
     }
 
     private void showLandedOnStartSquareMsg(Event event)
@@ -221,7 +221,7 @@ public class View
 
     private void showPassedStartSquareMsg(Event event)
     {
-        System.out.println("Player " + event.getPlayerName() + " passed start square");
+        System.out.println(event.getEventMessage());
     }
 
     private void showPaymentMsg(Event event)
@@ -231,7 +231,7 @@ public class View
 
     private void showPlayerLostMsg(Event event)
     {
-        System.out.println("Player " + event.getPlayerName() + " passed start square");
+        System.out.println(event.getEventMessage());
     }
 
     private void showPlayerResignMsg(Event event)

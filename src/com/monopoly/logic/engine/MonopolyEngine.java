@@ -31,6 +31,7 @@ public class MonopolyEngine implements Engine
     private int    numberOfPlayers;
     private Board  board;
     private Player currentPlayer;
+    private boolean isBoardIsInitialized = false;
 
     private EventList events = new EventList();
     private OnBuyDecisionTaken onBuyDecisionTaken;
@@ -108,11 +109,12 @@ public class MonopolyEngine implements Engine
                           monopolyInitReader.getSurpriseCards(),
                           monopolyInitReader.getAlertCards(),
                           monopolyInitReader.getKeyCells());
+        isBoardIsInitialized = true;
     }
 
     public boolean isStillPlaying()
     {
-        return (players.size() - lostPlayers.size()) > MINIMUM_GAME_PLAYERS;
+        return (players.size() - lostPlayers.size()) >= MINIMUM_GAME_PLAYERS;
     }
 
     public CubesResult throwCubes()
@@ -125,7 +127,7 @@ public class MonopolyEngine implements Engine
 
     public void startGame()
     {
-        if (players.size() < numberOfPlayers)
+        if (players.size() < numberOfPlayers || !isBoardIsInitialized)
         {
             return;
         }

@@ -88,8 +88,8 @@ import static org.junit.Assert.assertTrue;
 
 public class MonopolyEngineTest
 {
-    public static final  int    HUMAN_PLAYERS_COUNT               = 0;
-    public static final  int    COMPUTER_PLAYERS_COUNT            = 6;
+    public static final  int    HUMAN_PLAYERS_COUNT               = 3;
+    public static final  int    COMPUTER_PLAYERS_COUNT            = 3;
     public static final  int    MAX_CUBE_RESULT                   = 6;
     public static final  int    MIN_CUBE_RESULT                   = 1;
     public static final  String GAME_NAME                         = "GameName";
