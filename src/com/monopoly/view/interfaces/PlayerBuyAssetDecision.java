@@ -1,4 +1,4 @@
-package com.monopoly.view;
+package com.monopoly.view.interfaces;
 
 @FunctionalInterface
 public interface PlayerBuyAssetDecision 

@@ -1,5 +1,8 @@
 package com.monopoly.view;
 
+import com.monopoly.view.interfaces.PlayerResign;
+import com.monopoly.view.interfaces.PlayerBuyHouseDecision;
+import com.monopoly.view.interfaces.PlayerBuyAssetDecision;
 import com.monopoly.logic.events.Event;
 import com.monopoly.logic.events.EventType;
 import com.monopoly.utils.Utils;
@@ -7,14 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class View
 {
-    public static final int YES = 1;
-    public static final int NO = 2;
-    
     private Scanner scanner = new Scanner(System.in);
     private PlayerBuyHouseDecision playerBuyHouseDecision;
     private PlayerBuyAssetDecision playerBuyAssetDecision;
+    private PlayerResign playerResign;
+
+    public void setPlayerResign(PlayerResign playerResign) {
+        this.playerResign = playerResign;
+    }
     
     public void setPlayerBuyHouseDecision(PlayerBuyHouseDecision playerBuyHouseDecision) 
     {
@@ -148,38 +154,72 @@ public class View
 
     private void promtPlayerToBuyHouse(Event event)
     {
-        boolean isUserWillingToBuy = false;
-        System.out.println(event.getEventMessage() +  "press 1-Yes 2-No:");
-        isUserWillingToBuy = isUserWillingToBuy();
+        PLAYER_CHOICE playersChoice;
+        System.out.println(event.getEventMessage() +  "press 1-Yes 2-No 3-Resign:");
+        playersChoice = isUserWillingToBuy();
         
-        playerBuyHouseDecision.onAnswer(event.getEventID(), isUserWillingToBuy);
+        if(playersChoice == PLAYER_CHOICE.YES)
+        {
+            playerBuyHouseDecision.onAnswer(event.getEventID(), true);
+        } 
+        else if (playersChoice == PLAYER_CHOICE.NO)
+        {
+            playerBuyAssetDecision.onAnswer(event.getEventID(), false);    
+        }
+        else
+        {
+            playerResign.resing();
+        }
     }
     
     private void promtPlayerToBuyAsset(Event event)
     {
-        boolean isUserWillingToBuy = false;
-        System.out.println(event.getEventMessage() +  "press 1-Yes 2-No:");
-        isUserWillingToBuy = isUserWillingToBuy();
+        PLAYER_CHOICE playersChoice;
+        System.out.println(event.getEventMessage() +  "press 1-Yes 2-No 3-Resign:");
+        playersChoice = isUserWillingToBuy();
         
-        playerBuyAssetDecision.onAnswer(event.getEventID(), isUserWillingToBuy);    
+        if(playersChoice == PLAYER_CHOICE.YES)
+        {
+            playerBuyAssetDecision.onAnswer(event.getEventID(), true);    
+        }
+        else if (playersChoice == PLAYER_CHOICE.NO)
+        {
+            playerBuyAssetDecision.onAnswer(event.getEventID(), false);    
+        }
+        else
+        {
+            playerResign.resing();
+        }
     }
         
-    private boolean isUserWillingToBuy() 
+    private PLAYER_CHOICE isUserWillingToBuy() 
     {
-        boolean isUserWillingToBuy = false;
-        int maximumAllowed = 2;
+        int maximumAllowed = 3;
         int decision = getNumberFromUser(maximumAllowed);
-        while(decision != YES && decision != NO)
+        while(isWrongChoiceInserted(decision))
         {
             System.out.println("Wrong input, try again:");
             decision = getNumberFromUser(maximumAllowed);
         }
         
-        if(decision == YES)
+        if(PLAYER_CHOICE.YES.GetChoice() == decision)
         {
-            isUserWillingToBuy = true;
+            return PLAYER_CHOICE.YES;
         }
-        return isUserWillingToBuy;
+        else if(PLAYER_CHOICE.NO.GetChoice() == decision)
+        {
+            return PLAYER_CHOICE.NO;
+        }
+        else
+        {
+            return PLAYER_CHOICE.RESIGN;
+        }
+    }
+
+    private static boolean isWrongChoiceInserted(int decision) {
+        return (PLAYER_CHOICE.YES.GetChoice() != decision) &&
+               (PLAYER_CHOICE.NO.GetChoice() != decision) &&
+               (PLAYER_CHOICE.RESIGN.GetChoice() != decision);
     }
 
     private void showGameStartedMsg() 

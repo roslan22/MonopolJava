@@ -31,6 +31,7 @@ public class Controller
     public static int DUMMY_PLAYER_ID = 1;
     public static String XML_PATH = Utils.getAbsolutePath(
                       XmlMonopolyInitReader.class, "/com/monopoly/res/monopoly_config.xml");
+    public Player currentPlayer = null;
     
     public Controller(View view, MonopolyEngine engine)
     {
@@ -42,6 +43,10 @@ public class Controller
         view.setPlayerBuyAssetDecision((int eventID, boolean answer) -> {
             buy(DUMMY_PLAYER_ID, eventID, answer); //TODO: IN EXERCISE 3 CHANGE TO PLAYERID
         });
+        
+        view.setPlayerResign(() -> {
+            resign(DUMMY_PLAYER_ID); //TODO: IN EXERCISE 3 CHANGE TO PLAYERID
+        });
     }
 
     public void play()
@@ -49,13 +54,16 @@ public class Controller
         engine.startGame();
         while (engine.isStillPlaying())
         {
-            Player player = engine.getCurrentPlayer(); 
-            events = engine.getEvents(player.getPlayerID(), lastEvent);
+            currentPlayer = engine.getCurrentPlayer(); 
+            events = engine.getEvents(currentPlayer.getPlayerID(), lastEvent);
+            if(events.length > 0)
+            {
             lastEvent = events[events.length-1].getEventID();
             //NEXT TWO LINES FOR EX. 3
            // events = engine.getEvents(player.getPlayerID(), lastReceivedEventIds.get(player)); 
            // lastReceivedEventIds.replace(player, events[events.length-1].getEventID());
             view.showEvents(events);
+            }
         }
         events = engine.getEvents(DUMMY_PLAYER_ID, lastEvent);
         view.showEvents(events);
@@ -81,7 +89,7 @@ public class Controller
         int gamePlayersQuota = MAXIMUM_GAME_PLAYERS;
         int humanPlayersNumber = view.getHumanPlayersNumber(gamePlayersQuota);
         int computerPlayersNumber = view.getComputerPlayersNumber(gamePlayersQuota - humanPlayersNumber);
-
+        
         List<String> humanPlayersNames = view.getHumanPlayerNames(humanPlayersNumber);
         engine.createGame(GAME_NAME, computerPlayersNumber, humanPlayersNumber);
         addHumanPlayersNames(humanPlayersNames);
@@ -110,6 +118,14 @@ public class Controller
     private void buy(int playerID, int eventID, boolean answer) 
     {
         engine.buy(playerID, eventID, answer);
+    }
+
+    private void resign(int playerID) 
+    {
+        if(currentPlayer != null)
+        {
+          engine.resign(currentPlayer.getPlayerID());
+        }
     }
     
 }
