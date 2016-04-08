@@ -106,6 +106,7 @@ public class XmlMonopolyInitReader implements MonopolyInitReader
     private List<SurpriseCard> surpriseCards = new ArrayList<>();
     private CardPack<AlertCard> alertCardPack;
     private List<AlertCard> alertCards = new ArrayList<>();
+    private List<PropertyGroup> propertyGroups = new ArrayList<>();
 
     private Queue<City>    allCities       = new LinkedList<>();
     private Queue<Company> utilities       = new LinkedList<>();
@@ -140,7 +141,7 @@ public class XmlMonopolyInitReader implements MonopolyInitReader
         if (keyCells == null)
         {
             keyCells = new KeyCellsBuilder().setAlertCells(alertCells).setSurpriseCells(surpriseCells).setJailCell(jailCell)
-                    .setJailGate(jailGate).setParkingCell(parkingCell).createKeyCells();
+                    .setJailGate(jailGate).setParkingCell(parkingCell).setPropertyGroups(propertyGroups).createKeyCells();
         }
         return keyCells;
     }
@@ -207,6 +208,7 @@ public class XmlMonopolyInitReader implements MonopolyInitReader
         int monopolyPrice = getNumericAttribute(utilitiesContainer.getAttributes(), MONOPOLY_RENT_COST);
         addCompanies(companies, utilitiesContainer, monopolyPrice);
         PropertyGroup companyGroup = new PropertyGroup(companyType, new ArrayList<>(companies));
+        propertyGroups.add(companyGroup);
         companies.forEach(company -> company.setPropertyGroup(companyGroup));
     }
 
@@ -476,6 +478,7 @@ public class XmlMonopolyInitReader implements MonopolyInitReader
     private void createCountry(String name, List<City> cities)
     {
         PropertyGroup country = new PropertyGroup(name, cities);
+        propertyGroups.add(country);
         cities.forEach(c -> c.setPropertyGroup(country));
     }
 

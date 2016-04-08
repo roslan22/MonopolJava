@@ -23,18 +23,6 @@ public class EventBuilder
         this.eventType = eventType;
     }
 
-    public EventBuilder setEventID(int eventID)
-    {
-        this.eventID = eventID;
-        return this;
-    }
-
-    public EventBuilder setEventType(EventType eventType)
-    {
-        this.eventType = eventType;
-        return this;
-    }
-
     public EventBuilder setTimeoutCount(int timeoutCount)
     {
         this.timeoutCount = timeoutCount;

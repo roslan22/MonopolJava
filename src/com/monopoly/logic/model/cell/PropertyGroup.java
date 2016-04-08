@@ -20,6 +20,11 @@ public class PropertyGroup
         return name;
     }
 
+    public List<? extends Property> getProperties()
+    {
+        return properties;
+    }
+
     public boolean hasMonopoly(Player player)
     {
         for (Property p : properties)

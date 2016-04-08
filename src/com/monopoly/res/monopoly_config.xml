@@ -3,77 +3,77 @@
     <assets>
         <countries>
             <country name="Uzbekistan">
-                <city name="Tashkent" cost="60" houseCost="450" stayCost="2" stayCost1="10" stayCost2="120"
-                      stayCost3="360"/>
-                <city name="Namangan" cost="60" houseCost="450" stayCost="4" stayCost1="20" stayCost2="120"
-                      stayCost3="720"/>
+                <city name="Tashkent" cost="480" houseCost="250" stayCost="40" stayCost1="200" stayCost2="600"
+                      stayCost3="1800"/>
+                <city name="Namangan" cost="480" houseCost="250" stayCost="80" stayCost1="400" stayCost2="1200"
+                      stayCost3="3600"/>
             </country>
             <country name="Turkey">
-                <city name="Izmir" cost="100" houseCost="450" stayCost="6" stayCost1="30" stayCost2="720"
-                      stayCost3="1080"/>
-                <city name="Ankara" cost="100" houseCost="450" stayCost="6" stayCost1="30" stayCost2="720"
-                      stayCost3="1080"/>
-                <city name="Istanbul" cost="120" houseCost="450" stayCost="8" stayCost1="40" stayCost2="400"
-                      stayCost3="1200"/>
+                <city name="Izmir" cost="800" houseCost="250" stayCost="120" stayCost1="600" stayCost2="1800"
+                      stayCost3="5400"/>
+                <city name="Ankara" cost="800" houseCost="250" stayCost="120" stayCost1="600" stayCost2="1800"
+                      stayCost3="5400"/>
+                <city name="Istanbul" cost="960" houseCost="250" stayCost="160" stayCost1="800" stayCost2="2000"
+                      stayCost3="6000"/>
             </country>
             <country name="Israel">
-                <city name="Eilat" cost="140" houseCost="300" stayCost="10" stayCost1="50" stayCost2="1200"
-                      stayCost3="1800"/>
-                <city name="Jerusalem" cost="140" houseCost="300" stayCost="10" stayCost1="50" stayCost2="1200"
-                      stayCost3="1800"/>
-                <city name="Tel-Aviv" cost="160" houseCost="300" stayCost="12" stayCost1="60" stayCost2="720"
-                      stayCost3="2000"/>
+                <city name="Eilat" cost="1120" houseCost="500" stayCost="200" stayCost1="1000" stayCost2="3000"
+                      stayCost3="9000"/>
+                <city name="Jerusalem" cost="1120" houseCost="500" stayCost="200" stayCost1="1000" stayCost2="3000"
+                      stayCost3="9000"/>
+                <city name="Tel-Aviv" cost="1280" houseCost="500" stayCost="240" stayCost1="1200" stayCost2="3600"
+                      stayCost3="10000"/>
             </country>
             <country name="Italy">
-                <city name="Venezia" cost="180" houseCost="300" stayCost="14" stayCost1="70" stayCost2="400"
-                      stayCost3="2200"/>
-                <city name="Rome" cost="180" houseCost="300" stayCost="14" stayCost1="70" stayCost2="400"
-                      stayCost3="2200"/>
-                <city name="Milano" cost="200" houseCost="300" stayCost="16" stayCost1="80" stayCost2="440"
-                      stayCost3="2400"/>
+                <city name="Venezia" cost="1440" houseCost="500" stayCost="280" stayCost1="1400" stayCost2="4000"
+                      stayCost3="11000"/>
+                <city name="Rome" cost="1440" houseCost="500" stayCost="280" stayCost1="1400" stayCost2="4000"
+                      stayCost3="11000"/>
+                <city name="Milano" cost="1600" houseCost="500" stayCost="320" stayCost1="1600" stayCost2="4400"
+                      stayCost3="12000"/>
             </country>
             <country name="Russia">
-                <city name="Novosibirsk" cost="220" houseCost="450" stayCost="18" stayCost1="90"
-                      stayCost2="1000" stayCost3="2800"/>
-                <city name="Saint Petersburg" cost="220" houseCost="450" stayCost="18" stayCost1="90"
-                      stayCost2="1000" stayCost3="2800"/>
-                <city name="Moscow" cost="240" houseCost="450" stayCost="20" stayCost1="100" stayCost2="1200"
-                      stayCost3="3000"/>
+                <city name="Novosibirsk" cost="1760" houseCost="750" stayCost="360" stayCost1="1800"
+                      stayCost2="5000" stayCost3="14000"/>
+                <city name="Saint Petersburg" cost="1760" houseCost="750" stayCost="360" stayCost1="1800"
+                      stayCost2="5000" stayCost3="14000"/>
+                <city name="Moscow" cost="1920" houseCost="750" stayCost="400" stayCost1="2000" stayCost2="6000"
+                      stayCost3="15000"/>
             </country>
             <country name="Germany">
-                <city name="Frankfurt" cost="260" houseCost="450" stayCost="22" stayCost1="110"
-                      stayCost2="660" stayCost3="3200"/>
-                <city name="Munich" cost="260" houseCost="450" stayCost="22" stayCost1="110" stayCost2="660"
-                      stayCost3="3200"/>
-                <city name="Berlin" cost="280" houseCost="450" stayCost="24" stayCost1="120" stayCost2="720"
-                      stayCost3="3400"/>
+                <city name="Frankfurt" cost="2080" houseCost="750" stayCost="440" stayCost1="2200"
+                      stayCost2="6600" stayCost3="16000"/>
+                <city name="Munich" cost="2080" houseCost="750" stayCost="440" stayCost1="2200" stayCost2="6600"
+                      stayCost3="16000"/>
+                <city name="Berlin" cost="2240" houseCost="750" stayCost="480" stayCost1="2400" stayCost2="7200"
+                      stayCost3="17000"/>
             </country>
             <country name="China">
-                <city name="Hong Kong" cost="300" houseCost="600" stayCost="26" stayCost1="130"
-                      stayCost2="780" stayCost3="3600"/>
-                <city name="Beijing" cost="300" houseCost="600" stayCost="26" stayCost1="130" stayCost2="780"
-                      stayCost3="3600"/>
-                <city name="Shanghai" cost="320" houseCost="600" stayCost="28" stayCost1="450" stayCost2="900"
-                      stayCost3="3600"/>
+                <city name="Hong Kong" cost="2400" houseCost="1000" stayCost="520" stayCost1="2600"
+                      stayCost2="7800" stayCost3="18000"/>
+                <city name="Beijing" cost="2400" houseCost="1000" stayCost="520" stayCost1="2600" stayCost2="7800"
+                      stayCost3="18000"/>
+                <city name="Shanghai" cost="2560" houseCost="1000" stayCost="560" stayCost1="9000" stayCost2="9000"
+                      stayCost3="18000"/>
             </country>
             <country name="United States">
-                <city name="Chicago" cost="340" houseCost="600" stayCost="35" stayCost1="175" stayCost2="1000"
-                      stayCost3="4400"/>
-                <city name="Los Angeles" cost="340" houseCost="600" stayCost="35" stayCost1="175"
-                      stayCost2="1000" stayCost3="4400"/>
-                <city name="New York" cost="380" houseCost="600" stayCost="50" stayCost1="200" stayCost2="1200"
-                      stayCost3="5600"/>
+                <city name="Chicago" cost="2720" houseCost="1000" stayCost="700" stayCost1="3500" stayCost2="10000"
+                      stayCost3="22000"/>
+                <city name="Los Angeles" cost="2720" houseCost="1000" stayCost="700" stayCost1="3500"
+                      stayCost2="10000" stayCost3="22000"/>
+                <city name="New York" cost="3040" houseCost="1000" stayCost="1000" stayCost1="4000" stayCost2="12000"
+                      stayCost3="28000"/>
             </country>
         </countries>
-        <utilities stayCost="100">
-            <utility name="Electricity Company" cost="150" stayCost="25"/>
-            <utility name="Water Work" cost="150" stayCost="25"/>
+        <utilities stayCost="2000">
+            <utility name="Electricity Company" cost="1200" stayCost="500"/>
+            <utility name="Water Work" cost="1200" stayCost="500"/>
         </utilities>
-        <transportations stayCost="200">
-            <transportation name="Train" cost="200" stayCost="50"/>
-            <transportation name="Bus" cost="200" stayCost="50"/>
-            <transportation name="Air Port" cost="200" stayCost="50"/>
-            <transportation name="Sea Port" cost="200" stayCost="50"/>
+        <transportations stayCost="4000">
+            <transportation name="Train" cost="1600" stayCost="1000"/>
+            <transportation name="Bus" cost="1600" stayCost="1000"/>
+            <transportation name="Air Port" cost="1600" stayCost="1000"/>
+            <transportation name="Sea Port" cost="1600" stayCost="1000"/>
         </transportations>
     </assets>
     <surprise>
@@ -87,9 +87,9 @@
     <warrant>
         <goto num="1" text="Go To Jail!" to="JAIL"/>
         <goto num="1" text="Go to next Alert cell. If you pass through Road Start you wont collect 200₪" to="NEXT_WARRANT"/>
-        <monetary num="1" text="Make general repairs on all your property. Pay ₪50" who="TREASURY" sum="50"/>
-        <monetary num="1" text="Pay poor tax of ₪15" who="TREASURY" sum="15"/>
-        <monetary num="1" text="You have been elected Chairman of the Board – Pay each player ₪50" who="PLAYERS" sum="50"/>
+        <monetary num="3" text="Make general repairs on all your property. Pay ₪500" who="TREASURY" sum="500"/>
+        <monetary num="2" text="Pay poor tax of ₪300" who="TREASURY" sum="300"/>
+        <monetary num="1" text="You have been elected Chairman of the Board – Pay each player ₪200" who="PLAYERS" sum="200"/>
     </warrant>
     <board>
         <startSquare />

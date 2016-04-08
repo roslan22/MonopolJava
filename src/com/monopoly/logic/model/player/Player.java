@@ -10,7 +10,7 @@ import com.monopoly.logic.model.cell.Property;
 
 public abstract class Player
 {
-    private static final int START_MONEY_AMOUNT = 1500;
+    public static final int START_MONEY_AMOUNT = 1500;
     protected MonopolyEngine engine;
     private   String         name;
     private   int            playerID;
@@ -18,17 +18,6 @@ public abstract class Player
     private int money = START_MONEY_AMOUNT;
     private Cell          currentCell;
     private OutOfJailCard outOfJailCard;
-
-
-    public OutOfJailCard getOutOfJailCard()
-    {
-        return outOfJailCard;
-    }
-
-    public void setOutOfJailCard(OutOfJailCard outOfJailCard)
-    {
-        this.outOfJailCard = outOfJailCard;
-    }
 
     public Player(String name, int playerID, MonopolyEngine engine)
     {
@@ -66,11 +55,6 @@ public abstract class Player
     public int getPlayerID()
     {
         return playerID;
-    }
-
-    public void setPlayerID(int playerID)
-    {
-        this.playerID = playerID;
     }
 
     public void setCurrentCellDoNotPerform(Cell currentCell)

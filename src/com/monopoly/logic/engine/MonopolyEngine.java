@@ -1,9 +1,11 @@
 package com.monopoly.logic.engine;
 
+import com.monopoly.controller.XmlMonopolyInitReader;
 import com.monopoly.logic.engine.monopolyInitReader.CouldNotReadMonopolyInitReader;
 import com.monopoly.logic.engine.monopolyInitReader.MonopolyInitReader;
 import com.monopoly.logic.events.Event;
 import com.monopoly.logic.events.EventList;
+import com.monopoly.logic.events.EventType;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.cell.Jail;
@@ -25,6 +27,7 @@ public class MonopolyEngine implements Engine
     public static final int FIRST_PLAYER_INDEX      = 0;
     public static final int END_OF_ROUND_MONEY_EARN = 200;
     public static final int MINIMUM_GAME_PLAYERS    = 2;
+    public static final int MAXIMUM_TURNS           = 300;
 
     private List<Player> players     = new ArrayList<>();
     private List<Player> lostPlayers = new ArrayList<>();
@@ -56,7 +59,7 @@ public class MonopolyEngine implements Engine
     }
 
     @Override
-    public int joinGame(String gameName, String playerName) throws PlayerNameAlreadyExists
+    public int joinGame(String gameName, String playerName)
     {
         if (players.stream().anyMatch(player -> player.getName().equals(playerName)))
         {
@@ -88,18 +91,9 @@ public class MonopolyEngine implements Engine
         playGame();
     }
 
-    public Player getCurrentPlayer()
-    {
-        if (currentPlayer == null)
-        {
-            throw new IllegalStateException("There is no current player. Have you called createPlayers(...) ?");
-        }
-        return currentPlayer;
-    }
-
     private void createComputerPlayers(int computerPlayersCount)
     {
-        IntStream.range(0, computerPlayersCount).forEach(i -> players.add(new ComputerPlayer(players.size(), this)));
+        IntStream.range(0, computerPlayersCount).forEach(i -> players.add(new ComputerPlayer(players.size(), this, board)));
     }
 
     public void initializeBoard(MonopolyInitReader monopolyInitReader) throws CouldNotReadMonopolyInitReader
@@ -108,14 +102,16 @@ public class MonopolyEngine implements Engine
         board = new Board(this,
                           monopolyInitReader.getCells(),
                           monopolyInitReader.getSurpriseCards(),
-                          monopolyInitReader.getAlertCards(),
                           monopolyInitReader.getKeyCells());
         isBoardIsInitialized = true;
     }
 
     public boolean isStillPlaying()
     {
-        return (players.size() - lostPlayers.size()) >= MINIMUM_GAME_PLAYERS;
+        boolean isSomeoneWon = (players.size() - lostPlayers.size()) >= MINIMUM_GAME_PLAYERS;
+        boolean isPlayedMaximumAmountOfTurns = events.getEventsClone().stream()
+                .filter(e -> e.getEventType() == EventType.DICE_ROLL).count() >= MAXIMUM_TURNS;
+        return isSomeoneWon || isPlayedMaximumAmountOfTurns;
     }
 
     public CubesResult throwCubes()
@@ -144,8 +140,14 @@ public class MonopolyEngine implements Engine
         {
             nextPlayer();
             movePlayer();
+            checkLostPlayers();
         }
         finishGame();
+    }
+
+    private void checkLostPlayers()
+    {
+        players.stream().filter(p -> !lostPlayers.contains(p) && p.getMoneyAmount() <= 0).forEach(this::playerLost);
     }
 
     private boolean isWaitingForPlayer()
@@ -157,7 +159,8 @@ public class MonopolyEngine implements Engine
     {
         if (!isStillPlaying())
         {
-            events.addGameWinnerEvent(getPlayingPlayers().get(FIRST_PLAYER_INDEX));
+            Player winnerPlayer = getPlayingPlayers().stream().max((p1, p2) -> p1.getMoneyAmount() - p2.getMoneyAmount()).get();
+            events.addGameWinnerEvent(winnerPlayer);
             events.addGameOver();
         }
     }

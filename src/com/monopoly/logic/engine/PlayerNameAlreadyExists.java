@@ -1,5 +1,5 @@
 package com.monopoly.logic.engine;
 
-public class PlayerNameAlreadyExists extends Exception
+public class PlayerNameAlreadyExists extends RuntimeException
 {
 }

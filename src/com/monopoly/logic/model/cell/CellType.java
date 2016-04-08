@@ -7,9 +7,5 @@ public enum CellType
     PARKING,
     SURPRISE_CELL,
     ALERT_CELL,
-    DEFAULT;
-
-    public static class UnimplementedCellType extends RuntimeException
-    {
-    }
+    PROPERTY, DEFAULT
 }

@@ -1,11 +1,11 @@
 package com.monopoly.logic.model.board;
 
 import com.monopoly.logic.engine.MonopolyEngine;
-import com.monopoly.logic.model.card.AlertCard;
 import com.monopoly.logic.model.card.CardPack;
 import com.monopoly.logic.model.card.SurpriseCard;
 import com.monopoly.logic.model.cell.Cell;
 import com.monopoly.logic.model.cell.Property;
+import com.monopoly.logic.model.cell.PropertyGroup;
 import com.monopoly.logic.model.player.Player;
 
 import java.util.ArrayList;
@@ -20,19 +20,21 @@ public class Board
     private MonopolyEngine engine;
     private List<Cell> cells = new ArrayList<>();
     private CardPack<SurpriseCard> surpriseCardPack;
-    private CardPack<AlertCard>    alertCardPack;
 
     private KeyCells keyCells;
 
-    public Board(MonopolyEngine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack,
-                 CardPack<AlertCard> alertCardPack, KeyCells keyCells)
+    public Board(MonopolyEngine engine, List<Cell> cells, CardPack<SurpriseCard> surpriseCardPack, KeyCells keyCells)
     {
         this.cells = cells;
         this.engine = engine;
         this.surpriseCardPack = surpriseCardPack;
-        this.alertCardPack = alertCardPack;
         this.keyCells = keyCells;
         initBoard();
+    }
+
+    public KeyCells getKeyCells()
+    {
+        return keyCells;
     }
 
     private void initBoard()
@@ -180,15 +182,24 @@ public class Board
         clearPropertiesOwner(player);
     }
 
+    public List<Property> getProperties()
+    {
+        List<Property> properties = new ArrayList<>();
+        keyCells.getPropertyGroups().forEach(pg -> properties.addAll(pg.getProperties()));
+        return properties;
+    }
+
     private void clearPropertiesOwner(Player player)
     {
-        cells.stream().filter(cell -> cell instanceof Property).forEach(cell -> {
-            Property propertyCell = (Property) cell;
-            if (!propertyCell.isPropertyAvailable() && propertyCell.getOwner().equals(player))
-            {
-                propertyCell.setOwner(null);
-            }
-        });
+        getProperties().stream().forEach(p -> clearPlayerPropertiesOwnership(player, p));
+    }
+
+    private void clearPlayerPropertiesOwnership(Player player, Property p)
+    {
+        if (!p.isPropertyAvailable() && p.getOwner().equals(player))
+        {
+            p.setOwner(null);
+        }
     }
 
     public void addSurpriseCardEvent(Player player, String cardText)
@@ -225,6 +236,21 @@ public class Board
     public int getJailCellIndex()
     {
         return cells.indexOf(keyCells.getJailCell());
+    }
+
+    public List<PropertyGroup> getPropertyGroups()
+    {
+        return keyCells.getPropertyGroups();
+    }
+
+    public int getCellIndex(Cell cell)
+    {
+        return cells.indexOf(cell);
+    }
+
+    public int getCellsCount()
+    {
+        return cells.size();
     }
 
     public static class PlayerNotOnBoard extends RuntimeException

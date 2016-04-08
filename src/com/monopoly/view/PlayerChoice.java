@@ -1,20 +1,31 @@
 package com.monopoly.view;
 
-public enum PlayerChoice 
+import java.util.Arrays;
+
+public enum PlayerChoice
 {
     
     YES(1), NO(2), RESIGN(3);
-    
+
+    public static boolean isChoiceExists(int choice)
+    {
+        return Arrays.stream(PlayerChoice.values()).anyMatch(c -> c.getChoice() == choice);
+    }
+
+    public static PlayerChoice getValueForChoice(int choice)
+    {
+        return Arrays.stream(PlayerChoice.values()).filter(c -> c.getChoice() == choice).findAny().get();
+    }
+
     private int choice;
-    //Constructor which will initialize the enum
+
     PlayerChoice(int choice)
     {
       this.choice = choice;
     }
-    
-    //method to return the direction set by the user which initializing the enum
-    public int GetChoice()
+
+    public int getChoice()
     {
       return choice;
     }
-};
+}

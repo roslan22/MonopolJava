@@ -50,24 +50,24 @@ public abstract class Property extends Cell
     @Override
     public void perform(Player player)
     {
-        if (isAbleToBuyHouse(player))
+        if (isAbleToBuyProperty(player))
         {
             player.askToBuyProperty(this);
         }
-        else
+        else if (!isPropertyAvailable())
         {
             player.payToOtherPlayer(getOwner(), getRentPrice());
         }
     }
 
-    private boolean isAbleToBuyHouse(Player player)
+    private boolean isAbleToBuyProperty(Player player)
     {
         return isPropertyAvailable() && player.getMoneyAmount() >= getPrice();
     }
 
     public void buyProperty(Player player)
     {
-        if (isAbleToBuyHouse(player))
+        if (isAbleToBuyProperty(player))
         {
             player.payToBank(price);
             setOwner(player);
@@ -77,5 +77,11 @@ public abstract class Property extends Cell
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public CellType getType()
+    {
+        return CellType.PROPERTY;
     }
 }

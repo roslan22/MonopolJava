@@ -4,17 +4,19 @@ import com.monopoly.logic.model.cell.AlertCell;
 import com.monopoly.logic.model.cell.Jail;
 import com.monopoly.logic.model.cell.JailGate;
 import com.monopoly.logic.model.cell.Parking;
+import com.monopoly.logic.model.cell.PropertyGroup;
 import com.monopoly.logic.model.cell.SurpriseCell;
 
 import java.util.List;
 
 public class KeyCellsBuilder
 {
-    private List<AlertCell> alertCells;
-    private List<SurpriseCell> surpriseCells;
-    private Jail               jailCell;
-    private JailGate           jailGate;
-    private Parking            parkingCell;
+    private List<AlertCell>     alertCells;
+    private List<SurpriseCell>  surpriseCells;
+    private List<PropertyGroup> propertyGroups;
+    private Jail                jailCell;
+    private JailGate            jailGate;
+    private Parking             parkingCell;
 
     public KeyCellsBuilder setAlertCells(List<AlertCell> alertCells)
     {
@@ -46,8 +48,14 @@ public class KeyCellsBuilder
         return this;
     }
 
+    public KeyCellsBuilder setPropertyGroups(List<PropertyGroup> propertyGroups)
+    {
+        this.propertyGroups = propertyGroups;
+        return this;
+    }
+
     public KeyCells createKeyCells()
     {
-        return new KeyCells(alertCells, surpriseCells, jailCell, jailGate, parkingCell);
+        return new KeyCells(alertCells, surpriseCells, jailCell, jailGate, parkingCell, propertyGroups);
     }
 }

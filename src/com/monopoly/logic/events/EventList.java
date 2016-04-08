@@ -16,11 +16,6 @@ public class EventList
         return new ArrayList<>(events);
     }
 
-    public int getLastEventID()
-    {
-        return getAndIncrementNextEventID() - 1;
-    }
-
     public void addThrowCubesEvent(Player player, CubesResult cubesResult)
     {
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.DICE_ROLL).setPlayerName(player.getName())
