@@ -45,8 +45,12 @@ public class View
 
     public int getComputerPlayersNumber(int maximumAllowed)
     {
-        System.out.print("Please enter a number of Computer players: ");
-        return getNumberFromUser(maximumAllowed);
+        if (maximumAllowed > 0)
+        {
+            System.out.print("Please enter a number of Computer players: ");
+            return getNumberFromUser(maximumAllowed);
+        }
+        return 0;
     }
 
     public List<String> getDistinctHumanPlayerNames(int humanPlayersNumber)
@@ -279,7 +283,7 @@ public class View
 
     private void showOutOfJailCard(Event event)
     {
-        System.out.println("Out of jail card was used by " + event.getPlayerName());
+        System.out.println(event.getEventMessage());
     }
 
     private void showGoToJailMsg(Event event)
@@ -290,4 +294,5 @@ public class View
     private void unknownEvent()
     {
     }
+
 }

@@ -7,7 +7,6 @@ import com.monopoly.logic.model.cell.Property;
 import com.monopoly.logic.model.cell.PropertyGroup;
 
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ComputerPlayer extends Player
 {
@@ -69,9 +68,8 @@ public class ComputerPlayer extends Player
 
     private boolean isCloseToMonopoly(PropertyGroup propertyGroup)
     {
-        Stream<? extends Property> propertyStream = propertyGroup.getProperties().stream();
-        return propertyStream.filter(Property::isPropertyAvailable).count() == LAST_CELL &&
-                propertyStream.filter(p -> p.getOwner().equals(this)).count() == ALMOST_ALL_CELLS;
+        return propertyGroup.getProperties().stream().filter(Property::isPropertyAvailable).count() == LAST_CELL &&
+                propertyGroup.getProperties().stream().filter(p -> !p.isPropertyAvailable() && p.getOwner().equals(this)).count() == ALMOST_ALL_CELLS;
     }
 
     private boolean isBlockingAMonopoly(PropertyGroup propertyGroup)

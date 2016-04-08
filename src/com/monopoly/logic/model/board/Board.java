@@ -70,7 +70,7 @@ public class Board
 
     public void addMovePlayerEvent(Player player, int currentPlayerPlace, int destinationCellIndex)
     {
-        String destinationName = cells.get(destinationCellIndex).getClass().getSimpleName();
+        String destinationName = cells.get(destinationCellIndex).getCellName();
         engine.addMovePlayerEvent(player, currentPlayerPlace, destinationCellIndex, destinationName);
     }
 

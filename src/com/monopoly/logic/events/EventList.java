@@ -43,10 +43,10 @@ public class EventList
         events.add(e);
     }
 
-    public void addMovePlayerEvent(Player player, int from, int to, String destenationName)
+    public void addMovePlayerEvent(Player player, int from, int to, String destinationName)
     {
         String eventMessage = player.getName();
-        eventMessage += from == to ? " stayed at " + from : " moved from " + from + " to " + to + ", " + destenationName;
+        eventMessage += from == to ? " stayed at " + destinationName : " moved from " + from + " to " + to + ", " + destinationName;
         Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.MOVE).setEventMessage(eventMessage)
                 .setPlayerName(player.getName()).setPlayerMove(from != to).setBoardSquareID(from).setNextBoardSquareID(to)
                 .createGameEvent();
@@ -86,7 +86,7 @@ public class EventList
 
     public void addPlayerResignEvent(Player player)
     {
-        Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.GAME_OVER)
+        Event e = new EventBuilder(getAndIncrementNextEventID(), EventType.PLAYER_RESIGNED)
                 .setEventMessage(player.getName() + " has resigned").setPlayerName(player.getName()).createGameEvent();
         events.add(e);
     }

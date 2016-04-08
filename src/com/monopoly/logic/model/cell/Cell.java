@@ -21,4 +21,9 @@ public abstract class Cell
     {
         return CellType.DEFAULT;
     }
+
+    public String getCellName()
+    {
+        return this.getClass().getSimpleName();
+    }
 }

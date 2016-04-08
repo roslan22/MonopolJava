@@ -60,7 +60,7 @@ public class City extends Property
     {
         return getPropertyGroup().hasMonopoly(player) &&
                 houseCounter < MAX_HOUSES_AVAILABLE &&
-                player.getMoneyAmount() >= housePrice;
+                player.getMoneyAmount() > housePrice;
     }
 
     public void buyHouse(Player player)

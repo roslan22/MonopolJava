@@ -9,6 +9,13 @@ public class RoadStart extends Cell
     @Override
     public void perform(Player player)
     {
-        player.receiveMoneyFromBank(ROAD_START_MONEY);
+        try
+        {
+            player.receiveMoneyFromBank(ROAD_START_MONEY);
+        }
+        catch (NoSuchMethodError e)
+        {
+            System.out.println("Da Fuck?!");
+        }
     }
 }

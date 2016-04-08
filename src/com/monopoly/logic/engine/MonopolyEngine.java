@@ -1,11 +1,9 @@
 package com.monopoly.logic.engine;
 
-import com.monopoly.controller.XmlMonopolyInitReader;
 import com.monopoly.logic.engine.monopolyInitReader.CouldNotReadMonopolyInitReader;
 import com.monopoly.logic.engine.monopolyInitReader.MonopolyInitReader;
 import com.monopoly.logic.events.Event;
 import com.monopoly.logic.events.EventList;
-import com.monopoly.logic.events.EventType;
 import com.monopoly.logic.model.CubesResult;
 import com.monopoly.logic.model.board.Board;
 import com.monopoly.logic.model.cell.Jail;
@@ -86,8 +84,8 @@ public class MonopolyEngine implements Engine
         onBuyDecisionTaken = null;
         Player resignedPlayer = players.stream().filter(p -> p.getPlayerID() == playerID).findFirst()
                 .orElseThrow(Board.PlayerNotOnBoard::new);
-        playerLost(resignedPlayer);
         events.addPlayerResignEvent(resignedPlayer);
+        playerLost(resignedPlayer);
         playGame();
     }
 
@@ -108,10 +106,7 @@ public class MonopolyEngine implements Engine
 
     public boolean isStillPlaying()
     {
-        boolean isSomeoneWon = (players.size() - lostPlayers.size()) >= MINIMUM_GAME_PLAYERS;
-        boolean isPlayedMaximumAmountOfTurns = events.getEventsClone().stream()
-                .filter(e -> e.getEventType() == EventType.DICE_ROLL).count() >= MAXIMUM_TURNS;
-        return isSomeoneWon || isPlayedMaximumAmountOfTurns;
+        return (players.size() - lostPlayers.size()) >= MINIMUM_GAME_PLAYERS;
     }
 
     public CubesResult throwCubes()

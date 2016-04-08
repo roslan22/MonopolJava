@@ -62,7 +62,7 @@ public abstract class Property extends Cell
 
     private boolean isAbleToBuyProperty(Player player)
     {
-        return isPropertyAvailable() && player.getMoneyAmount() >= getPrice();
+        return isPropertyAvailable() && player.getMoneyAmount() > getPrice();
     }
 
     public void buyProperty(Player player)
@@ -83,5 +83,11 @@ public abstract class Property extends Cell
     public CellType getType()
     {
         return CellType.PROPERTY;
+    }
+
+    @Override
+    public String getCellName()
+    {
+        return getName();
     }
 }

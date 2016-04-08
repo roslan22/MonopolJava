@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<monopoly xsi:noNamespaceSchemaLocation="monopoly_config.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!--<monopoly xsi:noNamespaceSchemaLocation="monopoly_config.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">-->
+<monopoly>
     <assets>
         <countries>
             <country name="Uzbekistan">

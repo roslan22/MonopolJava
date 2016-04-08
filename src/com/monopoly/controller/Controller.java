@@ -47,8 +47,8 @@ public class Controller
 
     private void initGame()
     {
-        createPlayers();
         initBoard();
+        createPlayers();
     }
 
     private void initBoard()
