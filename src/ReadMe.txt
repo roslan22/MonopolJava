@@ -1,5 +1,9 @@
-Aviel Niego 203839170
-Ruslan Lbr
+Aviel  Niego     203839170
+Ruslan Ibragimov 320956758
 
-Assumptions:
-1. The game is finished after the 300 rounds and the player with the largest amount of money is the winner.
+Main-Class: com.monopoly.main.Main
+
+1. JRE 1.8 is needed to run the game
+2. We have implemented an AI for the ComputerPlayer. Which uses some known, proved and smart strategies.
+3. Most of the project is following the rules from the CleanCode movies.
+

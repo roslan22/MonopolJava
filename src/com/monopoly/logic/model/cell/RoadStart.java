@@ -15,7 +15,7 @@ public class RoadStart extends Cell
         }
         catch (NoSuchMethodError e)
         {
-            System.out.println("Da Fuck?!");
+            System.out.println("What");
         }
     }
 }

@@ -80,7 +80,7 @@ public abstract class Player
         int actualPayedAmount = money > amount ? amount : money;
         player.receiveMoneyFromOtherPlayer(actualPayedAmount);
         money -= actualPayedAmount;
-        engine.addPayToOtherPlayerEvent(this, player, amount);
+        engine.addPayToOtherPlayerEvent(this, player, actualPayedAmount);
     }
 
     private void receiveMoneyFromOtherPlayer(int amount)
@@ -92,8 +92,9 @@ public abstract class Player
 
     public void payToBank(int amount)
     {
-        money -= money > amount ? amount : money;
-        engine.addPayToBankEvent(this, amount);
+        int actualAmountPayed = money > amount ? amount : money;
+        money -= actualAmountPayed;
+        engine.addPayToBankEvent(this, actualAmountPayed);
     }
 
     public boolean isParking()

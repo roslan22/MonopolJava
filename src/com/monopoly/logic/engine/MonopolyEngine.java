@@ -82,10 +82,8 @@ public class MonopolyEngine implements Engine
     public void resign(int playerID)
     {
         onBuyDecisionTaken = null;
-        Player resignedPlayer = players.stream().filter(p -> p.getPlayerID() == playerID).findFirst()
-                .orElseThrow(Board.PlayerNotOnBoard::new);
-        events.addPlayerResignEvent(resignedPlayer);
-        playerLost(resignedPlayer);
+        events.addPlayerResignEvent(currentPlayer);
+        playerLost(currentPlayer);
         playGame();
     }
 
