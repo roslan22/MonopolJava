@@ -119,6 +119,11 @@ public class ComputerPlayer extends Player
     @Override
     public void askToBuyHouse(City city)
     {
+        /**
+         * If has the money. Smart player should always buy house when possible.
+         *  Even if it means he won't have the money for a better house in some other place.
+         *  The odds are better if he would buy house whenever possible
+         * */
         engine.addHouseBoughtEvent(this, city.getName());
         city.buyHouse(this);
     }

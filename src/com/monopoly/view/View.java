@@ -189,7 +189,7 @@ public class View
                 playerBuyAssetDecision.onAnswer(event.getEventID(), false);
                 break;
             case RESIGN:
-                playerResign.resing();
+                playerResign.resign();
                 break;
         }
     }
