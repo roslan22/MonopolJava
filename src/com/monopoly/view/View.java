@@ -23,48 +23,40 @@ public class View
     private PlayerBuyAssetDecision playerBuyAssetDecision;
     private PlayerResign           playerResign;
 
-    public static Boolean isNewGameRequired() 
+    public static Boolean isNewGameRequired()
     {
-         Scanner scanner = new Scanner(System.in);
-         Boolean isPlayerRequireNewGame = false;
-         System.out.println("Do you want to play again? Press 1-YES, 2-NO");
-         Integer inputNum = getUserChoice(scanner);
-         
-        if(PlayerChoice.getValueForChoice(inputNum) == PlayerChoice.YES)
-        {
-            isPlayerRequireNewGame = true;
-        }
-        
-        return isPlayerRequireNewGame;
+        System.out.println("Do you want to play again? Press 1-YES, 2-NO");
+        return PlayerChoice.getValueForChoice(getUserChoice()) == PlayerChoice.YES;
     }
 
-    private static Integer getUserChoice(Scanner scanner1) {
-        Integer inputNum = Utils.tryParseInt(scanner1.next());
-        
-        while (!PlayerChoice.isChoiceExists(inputNum)) {
+    private static int getUserChoice()
+    {
+        Scanner scanner = new Scanner(System.in);
+        Integer inputNum = Utils.tryParseInt(scanner.next());
+
+        while (inputNum == null || !PlayerChoice.isChoiceExists(inputNum))
+        {
             System.out.println("Bad input format, please try again:");
-            inputNum = Utils.tryParseInt(scanner1.next());
+            inputNum = Utils.tryParseInt(scanner.next());
         }
         return inputNum;
     }
-    
+
     public String loadExternalXmlPath()
     {
-        Scanner scanner = new Scanner(System.in);
-        String userString = null;
-        
         System.out.println("Do you want to load game XML file externally ? Press 1-YES, 2-NO");
-        Integer inputNum = getUserChoice(scanner);
-        
-        if(PlayerChoice.getValueForChoice(inputNum) == PlayerChoice.YES)
+        Integer inputNum = getUserChoice();
+
+        String userPath = null;
+        if (PlayerChoice.getValueForChoice(inputNum) == PlayerChoice.YES)
         {
-           userString = tryGetXMLPathFromUser();
+            userPath = tryGetXMLPathFromUser();
         }
-        
-        return userString;
-                
+
+        return userPath;
+
     }
-    
+
     public void setPlayerResign(PlayerResign playerResign)
     {
         this.playerResign = playerResign;
@@ -338,19 +330,19 @@ public class View
     {
     }
 
-    private String tryGetXMLPathFromUser() 
+    private String tryGetXMLPathFromUser()
     {
-       scanner = new Scanner(System.in);
-       System.out.println("Please enter full XML path and then enter");
-       String path = scanner.nextLine();
+        scanner = new Scanner(System.in);
+        System.out.println("Please enter full XML path and then enter");
+        String path = scanner.nextLine();
 
-       while(path.isEmpty())
-       {
-          System.out.println("Bad XML path, please enter again:");
-          path = scanner.nextLine();
-       }
-       
-       return path;
+        while (path.isEmpty())
+        {
+            System.out.println("Bad XML path, please enter again:");
+            path = scanner.nextLine();
+        }
+
+        return path;
     }
 
 }

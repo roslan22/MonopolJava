@@ -67,8 +67,8 @@ public class Controller
     private void tryToLoadBoardFromXML(String xmlPath) {
         try
         {
-            System.out.println("Configurational XML loaded from: " + xmlPath);
             engine.initializeBoard(new XmlMonopolyInitReader(xmlPath));
+            System.out.println("Configurations XML loaded from: " + xmlPath);
         } catch (CouldNotReadMonopolyInitReader couldNotReadMonopolyInitReader)
         {
             System.out.println(couldNotReadMonopolyInitReader.getMessage());
