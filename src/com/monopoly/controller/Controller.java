@@ -18,7 +18,7 @@ public class Controller
     public static       String GAME_NAME            = "Monopoly";
     public static final int    MAXIMUM_GAME_PLAYERS = 6;
     public static       int    DUMMY_PLAYER_ID      = 1;
-    public static       String XML_PATH             = Utils
+    public static       String DEFAULT_XML_PATH             = Utils
             .getAbsolutePath(XmlMonopolyInitReader.class, "/com/monopoly/res/monopoly_config.xml");
 
     public Controller(View view, MonopolyEngine engine)
@@ -53,10 +53,22 @@ public class Controller
 
     private void initBoard()
     {
+        String xmlPath;
+        xmlPath = view.loadExternalXmlPath();
+        
+        if(xmlPath == null || xmlPath.isEmpty())
+        {
+            xmlPath = DEFAULT_XML_PATH;
+        }      
+        
+        tryToLoadBoardFromXML(xmlPath);
+    }
+
+    private void tryToLoadBoardFromXML(String xmlPath) {
         try
         {
-            System.out.println(XML_PATH);
-            engine.initializeBoard(new XmlMonopolyInitReader(XML_PATH));
+            System.out.println("Configurational XML loaded from: " + xmlPath);
+            engine.initializeBoard(new XmlMonopolyInitReader(xmlPath));
         } catch (CouldNotReadMonopolyInitReader couldNotReadMonopolyInitReader)
         {
             System.out.println(couldNotReadMonopolyInitReader.getMessage());

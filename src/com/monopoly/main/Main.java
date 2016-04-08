@@ -9,7 +9,12 @@ public class Main
 {
     public static void main(String[] args)
     {
-        playMonopoly();
+        Boolean isNewGameRequired = true;
+        while(isNewGameRequired)
+        {
+           playMonopoly();
+           isNewGameRequired = View.isNewGameRequired();
+        }
     }
 
     private static void playMonopoly()
