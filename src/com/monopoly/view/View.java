@@ -90,9 +90,14 @@ public class View
 
     public List<String> getDistinctHumanPlayerNames(int humanPlayersNumber)
     {
-        System.out.println("Please enter the names of the human players: ");
         List<String> names = new ArrayList<>();
-        IntStream.range(0, humanPlayersNumber).forEach(i -> names.add(getNextName(i + 1, names)));
+
+        if(humanPlayersNumber > 0)
+        {
+           System.out.println("Please enter the names of the human players: ");
+           IntStream.range(0, humanPlayersNumber).forEach(i -> names.add(getNextName(i + 1, names)));
+        }
+        
         return names;
     }
 

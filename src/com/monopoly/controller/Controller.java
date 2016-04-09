@@ -78,11 +78,16 @@ public class Controller
 
     private void createPlayers()
     {
+        List<String> names = null;
         int humanPlayersNumber = view.getHumanPlayersNumber(MAXIMUM_GAME_PLAYERS);
         int computerPlayersNumber = view.getComputerPlayersNumber(MAXIMUM_GAME_PLAYERS - humanPlayersNumber);
 
         engine.createGame(GAME_NAME, computerPlayersNumber, humanPlayersNumber);
-        addHumanPlayersNames(view.getDistinctHumanPlayerNames(humanPlayersNumber));
+        names = view.getDistinctHumanPlayerNames(humanPlayersNumber);
+        if(!names.isEmpty())
+        {
+          addHumanPlayersNames(names);
+        }
     }
 
     private void addHumanPlayersNames(List<String> humanPlayersNames)
